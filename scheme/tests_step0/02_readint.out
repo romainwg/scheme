@@ -1,0 +1,56 @@
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : 1 
+sfs typeInput début 
+sfs typeInput récupération char : 1 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : 2 
+sfs typeInput début 
+sfs typeInput récupération char : 2 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : 0 
+sfs typeInput début 
+sfs typeInput récupération char : 0 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : 4 
+sfs typeInput début 
+sfs typeInput récupération char : 4 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : 4 
+sfs typeInput début 
+sfs typeInput récupération char : 4 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : - 
+sfs typeInput début 
+sfs typeInput récupération char : - 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : + 
+sfs typeInput début 
+sfs typeInput récupération char : + 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : - 
+sfs typeInput début 
+sfs typeInput récupération char : - 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 

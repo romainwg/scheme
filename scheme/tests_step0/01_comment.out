@@ -1,0 +1,7 @@
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : 4 
+sfs typeInput début 
+sfs typeInput récupération char : 4 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 

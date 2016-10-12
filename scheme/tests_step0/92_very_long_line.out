@@ -1,0 +1,21 @@
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : u 
+sfs typeInput début 
+sfs typeInput récupération char : u 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : u 
+sfs typeInput début 
+sfs typeInput récupération char : u 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 
+sfs Readatom 
+sfs Readatom intérieur
+sfs Readatom isspace useful char : u 
+sfs typeInput début 
+sfs typeInput récupération char : u 
+type_input = 0sfs Readatom typeInput trouvé : 0 
+==> 
