@@ -79,25 +79,25 @@ object make_character ( char character ) {
 object make_boolean ( int b ) {
     
     if (b == FALSE) {
-        if (false == NULL) {
+        if (faux == NULL) {
             object o = NULL;
             o = make_object(SFS_BOOLEAN);
             o->this.special = o;
             
             return o;
         }
-        else return false;
+        else return faux;
     }
     
     if (b == TRUE) {
-        if (true == NULL) {
+        if (vrai == NULL) {
             object o = NULL;
             o = make_object(SFS_BOOLEAN);
             o->this.special = o;
             
             return o;
         }
-        else return true;
+        else return vrai;
     }
     
     return NULL;

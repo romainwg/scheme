@@ -18,8 +18,13 @@ extern "C" {
 
 #include "object.h"
 #include "aux_eval.h"
+    
+    
+int is_define( object o );
+    
+int is_symbol( object eval_car )
 
-object sfs_eval( object );
+object sfs_eval( object input );
 
 #ifdef __cplusplus
 }

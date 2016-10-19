@@ -15,13 +15,20 @@
 
 /* FONCTIONS AUXILIAIRES DE L'EVALUATION */
 
+/* FONCTIONS ENVIRONNEMENTALES */
+
+object newEnvironment( object o );
+
+
+/* FONCTIONS DE HASHAGE */
+
 /* Clé de hashage */
 
-int hash( string chaine, int N );
+int hash( string chaine );
 
 /* Ajout tête */
 
-object add_ahead( string symbol, object o );
+object add_ahead( string symbol, object o, object cdr );
 
 
 

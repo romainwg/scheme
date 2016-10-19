@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "src">
+      <FileRef
+         location = "container:scheme/src/object.c">
+      </FileRef>
+      <FileRef
+         location = "container:scheme/src/aux_eval.c">
+      </FileRef>
+      <FileRef
+         location = "container:scheme/src/eval.c">
+      </FileRef>
+      <FileRef
+         location = "container:scheme/src/print.c">
+      </FileRef>
+      <FileRef
+         location = "container:scheme/src/aux_read.c">
+      </FileRef>
+      <FileRef
+         location = "container:scheme/src/read_atom.c">
+      </FileRef>
+      <FileRef
+         location = "container:scheme/src/read.c">
+      </FileRef>
+      <FileRef
+         location = "container:scheme/src/repl.c">
+      </FileRef>
+      <FileRef
+         location = "container:scheme/src/mem.c">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "include">
+      <FileRef
+         location = "group:scheme/include/aux_eval.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/eval.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/aux_read.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/basic.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/notify.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/number.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/object.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/print.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/read_atom.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/read.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/mem.h">
+      </FileRef>
+   </Group>
+</Workspace>
