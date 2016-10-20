@@ -33,12 +33,18 @@ void usage_error( char *command ) {
 object nil=NULL;
 object vrai=NULL;
 object faux=NULL;
+object toplevel[50]=NULL;
 
 void init_interpreter ( void ) {
 
-    nil      = make_nil();
-    vrai = make_boolean( TRUE );
-    faux = make_boolean( FALSE );
+    nil     = make_nil()            ;
+    vrai    = make_boolean( TRUE )  ;
+    faux    = make_boolean( FALSE ) ;
+    
+    int i;
+    for (i=0; i<50; i++) {
+        toplevel[i] = make_pair();
+    }
 
 }
 
@@ -46,7 +52,6 @@ void init_interpreter ( void ) {
 
 int main ( int argc, char *argv[] ) {
     
-    object   hashtable[50];
     char     input[BIGSTRING];
     uint     here = 0;
     uint     root = 1;

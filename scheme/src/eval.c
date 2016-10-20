@@ -10,13 +10,6 @@
 
 #include "eval.h"
 
-int is_symbol( object eval_car ) {
-    
-    if ( eval_car->type == SFS_SYMBOL ) {
-        return 1;
-    }
-    return 0;
-}
 
 object sfs_eval( object input ) {
     
@@ -26,9 +19,9 @@ object sfs_eval( object input ) {
         string symbol;
         strcpy( symbol, eval_car->this.symbol );
         
-        switch (symbol) {
-            case 'define' :
-                
+        = eval 
+        
+        return
                 
         }
     }

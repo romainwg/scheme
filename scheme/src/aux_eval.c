@@ -9,16 +9,36 @@
 
 #include "aux_eval.h"
 
+/* FONCTIONS CAR/CDR */
+
+object car ( object o ) {
+    return o->this.pair.car ;
+}
+
+object cdr ( object o ) {
+    return o->this.pair.cdr ;
+}
+
+object cadr ( object o ) {
+    return o->this.pair.cdr->this.pair.car ;
+}
+
+object cddr ( object o ) {
+    return o->this.pair.cdr->this.pair.cdr ;
+}
+
+
+
 /* FONCTIONS ENVIRONNEMENTALES */
 
 object newEnvironment( object o ) {
     
     object newEnv = make_object(SFS_PAIR);
-    
-    
 
 
 }
+
+
 
 /* FONCTIONS DE HASHAGE */
 

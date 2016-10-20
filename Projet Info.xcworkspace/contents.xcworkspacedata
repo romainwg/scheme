@@ -11,6 +11,9 @@
          location = "container:scheme/src/aux_eval.c">
       </FileRef>
       <FileRef
+         location = "group:scheme/src/is_functions.c">
+      </FileRef>
+      <FileRef
          location = "container:scheme/src/eval.c">
       </FileRef>
       <FileRef
@@ -37,6 +40,9 @@
       name = "include">
       <FileRef
          location = "group:scheme/include/aux_eval.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/is_functions.h">
       </FileRef>
       <FileRef
          location = "group:scheme/include/eval.h">

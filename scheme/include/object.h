@@ -64,6 +64,7 @@ object make_symbol      (   char* symbol, int i );
 extern object nil;
 extern object vrai;
 extern object faux;
+extern object toplevel[50];
 
 #ifdef __cplusplus
 }
