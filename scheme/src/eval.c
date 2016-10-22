@@ -14,7 +14,11 @@ object eval_define( object input ) {
     
     object o_eval=NULL;
     
-    return o_eval;
+    object symbol = cadr(input);
+    object valeur = sfs_eval(cddr(input));
+    int hashkey = hash(symbol);
+    
+    return symbol;
 }
 
 object eval_set( object input ) {
@@ -59,29 +63,27 @@ object sfs_eval( object input ) {
             string function;
             strcpy( function, eval_car->this.symbol );
             
-            switch (symbol) {
-                case 'define':
+            if (is_define(function)) {
                     o_eval = eval_define(input);
-                    break;
-                    
-                case 'set!':
+            }
+            
+            else if (is_set(function)) {
                     o_eval = eval_set(input);
-                    break;
+            }
                     
-                case 'if':
+            else if (is_if(function)) {
                     o_eval = eval_if(input);
-                    break;
+            }
                 
-                case 'or':
+            else if (is_or(function)) {
                     o_eval = eval_or(input);
-                    break;
+            }
                     
-                case 'and':
+            else if (is_and(function)) {
                     o_eval = eval_and(input);
-                    break;
             }
         }
     }
     
-    return o_eval;
+    return input;
 }

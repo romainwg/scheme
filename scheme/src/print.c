@@ -21,11 +21,11 @@ void sfs_print_atom( object o ) {
             break;
             
         case SFS_BOOLEAN :
-            if (o->this.special == true ) {
+            if (o->this.special == vrai ) {
                 
                 printf("#t");
             }
-            if (o->this.special == false ) {
+            if (o->this.special == faux ) {
                 
                 printf("#f");
             }
