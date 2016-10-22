@@ -31,11 +31,12 @@ object cddr ( object o ) {
 
 /* FONCTIONS ENVIRONNEMENTALES */
 
-object newEnvironment( object o ) {
+object newEnvironment( object levelInf ) {
     
-    object newEnv = make_object(SFS_PAIR);
+    object newEnv = make_pair();
+    newEnv->this.pair.cdr = levelInf;
 
-
+    return newEnv;
 }
 
 

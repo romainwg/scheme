@@ -33,18 +33,15 @@ void usage_error( char *command ) {
 object nil=NULL;
 object vrai=NULL;
 object faux=NULL;
-object toplevel[50]=NULL;
+object toplevel=NULL;
 
 void init_interpreter ( void ) {
 
-    nil     = make_nil()            ;
-    vrai    = make_boolean( TRUE )  ;
-    faux    = make_boolean( FALSE ) ;
-    
-    int i;
-    for (i=0; i<50; i++) {
-        toplevel[i] = make_pair();
-    }
+    nil         = make_nil()            ;
+    vrai        = make_boolean( TRUE )  ;
+    faux        = make_boolean( FALSE ) ;
+    toplevel    = make_pair()           ;
+    toplevel->this.pair.cdr = make_nil();
 
 }
 

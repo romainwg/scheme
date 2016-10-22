@@ -23,7 +23,7 @@ object cddr ( object o );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */
-object newEnvironment( object o );
+object newEnvironment( object levelInf );
 
 
 /* FONCTIONS DE HASHAGE */

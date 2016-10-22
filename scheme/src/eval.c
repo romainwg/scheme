@@ -13,15 +13,16 @@
 
 object sfs_eval( object input ) {
     
-    object eval_car = input->this.pair.car;
+    object eval_car = car(input);
     
     if ( is_symbol(eval_car) ) {
         string symbol;
         strcpy( symbol, eval_car->this.symbol );
         
-        = eval 
         
-        return
+        = eval ;
+        
+        return;
                 
         }
     }
