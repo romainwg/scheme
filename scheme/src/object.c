@@ -56,12 +56,12 @@ object make_integer( int valeur ) {
     return o;
 }
 
-object make_string ( char* chaine ) {
+object make_string ( char* chaine, int i ) {
     
     object o = NULL;
     o = make_object(SFS_STRING);
     
-    strcpy (o->this.string, chaine);
+    strncpy (o->this.string, chaine, i);
     
     return o;
 }

@@ -45,7 +45,7 @@ object make_object      (   uint type           );
 object make_nil         (   void                );
 object make_pair        (   void                );
 object make_integer     (   int valeur          );
-object make_string      (   char* chaine        );
+object make_string      (   char* chaine, int i );
 object make_character   (   char character      );
 object make_boolean     (   int b               );
 object make_symbol      (   char* symbol, int i );

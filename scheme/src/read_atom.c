@@ -36,7 +36,7 @@ object read_atom_number(char * input, uint *here) {
      
      if (  p_end[0] != ' ' ) {
      
-     WARNING_MSG("TYPE_ERROR : not a number");
+     DEBUG_MSG("TYPE_ERROR : not a number");
      return NULL;
      } */
     
@@ -72,10 +72,17 @@ object read_atom_chaine(char *input, uint *here){
     while ( input[*here] != '\"') {
         
         if ( input[*here] == '\\' && input[*here+1] == '\"') {
+            chaine[i]=input[*here];
+            chaine[i+1]=input[*here+1];
+            i++;
             (*here)++;
+            
         }
         
-        chaine[i]=input[*here];
+        else {
+            chaine[i]=input[*here];
+        }
+        
         (*here)++;
         i++;
     }
@@ -83,8 +90,9 @@ object read_atom_chaine(char *input, uint *here){
     chaine[i]='\"';
     
     (*here)++;
+    i++;
     
-    atom = make_string(chaine);
+    atom = make_string(chaine,i);
     
     return atom;
 }
@@ -127,8 +135,6 @@ object read_atom_character(char *input,uint *here){
             (*here)++;
             i++;
         }
-        
-        DEBUG_MSG("newline : %s",ch1);
             
         if ( strncmp (ch1,"newline",7) == 0 ) {
             
@@ -175,11 +181,16 @@ object read_atom_character(char *input,uint *here){
         }
     }
     
-    else if ( isspace(input[*here+1]) != 0 || input[*here+1] != ')' || input[*here+1] != '(' ) {
-        
+    else {
+        if ( isgraph(input[*here+1]) && (!isspace(input[*here+1]) || input[*here+1] == ')' || input[*here+1] == '(' ) ) {
+            WARNING_MSG("Error read_atom_character : not a character");
+            return NULL;
+        }
         character = input[*here];
         (*here)++;
     }
+    
+
     
     atom = make_character(character);
     

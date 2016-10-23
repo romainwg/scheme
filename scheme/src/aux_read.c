@@ -23,10 +23,10 @@ void SpaceCancel( char *input, uint *here ) {
 
 int is_special_initial(char input) {
     
-    char special_initial[14] = "!$%&*/:<=>?^_~";
+    char special_initial[16] = "!$%&*/:<=>?^_~.@";
     
     int i;
-    for ( i=0 ; i<14 ; i++ ) {
+    for ( i=0 ; i<16 ; i++ ) {
         
         if ( input == special_initial[i] ) {
             
@@ -64,18 +64,6 @@ uint typeInput(char *input, uint *here) {
     
     char first_char=input[*here];
     
-    
-    /* NUMBER */
-    
-    char *p_end;
-    strtol(input + *here, &p_end, 10);
-    
-    if ( isspace(p_end[0]) || iscntrl(p_end[0]) || p_end[0] == ')') {
-        
-        return SFS_NUMBER;
-    }
-    
-    
     /* STRING */
     
     char guillemet = '\"' ;
@@ -83,6 +71,16 @@ uint typeInput(char *input, uint *here) {
     if ( first_char == guillemet ) {
         
         return SFS_STRING;
+    }
+    
+    /* NUMBER */
+    
+    char *p_end;
+    strtol(input + *here, &p_end, 10);
+    
+    if ( isspace(p_end[0]) || iscntrl(p_end[0]) || p_end[0] == ')' || p_end[0] == '(' || p_end[0] == '\"' ) {
+        
+        return SFS_NUMBER;
     }
     
     
