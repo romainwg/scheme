@@ -42,6 +42,7 @@ void init_interpreter ( void ) {
     faux        = make_boolean( FALSE ) ;
     toplevel    = make_pair()           ;
     toplevel->this.pair.car = make_nil();
+    toplevel->this.pair.cdr = make_nil();
 
 }
 

@@ -31,6 +31,10 @@ object caar ( object o ) {
     return o->this.pair.car->this.pair.car ;
 }
 
+object cdar ( object o ) {
+    return o->this.pair.car->this.pair.cdr ;
+}
+
 
 
 /* FONCTIONS ENVIRONNEMENTALES */
@@ -58,6 +62,22 @@ object newVarEnvironment( string symbol, object valeur, object Env ) {
     
     return Env;
 }
+
+object changeVarEnvironment( string symbol, object valeur, object Env ) {
+    
+    object EnvCopy = cdr(Env);
+    while ( EnvCopy->type != SFS_NIL ) {
+        if ( strcmp(symbol,caar(EnvCopy)->this.symbol) == 0 ) {
+            EnvCopy->this.pair.car->this.pair.cdr=valeur;
+            return Env;
+        }
+        EnvCopy = cdr(EnvCopy);
+    }
+    return NULL;
+    
+}
+
+
 
 
 

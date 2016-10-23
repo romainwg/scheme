@@ -24,6 +24,7 @@ int is_if       ( string function );
 int is_or       ( string function );
 int is_and      ( string function );
 
+/* IS_FUNCTIONS - RECHERCHE D'UNE VARIABLE */
 int is_in_Env( string function, object Env );
 
 #endif /* is_functions_h */

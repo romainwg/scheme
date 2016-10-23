@@ -22,11 +22,13 @@ object cdr  ( object o );
 object cadr ( object o );
 object cddr ( object o );
 object caar ( object o );
+object cdar ( object o );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */
-object newEnvironment( object levelInf );
-object newVarEnvironment( string symbol, object valeur, object Env );
+object newEnvironment       ( object levelInf                               );
+object newVarEnvironment    ( string symbol, object valeur, object Env      );
+object changeVarEnvironment ( string symbol, object valeur, object toplevel );
 
 
 
