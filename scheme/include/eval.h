@@ -19,6 +19,13 @@ extern "C" {
 #include "object.h"
 #include "aux_eval.h"
 #include "is_functions.h"
+    
+object eval_define  ( object input );
+object eval_set     ( object input );
+object eval_if      ( object input );
+object eval_and     ( object input );
+object eval_or      ( object input );
+    
 
 object sfs_eval( object input );
 

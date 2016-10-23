@@ -27,51 +27,36 @@ object cddr ( object o ) {
     return o->this.pair.cdr->this.pair.cdr ;
 }
 
+object caar ( object o ) {
+    return o->this.pair.car->this.pair.car ;
+}
+
 
 
 /* FONCTIONS ENVIRONNEMENTALES */
 
-object newEnvironment( object levelInf ) {
+object newEnvironment( object toplevel ) {
     
     object newEnv = make_pair();
-    newEnv->this.pair.cdr = levelInf;
+    newEnv->this.pair.car = make_nil();
+    newEnv->this.pair.cdr = toplevel;
 
     return newEnv;
 }
 
 
-
-/* FONCTIONS DE HASHAGE */
-
-int hash( string chaine ) {
+object newVarEnvironment( string symbol, object valeur, object Env ) {
     
-    int A=31; /* Variable de Hash A */
-    int N = 50;
-    int hashkey=0;
-    int i;
+    object newPair = make_pair();
     
-    for(i=strlen(chaine)-1;i>=0;i--) {
-        hashkey=(hashkey*A+chaine[i])%N;
-    }
+    uint i=0;
+    newPair->this.pair.car = make_pair();
+    newPair->this.pair.car->this.pair.car = read_atom_symbol(symbol,&i);
+    newPair->this.pair.car->this.pair.cdr = valeur;
+    newPair->this.pair.cdr = Env->this.pair.car;
+    Env = newPair;
     
-    return hashkey;
-}
-
-object add_ahead( string symbol, object o, object cdr ) {
-    
-    object new_o = make_object(SFS_PAIR);
-    if ( new_o == NULL ) return NULL;
-    
-    new_o->this.pair.car=make_object(SFS_PAIR);
-    
-    new_o->this.pair.car->this.pair.car = make_object(SFS_SYMBOL);
-    strcpy(new_o->this.pair.car->this.pair.car->this.symbol,symbol);
-    
-    new_o->this.pair.car->this.pair.cdr = cdr;
-    
-    new_o->this.pair.cdr = o;
-    
-    return new_o;
+    return Env;
 }
 
 

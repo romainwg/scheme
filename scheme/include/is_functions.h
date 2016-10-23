@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "object.h"
+#include "aux_eval.h"
 
 /* IS_FUNCTIONS - TYPE */
 int is_pair     ( object o        );
@@ -22,5 +23,7 @@ int is_set      ( string function );
 int is_if       ( string function );
 int is_or       ( string function );
 int is_and      ( string function );
+
+int is_in_Env( string function, object Env );
 
 #endif /* is_functions_h */

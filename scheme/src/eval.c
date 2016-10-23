@@ -12,13 +12,22 @@
 
 object eval_define( object input ) {
     
-    object o_eval=NULL;
+    if (cadr(input)->type != SFS_SYMBOL) {
+        WARNING_MSG("EVAL_DEFINE WARNING : cannot use Define, not a symbol.");
+        return NULL;
+    }
     
-    object symbol = cadr(input);
+    if (is_in_Env(cadr(input)->this.symbol,toplevel)) {
+        WARNING_MSG("EVAL_DEFINE WARNING : cannot use Define, variable already defined.");
+        return NULL;
+    }
+    
+    string symbol;
+    strcpy(symbol,cadr(input)->this.symbol);
     object valeur = sfs_eval(cddr(input));
-    int hashkey = hash(symbol);
-    
-    return symbol;
+
+    toplevel = newVarEnvironment( symbol, valeur, toplevel );
+    return NULL;
 }
 
 object eval_set( object input ) {
@@ -64,26 +73,28 @@ object sfs_eval( object input ) {
             strcpy( function, eval_car->this.symbol );
             
             if (is_define(function)) {
-                    o_eval = eval_define(input);
+                return eval_define(input);
             }
             
             else if (is_set(function)) {
-                    o_eval = eval_set(input);
+                return eval_set(input);
             }
                     
             else if (is_if(function)) {
-                    o_eval = eval_if(input);
+                return eval_if(input);
             }
                 
             else if (is_or(function)) {
-                    o_eval = eval_or(input);
+                return eval_or(input);
             }
                     
             else if (is_and(function)) {
-                    o_eval = eval_and(input);
+                return eval_and(input);
             }
         }
     }
     
-    return input;
+    else {
+        return input;
+    }
 }

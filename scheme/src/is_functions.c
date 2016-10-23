@@ -58,3 +58,17 @@ int is_and( string function ) {
     }
     return 0;
 }
+
+int is_in_Env( string function, object Env ) {
+    
+    object EnvCopy = cdr(Env);
+    while ( EnvCopy->type != SFS_NIL ) {
+        if ( strcmp(function,caar(EnvCopy)->this.symbol) == 0 ) {
+            return 1;
+        }
+        EnvCopy = cdr(EnvCopy);
+    }
+    return 0;
+}
+
+

@@ -12,27 +12,21 @@
 
 #include <stdio.h>
 #include "object.h"
+#include "read_atom.h"
 
 /* FONCTIONS AUXILIAIRES DE L'EVALUATION */
 
 /* CAR/CDR */
-object car ( object o );
-object cdr ( object o );
+object car  ( object o );
+object cdr  ( object o );
 object cadr ( object o );
 object cddr ( object o );
+object caar ( object o );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */
 object newEnvironment( object levelInf );
-
-
-/* FONCTIONS DE HASHAGE */
-
-/* Clé de hashage */
-int hash( string chaine );
-
-/* Ajout tête */
-object add_ahead( string symbol, object o, object cdr );
+object newVarEnvironment( string symbol, object valeur, object Env );
 
 
 
