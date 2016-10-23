@@ -63,7 +63,7 @@ int is_in_Env( string function, object Env ) {
     
     DEBUG_MSG("is in Env begin function %s",function);
     
-    object EnvCopy = cdr(Env);
+    object EnvCopy = car(Env);
     while ( EnvCopy->type != SFS_NIL ) {
         if ( strcmp(function,caar(EnvCopy)->this.symbol) == 0 ) {
             return 1;

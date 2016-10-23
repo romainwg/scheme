@@ -35,7 +35,9 @@ object cdar ( object o ) {
     return o->this.pair.car->this.pair.cdr ;
 }
 
-
+object caddr ( object o ) {
+    return o->this.pair.cdr->this.pair.cdr->this.pair.car ;
+}
 
 /* FONCTIONS ENVIRONNEMENTALES */
 
@@ -58,7 +60,7 @@ object newVarEnvironment( string symbol, object valeur, object Env ) {
     newPair->this.pair.car->this.pair.car = read_atom_symbol(symbol,&i);
     newPair->this.pair.car->this.pair.cdr = valeur;
     newPair->this.pair.cdr = Env->this.pair.car;
-    Env = newPair;
+    Env->this.pair.car = newPair;
     
     return Env;
 }
