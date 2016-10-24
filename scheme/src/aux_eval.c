@@ -21,7 +21,7 @@ object eval_symbol ( object input, object toplevel ) {
         }
     }
     else {
-        WARNING_MSG("SFS_EVAL WARNING : not a defined symbol");
+        WARNING_MSG("Not a defined symbol");
         return NULL;
     }
     return NULL;
@@ -35,12 +35,12 @@ object eval_define( object input ) {
     }
     
     if (cadr(input)->type != SFS_SYMBOL) {
-        WARNING_MSG("EVAL_DEFINE WARNING : cannot use Define, not a symbol");
+        WARNING_MSG("Cannot use Define, not a symbol");
         return NULL;
     }
     
     if (is_in_Env(cadr(input)->this.symbol,toplevel)) {
-        WARNING_MSG("EVAL_DEFINE WARNING : cannot use Define, variable already defined");
+        WARNING_MSG("Cannot use Define, variable already defined");
         return NULL;
     }
     
@@ -49,7 +49,7 @@ object eval_define( object input ) {
     object valeur = sfs_eval(caddr(input));
     
     if (valeur == NULL) {
-        WARNING_MSG("EVAL_DEFINE WARNING : cannot use Define, valeur is NULL");
+        WARNING_MSG("Cannot use Define, valeur is NULL");
         return NULL;
     }
     
@@ -65,12 +65,12 @@ object eval_set( object input ) {
     }
     
     if (cadr(input)->type != SFS_SYMBOL) {
-        WARNING_MSG("EVAL_SET WARNING : cannot use set, not a symbol");
+        WARNING_MSG("Cannot use set, not a symbol");
         return NULL;
     }
     
     if (!is_in_Env(cadr(input)->this.symbol,toplevel)) {
-        WARNING_MSG("EVAL_SET WARNING : cannot use set, variable not defined");
+        WARNING_MSG("Cannot use set, variable not defined");
         return NULL;
     }
     
@@ -79,13 +79,13 @@ object eval_set( object input ) {
     object valeur = sfs_eval(caddr(input));
     
     if (valeur == NULL) {
-        WARNING_MSG("EVAL_SET WARNING : cannot use set, valeur is NULL");
+        WARNING_MSG("Cannot use set, valeur is NULL");
         return NULL;
     }
     
     toplevel = changeVarEnvironment( symbol, valeur, toplevel );
     if (toplevel == NULL) {
-        ERROR_MSG("EVAL_SET ERROR : problem with changeVarEnvironment");
+        ERROR_MSG("Problem with changeVarEnvironment");
     }
     return NULL;
 }
@@ -295,8 +295,3 @@ object changeVarEnvironment( string symbol, object valeur, object Env ) {
     return NULL;
     
 }
-
-
-
-
-
