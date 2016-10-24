@@ -13,18 +13,21 @@
 #include <stdio.h>
 #include "object.h"
 #include "read_atom.h"
+#include "is_functions.h"
+#include "eval.h"
 
 /* FONCTIONS AUXILIAIRES DE L'EVALUATION */
+/* SYMBOL */
+object eval_symbol  ( object input, object toplevel );
+object eval_define  ( object input );
+object eval_set     ( object input );
+object eval_if      ( object input );
+object eval_and     ( object input );
+object eval_or      ( object input );
 
-/* CAR/CDR */
-object car  ( object o );
-object cdr  ( object o );
-object cadr ( object o );
-object cddr ( object o );
-object caar ( object o );
-object cdar ( object o );
-object caddr ( object o );
-object cdddr ( object o );
+/* OPERATOR */
+object eval_calc_operator   ( object input );
+object eval_cmp_operator    ( object input );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */

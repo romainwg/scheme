@@ -11,7 +11,6 @@
 #include "object.h"
 #include "mem.h"
 
-
 object make_object( uint type ) {
 
     object t = sfs_malloc( sizeof( *t ) );
@@ -111,4 +110,37 @@ object make_symbol ( char* symbol , int i ) {
     strncpy(o->this.symbol,symbol,i);
     
     return o;
+}
+
+/* FONCTIONS CAR/CDR */
+
+object car ( object o ) {
+    return o->this.pair.car ;
+}
+object cdr ( object o ) {
+    return o->this.pair.cdr ;
+}
+object cadr ( object o ) {
+    return o->this.pair.cdr->this.pair.car ;
+}
+object cddr ( object o ) {
+    return o->this.pair.cdr->this.pair.cdr ;
+}
+object caar ( object o ) {
+    return o->this.pair.car->this.pair.car ;
+}
+object cdar ( object o ) {
+    return o->this.pair.car->this.pair.cdr ;
+}
+object caddr ( object o ) {
+    return o->this.pair.cdr->this.pair.cdr->this.pair.car ;
+}
+object cdddr ( object o ) {
+    return o->this.pair.cdr->this.pair.cdr->this.pair.cdr ;
+}
+object cadddr ( object o ) {
+    return o->this.pair.cdr->this.pair.cdr->this.pair.cdr->this.pair.car ;
+}
+object cddddr ( object o ) {
+    return o->this.pair.cdr->this.pair.cdr->this.pair.cdr->this.pair.cdr ;
 }
