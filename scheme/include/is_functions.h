@@ -13,18 +13,22 @@
 #include "object.h"
 #include "aux_eval.h"
 
-/* IS_FUNCTIONS - TYPE */
+/* FUNCTIONS - TYPE */
 int is_pair     ( object o        );
 int is_symbol   ( object eval_car );
 
-/* IS_FUNCTIONS - SPECIAL SYMBOL */
+/* FUNCTIONS - SPECIAL SYMBOL */
 int is_define   ( string function );
 int is_set      ( string function );
 int is_if       ( string function );
 int is_or       ( string function );
 int is_and      ( string function );
 
-/* IS_FUNCTIONS - RECHERCHE D'UNE VARIABLE */
+/* SPECIAL SYMBOL - OPERATOR */
+int is_calcul_operator ( string input );
+int is_cmp_operator    ( string input );
+
+/* FUNCTIONS - RECHERCHE D'UNE VARIABLE */
 int is_in_Env( string function, object Env );
 
 #endif /* is_functions_h */

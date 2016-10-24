@@ -20,13 +20,18 @@ extern "C" {
 #include "aux_eval.h"
 #include "is_functions.h"
     
+/* SYMBOL */
 object eval_define  ( object input );
 object eval_set     ( object input );
 object eval_if      ( object input );
 object eval_and     ( object input );
 object eval_or      ( object input );
     
-
+/* OPERATOR */
+object eval_calc_operator   ( object input );
+object eval_cmp_operator    ( object input );
+    
+/* EVAL FUNCTION */
 object sfs_eval( object input );
 
 #ifdef __cplusplus

@@ -59,9 +59,29 @@ int is_and( string function ) {
     return 0;
 }
 
+int is_calcul_operator( string input ) {
+    if ( strcmp(input, "+") == 0 || strcmp(input, "-") == 0
+        || strcmp(input, "*") == 0 || strcmp(input, "/") == 0 ) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+int is_cmp_operator( string input ) {
+    if ( strcmp(input, ">") == 0 || strcmp(input, "<") == 0
+        || strcmp(input, "=") == 0 || strcmp(input, "<=") == 0
+        || strcmp(input, ">=") == 0 || strcmp(input, "!=") == 0) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+
 int is_in_Env( string function, object Env ) {
-    
-    DEBUG_MSG("is in Env begin function %s",function);
     
     object EnvCopy = car(Env);
     while ( EnvCopy->type != SFS_NIL ) {

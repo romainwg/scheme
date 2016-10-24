@@ -151,12 +151,16 @@ object read_atom_character(char *input,uint *here){
     }
     
     else {
-        if ( isgraph(input[*here+1]) && (!isspace(input[*here+1]) || input[*here+1] == ')' || input[*here+1] == '(' ) ) {
+        if ( input[*here+1] == ')' || input[*here+1] == '(' || isspace(input[*here+1]) ) {
+            character = input[*here];
+            (*here)++;
+            atom = make_character(character);
+            return atom;
+        }
+        else {
             WARNING_MSG("Error read_atom_character : not a character");
             return NULL;
         }
-        character = input[*here];
-        (*here)++;
     }
 
     atom = make_character(character);

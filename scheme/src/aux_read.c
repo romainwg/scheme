@@ -27,13 +27,10 @@ int is_special_initial(char input) {
     
     int i;
     for ( i=0 ; i<16 ; i++ ) {
-        
         if ( input == special_initial[i] ) {
-            
             return 1;
         }
     }
-    
     return 0;
 }
 

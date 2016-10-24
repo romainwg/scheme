@@ -24,6 +24,7 @@ object cddr ( object o );
 object caar ( object o );
 object cdar ( object o );
 object caddr ( object o );
+object cdddr ( object o );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */

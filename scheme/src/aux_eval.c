@@ -39,6 +39,10 @@ object caddr ( object o ) {
     return o->this.pair.cdr->this.pair.cdr->this.pair.car ;
 }
 
+object cdddr ( object o ) {
+    return o->this.pair.cdr->this.pair.cdr->this.pair.cdr ;
+}
+
 /* FONCTIONS ENVIRONNEMENTALES */
 
 object newEnvironment( object toplevel ) {
@@ -67,7 +71,7 @@ object newVarEnvironment( string symbol, object valeur, object Env ) {
 
 object changeVarEnvironment( string symbol, object valeur, object Env ) {
     
-    object EnvCopy = cdr(Env);
+    object EnvCopy = car(Env);
     while ( EnvCopy->type != SFS_NIL ) {
         if ( strcmp(symbol,caar(EnvCopy)->this.symbol) == 0 ) {
             EnvCopy->this.pair.car->this.pair.cdr=valeur;
