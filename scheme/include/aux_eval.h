@@ -18,7 +18,7 @@
 
 /* FONCTIONS AUXILIAIRES DE L'EVALUATION */
 /* SYMBOL */
-object eval_symbol  ( object input, object toplevel );
+object eval_symbol  ( object input );
 object eval_quote   ( object input ); /*prend en argument l'object input et renvoie l'object car(cdr(input)) sans l'évaluer*/
 object eval_define  ( object input );
 object eval_set     ( object input );
@@ -32,9 +32,9 @@ object eval_cmp_operator    ( object input );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */
-object newEnvironment       ( object levelInf                               );
-object newVarEnvironment    ( string symbol, object valeur, object Env      );
-object changeVarEnvironment ( string symbol, object valeur, object toplevel );
+object newEnvironment       ( object levelInf              );
+void newVarEnvironment    ( string symbol, object valeur );
+void changeVarEnvironment ( string symbol, object valeur );
 
 
 

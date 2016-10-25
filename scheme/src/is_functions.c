@@ -24,6 +24,13 @@ int is_symbol ( object eval_car ) {
     return 0;
 }
 
+int is_nil ( object eval_car ) {
+    if ( eval_car->type == SFS_NIL ) {
+        return 1;
+    }
+    return 0;
+}
+
 int is_quote( string function ) {
     if ( strcmp(function,"quote") == 0 ) {
         return 1;
@@ -88,10 +95,10 @@ int is_cmp_operator( string input ) {
 }
 
 
-int is_in_Env( string function, object Env ) {
+int is_in_Env( string function ) {
     
-    object EnvCopy = car(Env);
-    while ( EnvCopy->type != SFS_NIL ) {
+    object EnvCopy = car(toplevel);
+    while ( !is_nil(EnvCopy) ) {
         if ( strcmp(function,caar(EnvCopy)->this.symbol) == 0 ) {
             return 1;
         }

@@ -13,6 +13,7 @@
 (and #t #t #t #t #t #t #t)
 (and (and #f #f) (and #t #t))
 (define bob #t)
+
 (and (if (< 3 4) #t #f) bob)
 
 ;;; Make sure you put a return at

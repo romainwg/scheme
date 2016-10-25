@@ -9,11 +9,11 @@
 
 #include "aux_eval.h"
 
-object eval_symbol ( object input, object toplevel ) {
+object eval_symbol ( object input ) {
 
-    if ( is_in_Env(input->this.symbol,toplevel) ) {
+    if ( is_in_Env(input->this.symbol ) ) {
         object EnvCopy = car(toplevel);
-        while ( EnvCopy->type != SFS_NIL ) {
+        while ( !is_nil(EnvCopy) ) {
             if ( strcmp(input->this.symbol,caar(EnvCopy)->this.symbol) == 0 ) {
                 return cdar(EnvCopy);
             }
@@ -29,7 +29,7 @@ object eval_symbol ( object input, object toplevel ) {
 
 object eval_quote( object input ) {
     
-    if ( cddr(input)->type != SFS_NIL ) {
+    if ( !is_nil(cddr(input)) ) {
         WARNING_MSG("%s accepts only 1 argument",car(input)->this.symbol);
         return NULL;
     }
@@ -38,17 +38,17 @@ object eval_quote( object input ) {
 
 object eval_define( object input ) {
     
-    if ( cdddr(input)->type != SFS_NIL ) {
+    if ( cdddr(input) == NULL || !is_nil(cdddr(input)) ) {
         WARNING_MSG("%s accepts only 1 symbol with 1 atom",car(input)->this.symbol);
         return NULL;
     }
     
-    if (cadr(input)->type != SFS_SYMBOL) {
+    if ( cadr(input) == NULL || !is_symbol(cadr(input)) ) {
         WARNING_MSG("Cannot use Define, not a symbol");
         return NULL;
     }
     
-    if (is_in_Env(cadr(input)->this.symbol,toplevel)) {
+    if (is_in_Env(cadr(input)->this.symbol)) {
         WARNING_MSG("Cannot use Define, variable already defined");
         return NULL;
     }
@@ -62,23 +62,23 @@ object eval_define( object input ) {
         return NULL;
     }
     
-    toplevel = newVarEnvironment( symbol, valeur, toplevel );
+    newVarEnvironment( symbol, valeur );
     return NULL;
 }
 
 object eval_set( object input ) {
     
-    if ( cdddr(input)->type != SFS_NIL ) {
+    if ( !is_nil(cdddr(input)) ) {
         WARNING_MSG("%s accepts only 1 symbol with 1 atom",car(input)->this.symbol);
         return NULL;
     }
     
-    if (cadr(input)->type != SFS_SYMBOL) {
+    if ( !is_symbol(cadr(input)) ) {
         WARNING_MSG("Cannot use set, not a symbol");
         return NULL;
     }
     
-    if (!is_in_Env(cadr(input)->this.symbol,toplevel)) {
+    if (!is_in_Env(cadr(input)->this.symbol)) {
         WARNING_MSG("Cannot use set, variable not defined");
         return NULL;
     }
@@ -92,7 +92,7 @@ object eval_set( object input ) {
         return NULL;
     }
     
-    toplevel = changeVarEnvironment( symbol, valeur, toplevel );
+    changeVarEnvironment( symbol, valeur );
     if (toplevel == NULL) {
         ERROR_MSG("Problem with changeVarEnvironment");
     }
@@ -102,8 +102,12 @@ object eval_set( object input ) {
 object eval_if( object input ) {
     
     
-    if ( cdddr(input)->type != SFS_NIL && cdddr(input)->type != SFS_PAIR ) {
-        WARNING_MSG("%s must have at least 1 expression",car(input)->this.symbol);
+    if ( cdddr(input) == NULL ) {
+        WARNING_MSG("%s-operator must have at least 1 expression",car(input)->this.symbol);
+        return NULL;
+    }
+    if ( !is_nil(cdddr(input)) && !is_pair(cdddr(input)) ) {
+        WARNING_MSG("%s-operator must have valid expression",car(input)->this.symbol);
         return NULL;
     }
     
@@ -114,7 +118,7 @@ object eval_if( object input ) {
         return NULL;
     }
     
-    if ( cdddr(input)->type == SFS_NIL ) {
+    if ( is_nil(cdddr(input)) ) {
         if ( o_first_arg == vrai ) {
             return sfs_eval(caddr(input));
         }
@@ -123,12 +127,12 @@ object eval_if( object input ) {
         }
     }
     
-    else if ( cddddr(input) != NULL && cddddr(input)->type == SFS_NIL ) {
+    else if ( cddddr(input) != NULL && is_nil(cddddr(input)) ) {
         if ( o_first_arg == vrai ) {
             return sfs_eval(caddr(input));
         }
         else {
-            if ( cdddr(input)->type == SFS_NIL ) {
+            if ( is_nil(cdddr(input)) ) {
                 return faux;
             }
             else {
@@ -136,19 +140,19 @@ object eval_if( object input ) {
             }
         }
     }
-    WARNING_MSG("%s isn't right format",car(input)->this.symbol);
+    WARNING_MSG("%s-operator isn't in the right format",car(input)->this.symbol);
     return NULL;
 }
 
 object eval_and( object input ) {
     
-    if ( cdr(input)->type == SFS_NIL ) {
+    if ( is_nil(cdr(input)) ) {
         return faux;
     }
     
     object o_and = input;
     
-    while ( cddr(o_and)->type != SFS_NIL ) {
+    while ( !is_nil(cddr(o_and)) ) {
         o_and = cdr(o_and);
         
         if ( sfs_eval(car(o_and)) == NULL
@@ -169,13 +173,13 @@ object eval_and( object input ) {
 
 object eval_or( object input ) {
     
-    if ( cdr(input)->type == SFS_NIL ) {
+    if ( is_nil(cdr(input)) ) {
         return vrai;
     }
     
     object o_or = input;
     
-    while ( cddr(o_or)->type != SFS_NIL ) {
+    while ( !is_nil(cddr(o_or)) ) {
         o_or = cdr(o_or);
         
         if ( sfs_eval(car(o_or)) == NULL
@@ -205,7 +209,7 @@ object eval_calc_operator( object input ) {
     object atom_number = NULL;
     int first_arg = o_first_arg->this.number.this.integer;
     int res;
-    if (cddr(input)->type == SFS_NIL) {
+    if ( is_nil(cddr(input)) ) {
         if ( strcmp( car(input)->this.symbol, "+" ) == 0 ) {
             res = first_arg;
         }
@@ -213,7 +217,7 @@ object eval_calc_operator( object input ) {
             res = -first_arg;
         }
         else {
-            WARNING_MSG("%s doesn't accept only 1 argument", car(input)->this.symbol);
+            WARNING_MSG("%s-operator doesn't accept only 1 argument", car(input)->this.symbol);
             return NULL;
         }
         atom_number = make_integer(res);
@@ -221,7 +225,7 @@ object eval_calc_operator( object input ) {
     }
                         
     
-    if ( cdddr(input)->type != SFS_NIL ) {
+    if ( !is_nil(cdddr(input)) ) {
         WARNING_MSG("%s operator accepts only 2 arguments",car(input)->this.symbol);
         return NULL;
     }
@@ -257,7 +261,7 @@ object eval_calc_operator( object input ) {
 
 object eval_cmp_operator( object input ) {
     
-    if ( cdddr(input)->type != SFS_NIL ) {
+    if ( !is_nil(cdddr(input)) ) {
         WARNING_MSG("%s operator accepts only 2 arguments",car(input)->this.symbol);
         return NULL;
     }
@@ -322,7 +326,7 @@ object newEnvironment( object toplevel ) {
 }
 
 
-object newVarEnvironment( string symbol, object valeur, object Env ) {
+void newVarEnvironment( string symbol, object valeur ) {
     
     object newPair = make_pair();
     
@@ -330,22 +334,17 @@ object newVarEnvironment( string symbol, object valeur, object Env ) {
     newPair->this.pair.car = make_pair();
     newPair->this.pair.car->this.pair.car = read_atom_symbol(symbol,&i);
     newPair->this.pair.car->this.pair.cdr = valeur;
-    newPair->this.pair.cdr = Env->this.pair.car;
-    Env->this.pair.car = newPair;
-    
-    return Env;
+    newPair->this.pair.cdr = toplevel->this.pair.car;
+    toplevel->this.pair.car = newPair;
 }
 
-object changeVarEnvironment( string symbol, object valeur, object Env ) {
+void changeVarEnvironment( string symbol, object valeur ) {
     
-    object EnvCopy = car(Env);
-    while ( EnvCopy->type != SFS_NIL ) {
+    object EnvCopy = car(toplevel);
+    while ( !is_nil(EnvCopy) ) {
         if ( strcmp(symbol,caar(EnvCopy)->this.symbol) == 0 ) {
             EnvCopy->this.pair.car->this.pair.cdr=valeur;
-            return Env;
         }
         EnvCopy = cdr(EnvCopy);
     }
-    return NULL;
-    
 }

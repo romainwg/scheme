@@ -26,7 +26,7 @@ object sfs_eval( object input ) {
     }
     
     if ( is_symbol(input) ) {
-        return eval_symbol(input, toplevel);
+        return eval_symbol(input);
     }
     
     if ( is_pair(input) ) {

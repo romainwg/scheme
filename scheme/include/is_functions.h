@@ -16,6 +16,7 @@
 /* FUNCTIONS - TYPE */
 int is_pair     ( object o        );
 int is_symbol   ( object eval_car );
+int is_nil      ( object eval_car );
 
 /* FUNCTIONS - SPECIAL SYMBOL */
 int is_quote	( string function ); /*vérifie que la forme quote est utilisée*/
@@ -30,6 +31,6 @@ int is_calcul_operator ( string input );
 int is_cmp_operator    ( string input );
 
 /* FUNCTIONS - RECHERCHE D'UNE VARIABLE */
-int is_in_Env( string function, object Env );
+int is_in_Env( string function );
 
 #endif /* is_functions_h */
