@@ -79,6 +79,30 @@
       location = "container:"
       name = "test">
       <FileRef
+         location = "group:scheme/tests_step2/00_quote.scm">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/00_quote.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/01_quote_apostrophe.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/01_quote_apostrophe.scm">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/02_quote_multi.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/02_quote_multi.scm">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/03_quote_multi_apostrophe.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/03_quote_multi_apostrophe.scm">
+      </FileRef>
+      <FileRef
          location = "group:scheme/tests_step2/04_define.res">
       </FileRef>
       <FileRef

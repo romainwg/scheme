@@ -1,0 +1,7 @@
+==> (quote 3)
+==> (quote "hi")
+==> (quote a)
+==> (quote (+ 3 4))
+==> (quote (a b c))
+==> (quote (define x 25))
+==> (quote (lambda (x) (+ x 3)))
