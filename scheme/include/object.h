@@ -51,14 +51,14 @@ object make_boolean     (   int b               );
 object make_symbol      (   char* symbol, int i );
     
     /* CAR/CDR */
-    object car  ( object o );
-    object cdr  ( object o );
-    object cadr ( object o );
-    object cddr ( object o );
-    object caar ( object o );
-    object cdar ( object o );
-    object caddr ( object o );
-    object cdddr ( object o );
+    object car    ( object o );
+    object cdr    ( object o );
+    object cadr   ( object o );
+    object cddr   ( object o );
+    object caar   ( object o );
+    object cdar   ( object o );
+    object caddr  ( object o );
+    object cdddr  ( object o );
     object cadddr ( object o );
     object cddddr ( object o );
 

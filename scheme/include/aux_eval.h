@@ -19,6 +19,7 @@
 /* FONCTIONS AUXILIAIRES DE L'EVALUATION */
 /* SYMBOL */
 object eval_symbol  ( object input, object toplevel );
+object eval_quote   ( object input ); /*prend en argument l'object input et renvoie l'object car(cdr(input)) sans l'évaluer*/
 object eval_define  ( object input );
 object eval_set     ( object input );
 object eval_if      ( object input );
