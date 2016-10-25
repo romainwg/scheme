@@ -1,20 +1,19 @@
 ; TEST_RETURN_CODE=PASS
-; TEST_COMMENT=Test 1 quote
+; TEST_COMMENT=Test 08 or
 
-(quote (quote 3))
-(quote (quote "hi"))
-(quote (quote a))
-(quote (quote (+ 3 4)))
-(quote (quote (a b c)))
-(quote (quote (define x 25)))
-(quote (quote (lambda (x) (+ x 3))))
-''3
-''"hi"
-''a
-''(+ 3 4)
-''(a b c)
-''(define x 25)
-''(lambda (x) (+ x 3))
+(or)
+(or #t)
+(or #f)
+(or #f #f)
+(or #f #t)
+(or #t #f)
+(or #t #t)
+(or #f #f #f #f #f)
+(or #f #f #f #f #f #f #t)
+(or #f #f #f #f #f #f #f)
+(or (or #f #f) (or #t #t))
+(define bob #t)
+(or (if (< 3 4) #t #f) bob)
 
 ;;; Make sure you put a return at
 ;;; the end of the input file
