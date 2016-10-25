@@ -16,6 +16,10 @@ object sfs_eval( object input ) {
     
     object eval_car = car(input);
     
+    if (input == NULL) {
+        return NULL;
+    }
+    
     if ( !is_symbol(input) && !is_pair(input)
         && (input->type != SFS_NIL) ) {
         return input;

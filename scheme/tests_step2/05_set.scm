@@ -1,5 +1,5 @@
 ; TEST_RETURN_CODE=PASS
-; TEST_COMMENT=Test 04 set!
+; TEST_COMMENT=Test 05 set!
 
 (define bob 4)
 bob

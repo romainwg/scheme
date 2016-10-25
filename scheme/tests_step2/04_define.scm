@@ -1,5 +1,5 @@
 ; TEST_RETURN_CODE=PASS
-; TEST_COMMENT=Test 03 Define
+; TEST_COMMENT=Test 04 Define
 
 (define bob 4)
 bob

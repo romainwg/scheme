@@ -142,43 +142,56 @@ object eval_if( object input ) {
 
 object eval_and( object input ) {
     
-    if ( cdddr(input)->type != SFS_NIL ) {
-        WARNING_MSG("%s accepts only 2 arguments",car(input)->this.symbol);
-        return NULL;
+    if ( cdr(input)->type == SFS_NIL ) {
+        return faux;
     }
     
-    object o_first_arg = sfs_eval(cadr(input));
-    object o_second_arg = sfs_eval(caddr(input));
+    object o_and = input;
     
-    if (o_first_arg->type != SFS_BOOLEAN || o_second_arg->type != SFS_BOOLEAN ) {
-        WARNING_MSG("EVAL_AND cannot be used, 1 argument is not a boolean");
-        return NULL;
+    while ( cddr(o_and)->type != SFS_NIL ) {
+        o_and = cdr(o_and);
+        
+        if ( sfs_eval(car(o_and)) == NULL
+            || sfs_eval(car(o_and))->type != SFS_BOOLEAN ) {
+            WARNING_MSG("EVAL_AND cannot be used, 1 argument is not a boolean");
+            return NULL;
+        }
+        
+        if ( sfs_eval(car(o_and)) == faux ) {
+            return faux;
+        }
     }
-    
-    if ( o_first_arg == vrai && o_second_arg == vrai ) {
-        return vrai;
+    if (cadr(o_and) == faux) {
+        return faux;
     }
-    return faux;
+    return vrai;
 }
 
 object eval_or( object input ) {
     
-    if ( cdddr(input)->type != SFS_NIL ) {
-        WARNING_MSG("%s accepts only 2 arguments",car(input)->this.symbol);
-        return NULL;
-    }
-    object o_first_arg = sfs_eval(cadr(input));
-    object o_second_arg = sfs_eval(caddr(input));
-    
-    if (o_first_arg->type != SFS_BOOLEAN || o_second_arg->type != SFS_BOOLEAN ) {
-        WARNING_MSG("EVAL_AND cannot be used, 1 argument is not a boolean");
-        return NULL;
+    if ( cdr(input)->type == SFS_NIL ) {
+        return vrai;
     }
     
-    if ( o_first_arg == faux && o_second_arg == faux ) {
-        return faux;
+    object o_or = input;
+    
+    while ( cddr(o_or)->type != SFS_NIL ) {
+        o_or = cdr(o_or);
+        
+        if ( sfs_eval(car(o_or)) == NULL
+            || sfs_eval(car(o_or))->type != SFS_BOOLEAN ) {
+            WARNING_MSG("EVAL_OR cannot be used, 1 argument is not a boolean");
+            return NULL;
+        }
+        
+        if ( sfs_eval(car(o_or)) == vrai ) {
+            return vrai;
+        }
     }
-    return vrai;
+    if (cadr(o_or) == vrai) {
+        return vrai;
+    }
+    return faux;
 }
 
 object eval_calc_operator( object input ) {

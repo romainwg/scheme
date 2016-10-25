@@ -1,5 +1,5 @@
 ; TEST_RETURN_CODE=PASS
-; TEST_COMMENT=Test 05 if
+; TEST_COMMENT=Test 06 if
 
 (if (< 3 4) "3 inférieur à 4")
 (define x 4)
