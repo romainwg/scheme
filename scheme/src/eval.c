@@ -32,7 +32,7 @@ object sfs_eval( object input ) {
             strcpy( function, eval_car->this.symbol );
             
             if (is_quote(function)) {
-		return eval_quote(input);
+                return eval_quote(input);
             }
             else if (is_define(function)) {
                 return eval_define(input);

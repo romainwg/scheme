@@ -28,12 +28,11 @@ object eval_symbol ( object input, object toplevel ) {
 }
 
 object eval_quote( object input ) {
-    /*mettre cdr(input) à la place de car(input) et affecter fin de liste à cdr(input) ???*/
     
-    /*printf("\ninput : %d", input->type);
-    printf("\ncar input : %d", input->this.pair.car->type);
-    printf("\ncdr input : %d", input->this.pair.cdr->type);*/
-    
+    if ( cddr(input)->type != SFS_NIL ) {
+        WARNING_MSG("%s accepts only 1 argument",car(input)->this.symbol);
+        return NULL;
+    }
     return input->this.pair.cdr->this.pair.car;
 }
 
