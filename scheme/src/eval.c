@@ -31,7 +31,10 @@ object sfs_eval( object input ) {
             string function;
             strcpy( function, eval_car->this.symbol );
             
-            if (is_define(function)) {
+            if (is_quote(function)) {
+		return eval_quote(input);
+            }
+            else if (is_define(function)) {
                 return eval_define(input);
             }
             else if (is_set(function)) {

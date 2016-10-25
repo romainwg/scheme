@@ -303,7 +303,6 @@ object sfs_read( char *input, uint *here ) {
             (*here)++;
             return nil;
         }
-        
         else {
             return sfs_read_pair( input, here );
         }

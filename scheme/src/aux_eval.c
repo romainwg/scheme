@@ -27,6 +27,16 @@ object eval_symbol ( object input, object toplevel ) {
     return NULL;
 }
 
+object eval_quote( object input ) {
+    /*mettre cdr(input) à la place de car(input) et affecter fin de liste à cdr(input) ???*/
+    
+    /*printf("\ninput : %d", input->type);
+    printf("\ncar input : %d", input->this.pair.car->type);
+    printf("\ncdr input : %d", input->this.pair.cdr->type);*/
+    
+    return input->this.pair.cdr->this.pair.car;
+}
+
 object eval_define( object input ) {
     
     if ( cdddr(input)->type != SFS_NIL ) {

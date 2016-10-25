@@ -24,6 +24,13 @@ int is_symbol ( object eval_car ) {
     return 0;
 }
 
+int is_quote( string function ) {
+    if ( strcmp(function,"quote") == 0 ) { /* la guillemet devra être changé en (quote *) avant d'utiliser cette fonction */
+        return 1;
+    }
+    return 0;
+}
+
 int is_define( string function ) {
     if ( strcmp(function,"define") == 0 ) {
         return 1;
