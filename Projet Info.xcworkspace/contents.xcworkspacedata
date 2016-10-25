@@ -39,13 +39,13 @@
       location = "container:"
       name = "include">
       <FileRef
-         location = "group:scheme/include/aux_eval.h">
-      </FileRef>
-      <FileRef
          location = "group:scheme/include/is_functions.h">
       </FileRef>
       <FileRef
          location = "group:scheme/include/eval.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/aux_eval.h">
       </FileRef>
       <FileRef
          location = "group:scheme/include/aux_read.h">
@@ -73,6 +73,58 @@
       </FileRef>
       <FileRef
          location = "group:scheme/include/mem.h">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "test">
+      <FileRef
+         location = "group:scheme/tests_step2/00_quote.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/00_quote.scm">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/01_quote.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/01_quote.scm">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/02_quote.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/02_quote.scm">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/04_define.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/04_define.scm">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/05_set.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/05_set.scm">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/06_if.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/06_if.scm">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/07_and.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/07_and.scm">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/08_or.res">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/tests_step2/08_or.scm">
       </FileRef>
    </Group>
 </Workspace>

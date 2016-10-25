@@ -101,8 +101,9 @@ object eval_set( object input ) {
 
 object eval_if( object input ) {
     
-    if ( cdddr(input)->type != SFS_NIL || cddddr(input)->type != SFS_NIL ) {
-        WARNING_MSG("%s accepts only 1 predicat with 1 or 2 expression(s)",car(input)->this.symbol);
+    
+    if ( cdddr(input)->type != SFS_NIL && cdddr(input)->type != SFS_PAIR ) {
+        WARNING_MSG("%s must have at least 1 expression",car(input)->this.symbol);
         return NULL;
     }
     
@@ -113,17 +114,29 @@ object eval_if( object input ) {
         return NULL;
     }
     
-    if ( o_first_arg == vrai ) {
-        return sfs_eval(caddr(input));
-    }
-    else {
-        if ( cdddr(input)->type == SFS_NIL ) {
-            return faux;
+    if ( cdddr(input)->type == SFS_NIL ) {
+        if ( o_first_arg == vrai ) {
+            return sfs_eval(caddr(input));
         }
         else {
-            return sfs_eval(cadddr(input));
+            return faux;
         }
     }
+    
+    else if ( cddddr(input) != NULL && cddddr(input)->type == SFS_NIL ) {
+        if ( o_first_arg == vrai ) {
+            return sfs_eval(caddr(input));
+        }
+        else {
+            if ( cdddr(input)->type == SFS_NIL ) {
+                return faux;
+            }
+            else {
+                return sfs_eval(cadddr(input));
+            }
+        }
+    }
+    WARNING_MSG("%s isn't right format",car(input)->this.symbol);
     return NULL;
 }
 
@@ -170,24 +183,43 @@ object eval_or( object input ) {
 
 object eval_calc_operator( object input ) {
     
+    object o_first_arg = sfs_eval(cadr(input));
+    if ( o_first_arg->type != SFS_NUMBER ) {
+        WARNING_MSG("CALC_OPERATOR : Not a proper number to evaluate");
+        return NULL;
+    }
+    
+    object atom_number = NULL;
+    int first_arg = o_first_arg->this.number.this.integer;
+    int res;
+    if (cddr(input)->type == SFS_NIL) {
+        if ( strcmp( car(input)->this.symbol, "+" ) == 0 ) {
+            res = first_arg;
+        }
+        else if ( strcmp( car(input)->this.symbol, "-" ) == 0 ) {
+            res = -first_arg;
+        }
+        else {
+            WARNING_MSG("%s doesn't accept only 1 argument", car(input)->this.symbol);
+            return NULL;
+        }
+        atom_number = make_integer(res);
+        return atom_number;
+    }
+                        
+    
     if ( cdddr(input)->type != SFS_NIL ) {
         WARNING_MSG("%s operator accepts only 2 arguments",car(input)->this.symbol);
         return NULL;
     }
     
-    object atom_number = NULL;
-    
-    object o_first_arg = sfs_eval(cadr(input));
     object o_second_arg = sfs_eval(caddr(input));
-    
-    if ( o_first_arg->type != SFS_NUMBER || o_second_arg->type != SFS_NUMBER ) {
+    if ( o_second_arg->type != SFS_NUMBER ) {
         WARNING_MSG("CALC_OPERATOR : Not a proper number to evaluate");
         return NULL;
     }
     
-    int first_arg = o_first_arg->this.number.this.integer;
     int second_arg = o_second_arg->this.number.this.integer;
-    int res;
     
     if ( strcmp( car(input)->this.symbol, "+" ) == 0 ) {
         res = first_arg + second_arg;
