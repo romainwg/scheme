@@ -200,7 +200,16 @@ object read_atom_symbol(char *input, uint *here){
     int i=0;
     int current_here = *here;
     
-    char symbol[256];
+    string symbol;
+    
+    if ( input[*here] == '\'') {
+        DEBUG_MSG("input [*here] %c",input[*here]);
+        strncpy(symbol,"quote",5);
+        atom = make_symbol(symbol,5);
+        (*here)++;
+        DEBUG_MSG("Atom symbol : %s",atom->this.symbol);
+        return atom;
+    }
     
     while ( isalnum(input[current_here]) != 0 || is_special_initial(input[current_here]) != 0
            || input[current_here] == '+' || input[current_here] == '-' ) {

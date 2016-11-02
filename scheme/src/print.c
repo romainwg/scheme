@@ -84,34 +84,24 @@ void sfs_print_pair( object o , uint *root) {
 
 
 void sfs_print( object o , uint* root ) {
-
-
+    
+    DEBUG_MSG("sfs_print o->type %d",o->type);
+    
     if ( SFS_PAIR == o->type ) {
-        
         if (*root == 1) {
-            
             printf("(");
-            
             *root = 0;
-            
         }
-        
         sfs_print_pair( o , root);
     }
     
     else {
-        
         if (*root == 1) {
-            
             if (o->type == SFS_NIL) {
                 printf("()");
             }
-            
             *root = 0;
-            
         }
-        
         sfs_print_atom( o );
     }
-
 }

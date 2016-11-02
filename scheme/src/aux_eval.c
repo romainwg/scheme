@@ -29,10 +29,10 @@ object eval_symbol ( object input ) {
 
 object eval_quote( object input ) {
     
-    if ( !is_nil(cddr(input)) ) {
+    /*if ( !is_nil(cddr(input)) ) {
         WARNING_MSG("%s accepts only 1 argument",car(input)->this.symbol);
         return NULL;
-    }
+    }*/
     return input->this.pair.cdr->this.pair.car;
 }
 
@@ -165,7 +165,7 @@ object eval_and( object input ) {
             return faux;
         }
     }
-    if (cadr(o_and) == faux) {
+    if (sfs_eval(cadr(o_and)) == faux) {
         return faux;
     }
     return vrai;
@@ -192,7 +192,7 @@ object eval_or( object input ) {
             return vrai;
         }
     }
-    if (cadr(o_or) == vrai) {
+    if (sfs_eval(cadr(o_or)) == vrai) {
         return vrai;
     }
     return faux;

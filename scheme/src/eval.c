@@ -11,9 +11,17 @@
 #include "eval.h"
 
 /* FONCTION D'EVALUATION */
+/**
+ * @param
+ * @return
+ * @brief this function will evaluate an expression in a given environment
+ *
+ * This function evaluates an expression in a fiven environem. As required by Rnrs, speciale care has been with recursive calls (no goto) 
+ **/
 
 object sfs_eval( object input ) {
-    
+    DEBUG_MSG("input %p %d", input, input->type);
+
     object eval_car = car(input);
     
     if (input == NULL) {
@@ -36,6 +44,7 @@ object sfs_eval( object input ) {
             strcpy( function, eval_car->this.symbol );
             
             if (is_quote(function)) {
+                DEBUG_MSG("input %p %d", input, input->type);
                 return eval_quote(input);
             }
             else if (is_define(function)) {

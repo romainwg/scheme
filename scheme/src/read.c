@@ -10,10 +10,13 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#include <readline/readline.h>
+#include <readline/history.h>
+
 #include "read.h"
 #include "read_atom.h"
 #include "aux_read.h"
-
+#include "print.h"
 
 void flip( uint *i ) {
     
@@ -117,8 +120,7 @@ uint  sfs_get_sexpr( char *input, FILE *fp ) {
     
     do {
         ret = NULL;
-        chunk=k;
-        memset( chunk, '\0', BIGSTRING );
+        chunk = NULL;
         
         /* si en mode interactif*/
         if ( stdin == fp ) {
@@ -142,13 +144,12 @@ uint  sfs_get_sexpr( char *input, FILE *fp ) {
             }
             
             /*saisie de la prochaine ligne à ajouter dans l'input*/
-            printf("%s",sfs_prompt);
-            ret = fgets( chunk, BIGSTRING, fp );
-            if (ret && chunk[strlen(chunk)-1] == '\n') chunk[strlen(chunk)-1] = '\0';
-            
+            chunk = readline( sfs_prompt );
         }
         /*si en mode fichier*/
         else {
+            chunk=k;
+            memset( chunk, '\0', BIGSTRING );
             ret = fgets( chunk, BIGSTRING, fp );
             
             if ( NULL == ret ) {
@@ -284,15 +285,26 @@ uint  sfs_get_sexpr( char *input, FILE *fp ) {
     /* Suppression des espaces restant a la fin de l'expression, notamment le dernier '\n' */
     while (isspace(input[strlen(input)-1])) input[strlen(input)-1] = '\0';
     
+    if(stdin == fp) {
+        add_history( input );
+    }
     return S_OK;
 }
 
 
 object sfs_read( char *input, uint *here ) {
-    
+    DEBUG_MSG("input %s", input);
     SpaceCancel(input, here);
-
-    /* MODIFICATION TRAITEMENT D'UNE LISTE VIDE : on traitera les listes vides à l'intérieur plus tard */
+    
+    if (input[*here] == '\'') {
+        object o = make_pair();
+        o->this.pair.car=make_symbol("quote",5);
+        (*here)++;
+        o->this.pair.cdr=make_pair();
+        o->this.pair.cdr->this.pair.car=sfs_read(input,here);
+        o->this.pair.cdr->this.pair.cdr=make_nil();
+        return o;
+    }
     
     if ( input[*here] == '(' ) {
         
@@ -308,6 +320,7 @@ object sfs_read( char *input, uint *here ) {
         }
     }
     else {
+        DEBUG_MSG("ATOM input %s",input);
         return sfs_read_atom( input, here );
     }
 }
@@ -328,6 +341,8 @@ object sfs_read_atom( char *input, uint *here ) {
     
     uint type_input;
     type_input=typeInput(input,here);
+    
+    DEBUG_MSG("type input %d",type_input);
     
     switch (type_input) {
             
@@ -383,6 +398,8 @@ object sfs_read_pair( char *input, uint *here ) {
     pair->this.pair.car = sfs_read( input, here ) ;
     
     SpaceCancel(input,here);
+    
+    DEBUG_MSG("read pair input[*here] %c",input[*here]);
     
     if ( input[*here] == ')' ) {
         

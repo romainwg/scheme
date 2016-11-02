@@ -23,10 +23,10 @@ void SpaceCancel( char *input, uint *here ) {
 
 int is_special_initial(char input) {
     
-    char special_initial[16] = "!$%&*/:<=>?^_~.@";
+    char special_initial[17] = "\'!$%&*/:<=>?^_~.@";
     
     int i;
-    for ( i=0 ; i<16 ; i++ ) {
+    for ( i=0 ; i<17 ; i++ ) {
         if ( input == special_initial[i] ) {
             return 1;
         }
