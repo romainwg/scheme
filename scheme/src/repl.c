@@ -133,7 +133,91 @@ int main ( int argc, char *argv[] ) {
         /* POUR PASSER A L'INCREMENT 1 */
   /*      printf("%s\n", input );
         continue;*/
-
+		/**************************************************************/
+		
+		
+		char     input2[BIGSTRING];
+		
+		
+		
+		int a = 0;
+		int numero_apostrophe = 0;
+		int count_apostrophe_quote = 0;
+		
+		for(a=0;a<BIGSTRING;a++){
+			
+			input2[a]=0;
+			
+		}
+		
+		
+		printf("\n\n\n|");
+		for(a=0 ; input[a]!=0 && a<BIGSTRING ; a++){
+			
+			printf("%c",input[a]);
+			
+		}
+		printf("|\n\n\n");
+		/*	- on compte le nombre d'apostrophe
+		*	- on alloue une place suffisante à l'ajout (quote ) -> 8-1 par '
+		*	- parcours de la chaîne
+		*	- estimation du remplacement : 'abc ; '(set! a b) ; '" abc a" ; '
+		*	- remplacement
+		*/
+		
+		for(a=0 ; input[a]!=0 && a<BIGSTRING ; a++){
+			/*l'on compte le nombre d'aopostrophe dans la chaîne*/
+			if(input[a] == '\''){
+				count_apostrophe_quote++;
+			}
+		}
+		if( count_apostrophe_quote != 0){
+			
+			if(strlen(input)+7*count_apostrophe_quote>=BIGSTRING){
+				/* Pas assez de place pour le remplacement ! */
+				
+				
+			}else{
+				/* OK : assez de place pour le remplacement ! */
+				
+				for(a=0 ; input[a]!=0 && a<BIGSTRING ; a++){
+					
+					/*ouverture du quote*/
+					if(input[a]=='\''){
+						
+						
+						input2[a+numero_apostrophe*6] = '(';
+						input2[a+numero_apostrophe*6+1] = 'q';
+						input2[a+numero_apostrophe*6+2] = 'u';
+						input2[a+numero_apostrophe*6+3] = 'o';
+						input2[a+numero_apostrophe*6+4] = 't';
+						input2[a+numero_apostrophe*6+5] = 'e';
+						input2[a+numero_apostrophe*6+6] = ' ';
+						
+						numero_apostrophe++;
+						
+					}else{
+						input2[a+numero_apostrophe*6] = input[a];
+					}
+					
+					/*fermeture du quote*/
+					
+					
+					
+				}
+				
+			}
+		}
+		
+		printf("\n\n\n|");
+		for(a=0 ; input2[a]!=0 && a<BIGSTRING ; a++){
+			
+			printf("%c",input2[a]);
+			
+		}
+		printf("|\n\n\n");
+		
+		/**************************************************************/
         here  = 0;
         sexpr = sfs_read( input, &here );
         if ( NULL == sexpr ) {
