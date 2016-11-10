@@ -9,7 +9,6 @@
  */
 
 
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -44,6 +43,52 @@ void init_interpreter ( void ) {
     toplevel->this.pair.car = make_nil();
     toplevel->this.pair.cdr = make_nil();
 
+}
+
+
+
+/**
+* Prend en paramètre deux chaînes de caractère et la position de leur curseur
+* change les apostrophes par des ouvertures de quote : "quote("
+* La chaîne input est inchangée
+*/
+void ouverture_apostrophe_quote(char * input, char * inputModif, int * here, int * hereModif){
+	
+	
+	/*ouverture du quote*/
+	inputModif[(*hereModif)] = '(';
+	inputModif[(*hereModif)+1] = 'q';
+	inputModif[(*hereModif)+2] = 'u';
+	inputModif[(*hereModif)+3] = 'o';
+	inputModif[(*hereModif)+4] = 't';
+	inputModif[(*hereModif)+5] = 'e';
+	inputModif[(*hereModif)+6] = ' ';
+
+	/*increment du curseur quote modif*/
+	(*hereModif)+=6;
+
+	/*fermeture du quote*/
+	fermeture_apostrophe_quote(input, inputModif, here, hereModif);
+	return;
+}
+
+
+/**
+* Prend en paramètre deux chaînes de caractère et la position de leur curseur
+* Est chargé après l'ouverture de quote et va fermer la parenthèse du quote
+* La chaîne input est inchangée
+*/
+void fermeture_apostrophe_quote(char * input, char * inputModif, int * here, int * hereModif){
+	/*le curseur est placé apres l'apostrophe/l'ouverture*/
+/*
+	*here++;
+	*hereModif++;
+*/
+	
+	/*
+	* si 
+	*/
+	return;
 }
 
 
@@ -135,29 +180,33 @@ int main ( int argc, char *argv[] ) {
         continue;*/
 		/**************************************************************/
 		
+		/*creation chaine bis afin de stocker les modifications*/
+		char inputQuoteModif[BIGSTRING];
 		
-		char     input2[BIGSTRING];
 		
-		
-		
-		int a = 0;
+		/*initialisation variable*/
+		int varDebugQuote = 1;		
+		int varCountForQuote = 0;
+		int hereQuoteModif = 0;
 		int numero_apostrophe = 0;
 		int count_apostrophe_quote = 0;
 		
-		for(a=0;a<BIGSTRING;a++){
-			
-			input2[a]=0;
-			
+		/*mise à zero de tout les caractères de la chaine modif*/
+		for(varCountForQuote=0;varCountForQuote<BIGSTRING;varCountForQuote++){
+			inputQuoteModif[varCountForQuote]=0;
 		}
 		
-		
-		printf("\n\n\n|");
-		for(a=0 ; input[a]!=0 && a<BIGSTRING ; a++){
+		/*DEBUG*/
+		if(varDebugQuote){
+			printf("\n\n\n|");
+			for(varCountForQuote=0 ; input[varCountForQuote]!=0 && varCountForQuote<BIGSTRING ; varCountForQuote++){
 			
-			printf("%c",input[a]);
+				printf("%c",input[varCountForQuote]);
 			
+			}
+			printf("|\n\n\n");
 		}
-		printf("|\n\n\n");
+		
 		/*	- on compte le nombre d'apostrophe
 		*	- on alloue une place suffisante à l'ajout (quote ) -> 8-1 par '
 		*	- parcours de la chaîne
@@ -165,58 +214,63 @@ int main ( int argc, char *argv[] ) {
 		*	- remplacement
 		*/
 		
-		for(a=0 ; input[a]!=0 && a<BIGSTRING ; a++){
+		/*Comptage du nombre d apostrophe dans la chaine*/
+		for(varCountForQuote=0 ; input[varCountForQuote]!=0 && varCountForQuote<BIGSTRING ; varCountForQuote++){
 			/*l'on compte le nombre d'aopostrophe dans la chaîne*/
-			if(input[a] == '\''){
+			if(input[varCountForQuote] == '\''){
 				count_apostrophe_quote++;
 			}
 		}
+		
+		/*Vérification si présence ou non ; si non, saut de la procédure de remplacement*/
 		if( count_apostrophe_quote != 0){
 			
+			/*verification si la chaine d'acceuil de longueur BIGSTRING sera suffisante après ajout du quote et des parenthèses
+			* ' -> "(quote " + ")" soit 7 caractères supplémentaires par apostrophes
+			*/
 			if(strlen(input)+7*count_apostrophe_quote>=BIGSTRING){
 				/* Pas assez de place pour le remplacement ! */
 				
 				
 			}else{
 				/* OK : assez de place pour le remplacement ! */
-				
-				for(a=0 ; input[a]!=0 && a<BIGSTRING ; a++){
+				/*parcours de la chaine à la recherche des apostrophes*/
+				for(varCountForQuote=0 ; input[varCountForQuote]!=0 && varCountForQuote<BIGSTRING /*&& numero_apostrophe!=count_apostrophe_quote*/ ; varCountForQuote++){
+										
 					
+					
+
 					/*ouverture du quote*/
-					if(input[a]=='\''){
+					if(input[varCountForQuote]=='\''){
+						/*ouverture du quote a la position du curseur*/
+						ouverture_apostrophe_quote(input, inputQuoteModif, &varCountForQuote, &hereQuoteModif);
 						
-						
-						input2[a+numero_apostrophe*6] = '(';
-						input2[a+numero_apostrophe*6+1] = 'q';
-						input2[a+numero_apostrophe*6+2] = 'u';
-						input2[a+numero_apostrophe*6+3] = 'o';
-						input2[a+numero_apostrophe*6+4] = 't';
-						input2[a+numero_apostrophe*6+5] = 'e';
-						input2[a+numero_apostrophe*6+6] = ' ';
-						
+						/*incrementation du nombre d apostrophe modifie*/
 						numero_apostrophe++;
 						
 					}else{
-						input2[a+numero_apostrophe*6] = input[a];
+						/*copie du caractere a la position du curseur*/
+						inputQuoteModif[hereQuoteModif] = input[varCountForQuote];
 					}
-					
-					/*fermeture du quote*/
-					
-					
-					
+
+					hereQuoteModif++;					
 				}
 				
 			}
 		}
 		
-		printf("\n\n\n|");
-		for(a=0 ; input2[a]!=0 && a<BIGSTRING ; a++){
+		/*DEBUG*/
+		if(varDebugQuote){
+			printf("\n\n\n|");
+			for(varCountForQuote=0 ; inputQuoteModif[varCountForQuote]!=0 && varCountForQuote<BIGSTRING ; varCountForQuote++){
+								
+				printf("%c",inputQuoteModif[varCountForQuote]);
 			
-			printf("%c",input2[a]);
-			
+			}
+			printf("|\n\n\n");
+			printf("here : %d ; hereModif : %d", varCountForQuote, hereQuoteModif);
 		}
-		printf("|\n\n\n");
-		
+
 		/**************************************************************/
         here  = 0;
         sexpr = sfs_read( input, &here );

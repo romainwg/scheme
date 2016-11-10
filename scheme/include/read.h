@@ -27,6 +27,26 @@ object sfs_read     (   char *input, uint *here );
 object sfs_read_atom(   char *input, uint *here );
 object sfs_read_pair(   char *stream, uint *i   );
 
+/*************************************************************/
+/* AJOUT QUOTE */
+
+/**
+* Prend en paramètre deux chaînes de caractère et la position de leur curseur
+* change les apostrophes par des ouvertures de quote : "quote("
+* La chaîne input est inchangée
+*/
+void ouverture_apostrophe_quote(char * input, char * inputModif, int * here, int * hereModif);
+
+
+/**
+* Prend en paramètre deux chaînes de caractère et la position de leur curseur
+* Est chargé après l'ouverture de quote et va fermer la parenthèse du quote
+* La chaîne input est inchangée
+*/
+void fermeture_apostrophe_quote(char * input, char * inputModif, int * here, int * hereModif);
+
+/*************************************************************/
+
 
 #ifdef __cplusplus
 }
