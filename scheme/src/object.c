@@ -115,6 +115,10 @@ object make_symbol ( char* symbol , int i ) {
 /* FONCTIONS CAR/CDR */
 
 object car ( object o ) {
+    if ( o->type != SFS_PAIR ) {
+        WARNING_MSG("car doesn't exist, not a pair");
+        return NULL;
+    }
     return o->this.pair.car ;
 }
 object cdr ( object o ) {
