@@ -53,15 +53,37 @@ object make_symbol      (   char* symbol, int i );
     /* CAR/CDR */
     object car    ( object o );
     object cdr    ( object o );
-    object cadr   ( object o );
+	
     object cddr   ( object o );
-    object caar   ( object o );
     object cdar   ( object o );
+    object cadr   ( object o );
+    object caar   ( object o );
+	
+	object cdddr  ( object o );
+	object cddar  ( object o );
+	object cdadr  ( object o );
+	object cdaar  ( object o );
     object caddr  ( object o );
-    object cdddr  ( object o );
-    object cadddr ( object o );
+    object cadar  ( object o );
+	object caadr  ( object o );
+	object caaar  ( object o );
+	
     object cddddr ( object o );
-
+	object cdddar ( object o );
+	object cddadr ( object o );
+	object cddaar ( object o );
+	object cdaddr ( object o );
+	object cdadar ( object o );
+	object cdaadr ( object o );
+	object cdaaar ( object o );
+    object cadddr ( object o );
+	object caddar ( object o );
+	object cadadr ( object o );
+	object cadaar ( object o );
+	object caaddr ( object o );
+	object caadar ( object o );
+	object caaadr ( object o );
+	object caaaar ( object o );
 
 #define SFS_NUMBER       0x00
 #define SFS_CHARACTER    0x01
