@@ -50,7 +50,9 @@ object read_atom_chaine(char *input, uint *here){
     int i=1;
     (*here) = (*here)+1;
     
-    if ( input[*here] == '\"' ) {
+    if ( input[*here] == '"' ) {
+        DEBUG_MSG("READ CHAINE");
+        (*here)++;
         return NULL;
     }
     
