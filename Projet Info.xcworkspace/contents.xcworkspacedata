@@ -5,6 +5,9 @@
       location = "container:"
       name = "src">
       <FileRef
+         location = "group:scheme/src/primitive.c">
+      </FileRef>
+      <FileRef
          location = "container:scheme/src/object.c">
       </FileRef>
       <FileRef
@@ -43,6 +46,9 @@
       </FileRef>
       <FileRef
          location = "group:scheme/include/eval.h">
+      </FileRef>
+      <FileRef
+         location = "group:scheme/include/primitive.h">
       </FileRef>
       <FileRef
          location = "group:scheme/include/aux_eval.h">

@@ -12,11 +12,9 @@
 #include "mem.h"
 
 object make_object( uint type ) {
-
+    
     object t = sfs_malloc( sizeof( *t ) );
-
     t->type = type;
-
     return t;
 }
 
@@ -24,24 +22,18 @@ object make_nil( void ) {
     
     if (nil == NULL) {
         object t = make_object( SFS_NIL );
-        
         t->this.special = t;
-        
         return t;
     }
     else return nil;
-
 }
 
 object make_pair( void ) {
     
     object o = NULL;
-    
     o = make_object(SFS_PAIR);
-    
     o->this.pair.car = NULL;
     o->this.pair.cdr = NULL;
-    
     return o;
 }
 
@@ -49,9 +41,7 @@ object make_integer( int valeur ) {
     
     object o = NULL;
     o = make_object(SFS_NUMBER);
-    
     o->this.number.this.integer = valeur;
-    
     return o;
 }
 
@@ -59,9 +49,7 @@ object make_string ( char* chaine, int i ) {
     
     object o = NULL;
     o = make_object(SFS_STRING);
-    
     strncpy (o->this.string, chaine, i);
-    
     return o;
 }
 
@@ -69,9 +57,7 @@ object make_character ( char character ) {
     
     object o = NULL;
     o = make_object(SFS_CHARACTER);
-    
     o->this.character = character;
-    
     return o;
 }
 
@@ -82,7 +68,6 @@ object make_boolean ( int b ) {
             object o = NULL;
             o = make_object(SFS_BOOLEAN);
             o->this.special = o;
-            
             return o;
         }
         else return faux;
@@ -93,12 +78,10 @@ object make_boolean ( int b ) {
             object o = NULL;
             o = make_object(SFS_BOOLEAN);
             o->this.special = o;
-            
             return o;
         }
         else return vrai;
     }
-    
     return NULL;
 }
 
@@ -106,9 +89,7 @@ object make_symbol ( char* symbol , int i ) {
     
     object o = NULL;
     o = make_object(SFS_SYMBOL);
-    
     strncpy(o->this.symbol,symbol,i);
-    
     return o;
 }
 
@@ -130,23 +111,18 @@ object cdr ( object o ) {
 }
 object cddr ( object o ) {
 	return cdr(cdr(o));
-    /*return o->this.pair.cdr->this.pair.cdr ;*/
 }
 object cdar ( object o ) {
 	return cdr(car(o));
-    /*return o->this.pair.car->this.pair.cdr ;*/
 }
 object cadr ( object o ) {
 	return car(cdr(o));
-    /*return o->this.pair.cdr->this.pair.car ;*/
 }
 object caar ( object o ) {
 	return car(car(o));
-    /*return o->this.pair.car->this.pair.car ;*/
 }
 object cdddr ( object o ) {
 	return cdr(cddr(o));
-    /*return o->this.pair.cdr->this.pair.cdr->this.pair.cdr ;*/
 }
 object cddar ( object o ) {
 	return cdr(cdar(o));
@@ -159,7 +135,6 @@ object cdaar ( object o ) {
 }
 object caddr ( object o ) {
 	return car(cddr(o));
-    /*return o->this.pair.cdr->this.pair.cdr->this.pair.car ;*/
 }
 object cadar ( object o ) {
 	return car(cdar(o));
@@ -172,7 +147,6 @@ object caaar ( object o ) {
 }
 object cddddr ( object o ) {
 	return cdr(cdddr(o));
-    /*return o->this.pair.cdr->this.pair.cdr->this.pair.cdr->this.pair.cdr ;*/
 }
 object cdddar ( object o ) {
 	return cdr(cddar(o));
@@ -197,7 +171,6 @@ object cdaaar ( object o ) {
 }
 object cadddr ( object o ) {
 	return car(cdddr(o));
-    /*return (o));o->this.pair.cdr->this.pair.cdr->this.pair.cdr->this.pair.car ;*/
 }
 object caddar ( object o ) {
 	return car(cddar(o));
