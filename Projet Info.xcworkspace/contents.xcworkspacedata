@@ -45,6 +45,9 @@
          location = "group:scheme/include/is_functions.h">
       </FileRef>
       <FileRef
+         location = "group:scheme/include/object.h">
+      </FileRef>
+      <FileRef
          location = "group:scheme/include/eval.h">
       </FileRef>
       <FileRef
@@ -64,9 +67,6 @@
       </FileRef>
       <FileRef
          location = "group:scheme/include/number.h">
-      </FileRef>
-      <FileRef
-         location = "group:scheme/include/object.h">
       </FileRef>
       <FileRef
          location = "group:scheme/include/print.h">
