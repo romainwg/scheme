@@ -17,6 +17,13 @@ int is_pair ( object o ) {
     return 0;
 }
 
+int is_primitive ( object o ) {
+    if ( o->type == SFS_PRIMITIVE ) {
+        return 1;
+    }
+    return 0;
+}
+
 int is_symbol ( object eval_car ) {
     if ( eval_car->type == SFS_SYMBOL ) {
         return 1;

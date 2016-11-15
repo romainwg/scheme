@@ -10,6 +10,7 @@
 
 #include "object.h"
 #include "mem.h"
+#include "aux_eval.h"
 
 object make_object( uint type ) {
     
@@ -91,6 +92,16 @@ object make_symbol ( char* symbol , int i ) {
     o = make_object(SFS_SYMBOL);
     strncpy(o->this.symbol,symbol,i);
     return o;
+}
+
+object make_primitive ( string symbol, object (*function)(object) ) {
+    
+    object o = NULL;
+    o = make_object( SFS_PRIMITIVE );
+    o->this.primitive.function = function;
+    newVarEnvironment( symbol, o );
+    return o;
+    
 }
 
 /* FONCTIONS CAR/CDR */

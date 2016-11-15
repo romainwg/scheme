@@ -16,7 +16,8 @@ extern "C" {
 #endif
 
 #include "number.h"
-#include <ctype.h>
+#include <ctype.h>  
+
 
 typedef struct object_t {
 
@@ -37,15 +38,14 @@ typedef struct object_t {
         struct object_t *special;
         
         struct {
-            struct object_t * (*function)( struct object_t * ) ;
+            struct object_t * (*function)( struct object_t * );
         } primitive;
-        
-        };
 
     } this;
 
 } *object;
-    
+
+
 
 object make_object      ( uint type           );
 object make_nil         ( void                );
@@ -55,8 +55,10 @@ object make_string      ( char* chaine, int i );
 object make_character   ( char character      );
 object make_boolean     ( int b               );
 object make_symbol      ( char* symbol, int i );
-object make_primitive   ( string symbol       );
-    
+
+object make_primitive   ( string symbol, object (*function)(object) );
+
+
     /* CAR/CDR */
     object car    ( object o );
     object cdr    ( object o );

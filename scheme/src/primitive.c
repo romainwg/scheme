@@ -1,14 +1,14 @@
-//
-//  primitive.c
-//  
-//
-//  Created by Jérémy Hraman on 15/11/2016.
-//
-//
+/*
+  primitive.c
+  
+
+  Created by Jérémy Hraman on 15/11/2016.
+
+*/
 
 #include "primitive.h"
 
-void init_primitive () {
+void init_primitive ( void ) {
     
     make_primitive( "+"         , prim_plus     );
     make_primitive( "-"         , prim_minus    );
@@ -40,6 +40,112 @@ void init_primitive () {
     make_primitive( "string->number", prim_string_num       );
     make_primitive( "symbol->string", prim_symbol_string    );
     make_primitive( "string->symbol", prim_string_symbol    );
-    make_primitive( "string->list"  , prim_string_to_list   );
+    make_primitive( "string->list"  , prim_string_list   );
     
 }
+
+
+
+object prim_plus ( object o ) {
+    return o;
+}
+object prim_minus ( object o ) {
+    return o;
+}
+object prim_times ( object o ) {
+    return o;
+}
+object prim_divide ( object o ) {
+    return o;
+}
+object prim_quotient ( object o ) {
+    return o;
+}
+object prim_modulo ( object o ) {
+    return o;
+}
+
+
+
+object prim_sin ( object o ) {
+    return o;
+}
+object prim_cos ( object o ) {
+    return o;
+}
+object prim_tan ( object o ) {
+    return o;
+}
+object prim_abs ( object o ) {
+    return o;
+}
+object prim_exp ( object o ) {
+    return o;
+}
+object prim_sqrt ( object o ) {
+    return o;
+}
+
+
+
+
+object prim_is_boolean ( object o ) {
+    return o;
+}
+object prim_is_char ( object o ) {
+    return o;
+}
+object prim_is_list ( object o ) {
+    return o;
+}
+object prim_is_null ( object o ) {
+    return o;
+}
+object prim_is_symbol ( object o ) {
+    return o;
+}
+object prim_is_number ( object o ) {
+    return o;
+}
+object prim_is_pair ( object o ) {
+    return o;
+}
+object prim_is_procedure ( object o ) {
+    return o;
+}
+object prim_is_string ( object o ) {
+    return o;
+}
+
+
+
+
+object prim_int_char ( object o ) {
+    return o;
+}
+object prim_char_int ( object o ) {
+    return o;
+}
+object prim_num_string ( object o ) {
+    return o;
+}
+object prim_string_num ( object o ) {
+    return o;
+}
+object prim_symbol_string ( object o ) {
+    return o;
+}
+object prim_string_symbol ( object o ) {
+    return o;
+}
+object prim_string_list ( object o ) {
+    return o;
+}
+
+
+
+
+
+
+
+

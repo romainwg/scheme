@@ -17,6 +17,7 @@
 int is_pair     ( object o        );
 int is_symbol   ( object eval_car );
 int is_nil      ( object eval_car );
+int is_primitive( object o        );
 
 /* FUNCTIONS - SPECIAL SYMBOL */
 int is_quote	( string function ); /*vérifie que la forme quote est utilisée*/

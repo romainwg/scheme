@@ -39,6 +39,10 @@ object sfs_eval( object input ) {
     
     if ( is_pair(input) ) {
         
+        if ( is_primitive(eval_car) ) {
+            return input->this.primitive.function( cadr(input) );
+        }
+        
         if ( is_symbol(eval_car) ) {
             string function;
             strcpy( function, eval_car->this.symbol );
@@ -61,12 +65,12 @@ object sfs_eval( object input ) {
             else if (is_and(function)) {
                 return eval_and(input);
             }
-            else if (is_calcul_operator(function)) {
+       /*     else if (is_calcul_operator(function)) {
                 return eval_calc_operator(input);
             }
             else if (is_cmp_operator(function)) {
                 return eval_cmp_operator(input);
-            }
+            } */
         }
         
         else {
