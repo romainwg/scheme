@@ -1,0 +1,147 @@
+//configuration
+git config --global user.name "romainwg"
+git config --global user.mail "romain.wg@live.fr"
+git config -l
+
+
+//version ?
+git --version
+
+//chemin ?
+which git
+
+//starting
+mkdir new_project
+cd new_project
+
+//demarrer versionnage des fichiers
+git init
+
+//ce qui se passe sur le projet
+git status
+
+// stt editeur texte ???
+
+ls -lh
+
+//commit : snapshot de l'état du projet
+git add <file1..>
+
+git status
+
+git commit --message "Mon message du snapshot"
+
+//modifier le nom de son commit
+git commit --amend -m "Mon nouveau message du snapshot"
+
+//qu'est ce qui a changé depuis l'ancienne version ?
+git diff
+
+//tous les commit depuis le debut du projet ?
+git log
+
+//BRANCHING
+//incrémentation
+//ex : test fonction experimentale en parallele de master
+git branch my-feature
+
+//quelles branches existent ?
+git branch
+
+//se positionner sur une branche
+git checkout my-feature
+
+//Apres avoir quelque chose de fonctionnelle dans une branche parallele : merge -> je rapatrie sur master !
+git checkout master
+git diff master..my-feature
+git merge my-feature
+
+//si il y a un changement en parallele a la meme ligne : CONFLICT
+//un developpeur va devoir faire un choix
+//ça se retrouve dans le fichier sous la forme : <<<<<< machin ===== truc >>>>>
+
+//modification puis
+git status
+git add
+git commit ..
+
+//supprimer une branche inutile, ou le travail a été merge
+git branch -d my-feature //git br -d my-feature
+
+//si la branche est toujour en parallele de master mais à supprimer
+git branch -D my-feature
+
+//logiciel ex : gitk affichage de l'historique
+//entrainement sur internet : http://www.wei-wang.com/ExplainGitWithD3/#
+
+
+
+//REMOTE
+git remote add origin git@github.com:<username>/<project>.git
+
+//verification remote existe
+git remote -v
+
+//envoie : où ? quelle branche ?
+git push origin master
+
+//recuperation :
+git pull origin master
+
+//git desktop pour windows ou mac
+
+//fork : recuperer le projet et proposer ses modification
+
+
+//MERGE : attention une branche ne doit pas durer longtemps : risque lors du merge
+
+
+
+
+//code review ; pull request ; faire vérifier son code par un autre dev
+//ex : commentaire :
+//Super !
+//'''html
+//du code formaté
+
+//l'autre développeur après vérification peut merge
+
+
+
+//récupérer la branche d'un autre dev pour travailler dessus
+//rapatrie les infos du serveur sans faire les avances de commit
+git fetch
+
+//lister les branche :
+git branch -a
+
+
+//recuperer un projet existant pour proposer un fix par ex
+//fork permet de recuperer le projet chez soi
+git fork
+
+//clonage du projet chez soi
+git clone git@github.com:<son username>/<le projet forked>.git
+
+git branch test-meetup
+git checkout test-meetup
+
+//modif
+
+git status
+
+//add / commit ..
+
+//bitbucket alternative privée
+
+//hebergement possible des sites web
+git branch gh-pages
+git checkout gh-pages
+
+git push origin gh-pages
+
+//https://username.github.io/projet
+//jeckyll
+//CNAME
+
+

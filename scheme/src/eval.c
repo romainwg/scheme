@@ -44,7 +44,6 @@ object sfs_eval( object input ) {
             strcpy( function, eval_car->this.symbol );
             
             if (is_quote(function)) {
-                DEBUG_MSG("input %p %d", input, input->type);
                 return eval_quote(input);
             }
             else if (is_define(function)) {

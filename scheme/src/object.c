@@ -115,32 +115,108 @@ object make_symbol ( char* symbol , int i ) {
 /* FONCTIONS CAR/CDR */
 
 object car ( object o ) {
+    if ( o->type != SFS_PAIR ) {
+        WARNING_MSG("car doesn't exist, not a pair");
+        return NULL;
+    }
     return o->this.pair.car ;
 }
 object cdr ( object o ) {
+	if ( o->type != SFS_PAIR ) {
+        WARNING_MSG("cdr doesn't exist, not a pair");
+        return NULL;
+    }
     return o->this.pair.cdr ;
 }
-object cadr ( object o ) {
-    return o->this.pair.cdr->this.pair.car ;
-}
 object cddr ( object o ) {
-    return o->this.pair.cdr->this.pair.cdr ;
-}
-object caar ( object o ) {
-    return o->this.pair.car->this.pair.car ;
+	return cdr(cdr(o));
+    /*return o->this.pair.cdr->this.pair.cdr ;*/
 }
 object cdar ( object o ) {
-    return o->this.pair.car->this.pair.cdr ;
+	return cdr(car(o));
+    /*return o->this.pair.car->this.pair.cdr ;*/
 }
-object caddr ( object o ) {
-    return o->this.pair.cdr->this.pair.cdr->this.pair.car ;
+object cadr ( object o ) {
+	return car(cdr(o));
+    /*return o->this.pair.cdr->this.pair.car ;*/
+}
+object caar ( object o ) {
+	return car(car(o));
+    /*return o->this.pair.car->this.pair.car ;*/
 }
 object cdddr ( object o ) {
-    return o->this.pair.cdr->this.pair.cdr->this.pair.cdr ;
+	return cdr(cddr(o));
+    /*return o->this.pair.cdr->this.pair.cdr->this.pair.cdr ;*/
 }
-object cadddr ( object o ) {
-    return o->this.pair.cdr->this.pair.cdr->this.pair.cdr->this.pair.car ;
+object cddar ( object o ) {
+	return cdr(cdar(o));
+}
+object cdadr ( object o ) {
+	return cdr(cadr(o));
+}
+object cdaar ( object o ) {
+	return cdr(caar(o));
+}
+object caddr ( object o ) {
+	return car(cddr(o));
+    /*return o->this.pair.cdr->this.pair.cdr->this.pair.car ;*/
+}
+object cadar ( object o ) {
+	return car(cdar(o));
+}
+object caadr ( object o ) {
+	return car(cadr(o));
+}
+object caaar ( object o ) {
+	return car(caar(o));
 }
 object cddddr ( object o ) {
-    return o->this.pair.cdr->this.pair.cdr->this.pair.cdr->this.pair.cdr ;
+	return cdr(cdddr(o));
+    /*return o->this.pair.cdr->this.pair.cdr->this.pair.cdr->this.pair.cdr ;*/
+}
+object cdddar ( object o ) {
+	return cdr(cddar(o));
+}
+object cddadr ( object o ) {
+	return cdr(cdadr(o));
+}
+object cddaar ( object o ) {
+	return cdr(cdaar(o));
+}
+object cdaddr ( object o ) {
+	return cdr(caddr(o));
+}
+object cdadar ( object o ) {
+	return cdr(cadar(o));
+}
+object cdaadr ( object o ) {
+	return cdr(caadr(o));
+}
+object cdaaar ( object o ) {
+	return cdr(caaar(o));
+}
+object cadddr ( object o ) {
+	return car(cdddr(o));
+    /*return (o));o->this.pair.cdr->this.pair.cdr->this.pair.cdr->this.pair.car ;*/
+}
+object caddar ( object o ) {
+	return car(cddar(o));
+}
+object cadadr ( object o ) {
+	return car(cdadr(o));
+}
+object cadaar ( object o ) {
+	return car(cdaar(o));
+}
+object caaddr ( object o ) {
+	return car(caddr(o));
+}
+object caadar ( object o ) {
+	return car(cadar(o));
+}
+object caaadr ( object o ) {
+	return car(caadr(o));
+}
+object caaaar ( object o ) {
+	return car(caaar(o));
 }
