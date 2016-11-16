@@ -11,6 +11,9 @@
 
 #include <stdio.h>
 #include "object.h"
+#include "is_functions.h"
+#include "eval.h"
+#include "math.h"
 
 void init_primitive ( void );
 

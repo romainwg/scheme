@@ -8,6 +8,7 @@
 
 #include "primitive.h"
 
+
 void init_primitive ( void ) {
     
     make_primitive( "+"         , &prim_plus     );
@@ -47,8 +48,43 @@ void init_primitive ( void ) {
 
 
 object prim_plus ( object o ) {
-    return o;
+	/*FLOAT*/
+	/* (+ 3) -> 3
+	
+	Verification : si un nombre à pour type : float -> sortie float
+	*/		
+		float somme = 0;
+		object obj_eval = o;
+		object resultat = NULL;
+		
+	if(car(o)!=NULL){
+		
+		if(car(obj_eval)->type == SFS_NUMBER){
+			somme = car(obj_eval)->this.number.this.integer;
+		}else{
+			WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
+			return NULL;
+		}
+		
+		
+		while(!is_nil(cdr(obj_eval))){
+			
+			if(cadr(obj_eval)->type == SFS_NUMBER){
+				somme += cadr(obj_eval)->this.number.this.integer;
+			}else{
+				WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
+				return NULL;
+			}
+			
+			obj_eval = cdr(obj_eval);
+			
+		}
+		resultat = make_integer(somme);
+	}
+	
+    return resultat;
 }
+
 object prim_minus ( object o ) {
     return o;
 }
