@@ -18,8 +18,13 @@ int is_pair ( object o ) {
 }
 
 int is_primitive ( object o ) {
-    if ( o->type == SFS_PRIMITIVE ) {
-        return 1;
+    
+    object EnvCopy = car(toplevel);
+    while ( !is_nil(EnvCopy) ) {
+        if ( cdar(EnvCopy)->type == SFS_PRIMITIVE ) {
+            return 1;
+        }
+        EnvCopy = cdr(EnvCopy);
     }
     return 0;
 }

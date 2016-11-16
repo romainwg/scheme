@@ -47,7 +47,6 @@ void init_primitive ( void ) {
 
 
 object prim_plus ( object o ) {
-    printf("dkkkd");
     return o;
 }
 object prim_minus ( object o ) {

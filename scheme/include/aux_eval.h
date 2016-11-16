@@ -17,6 +17,9 @@
 #include "eval.h"
 
 /* FONCTIONS AUXILIAIRES DE L'EVALUATION */
+
+object eval_primitive( object input );
+
 /* SYMBOL */
 object eval_symbol  ( object input );
 object eval_quote   ( object input ); /*prend en argument l'object input et renvoie l'object car(cdr(input)) sans l'évaluer*/
@@ -35,6 +38,7 @@ object eval_cmp_operator    ( object input );
 object newEnvironment       ( object levelInf              );
 void newVarEnvironment    ( string symbol, object valeur );
 void changeVarEnvironment ( string symbol, object valeur );
+void print_environment( void );
 
 
 

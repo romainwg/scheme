@@ -21,8 +21,6 @@
 
 object sfs_eval( object input ) {
     DEBUG_MSG("input %p %d", input, input->type);
-
-    object eval_car = car(input);
     
     if (input == NULL) {
         return NULL;
@@ -39,8 +37,10 @@ object sfs_eval( object input ) {
     
     if ( is_pair(input) ) {
         
+        object eval_car = car(input);
+        
         if ( is_primitive(eval_car) ) {
-            return input->this.primitive.function( cdr(input) );
+            return eval_primitive(input);
         }
         
         if ( is_symbol(eval_car) ) {

@@ -375,7 +375,6 @@ object sfs_read_atom( char *input, uint *here ) {
         case SFS_SYMBOL :
             return read_atom_symbol(input,here);
             break;
-            
     }
 
     return atom;
