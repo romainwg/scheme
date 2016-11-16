@@ -72,11 +72,12 @@ uint typeInput(char *input, uint *here) {
     
     /* NUMBER */
     
-    char *p_end;
-    strtol(input + *here, &p_end, 10);
+    char *p_end1;
+    char *p_end2;
+    strtol(input + *here, &p_end1, 10);
+    strtod(input + *here, &p_end2);
     
-    if ( isspace(p_end[0]) || iscntrl(p_end[0]) || p_end[0] == ')' || p_end[0] == '(' || p_end[0] == '\"' ) {
-        
+    if ( isspace(p_end1[0]) || iscntrl(p_end1[0]) || p_end1[0] == ')' || p_end1[0] == '(' || p_end1[0] == '\"' || isspace(p_end2[0]) || iscntrl(p_end2[0]) || p_end2[0] == ')' || p_end2[0] == '(' || p_end2[0] == '\"') {
         return SFS_NUMBER;
     }
     

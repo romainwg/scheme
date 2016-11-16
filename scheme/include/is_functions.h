@@ -19,6 +19,10 @@ int is_symbol   ( object eval_car );
 int is_nil      ( object eval_car );
 int is_primitive( object o        );
 
+int is_number   ( object o );
+int is_integer  ( object o );
+int is_real     ( object o );
+
 /* FUNCTIONS - SPECIAL SYMBOL */
 int is_quote	( string function ); /*vérifie que la forme quote est utilisée*/
 int is_define   ( string function );

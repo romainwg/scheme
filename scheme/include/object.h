@@ -51,6 +51,7 @@ object make_object      ( uint type           );
 object make_nil         ( void                );
 object make_pair        ( void                );
 object make_integer     ( int valeur          );
+object make_real        ( double valeur       );
 object make_string      ( char* chaine, int i );
 object make_character   ( char character      );
 object make_boolean     ( int b               );
@@ -103,6 +104,7 @@ object make_primitive   ( string symbol, object (*function)(object) );
 #define SFS_SYMBOL       0x06
 #define SFS_NOTYPE       0x07
 #define SFS_PRIMITIVE    0x08
+#define SFS_FLOAT        0x09
 
 
 extern object nil;

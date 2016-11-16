@@ -68,21 +68,136 @@ object prim_modulo ( object o ) {
 
 
 object prim_sin ( object o ) {
+    
+    o = sfs_eval(car(o));
+    if ( is_pair(o) ) {
+        WARNING_MSG("sin must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    if ( !is_number(o) ) {
+        WARNING_MSG("sin only accepts number");
+        return NULL;
+    }
+    
+    double out_sin;
+    if ( is_integer(o) ) {
+        out_sin = sin( o->this.number.this.integer );
+    }
+    else {
+        out_sin = sin( o->this.number.this.real );
+    }
+    o = make_real ( out_sin );
     return o;
 }
 object prim_cos ( object o ) {
+    o = sfs_eval(car(o));
+    if ( is_pair(o) ) {
+        WARNING_MSG("cos must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    if ( !is_number(o) ) {
+        WARNING_MSG("cos only accepts number");
+        return NULL;
+    }
+    
+    double out_cos;
+    if ( is_integer(o) ) {
+        out_cos = cos( o->this.number.this.integer );
+    }
+    else {
+        out_cos = cos( o->this.number.this.real );
+    }
+    o = make_real ( out_cos );
     return o;
 }
 object prim_tan ( object o ) {
+    o = sfs_eval(car(o));
+    if ( is_pair(o) ) {
+        WARNING_MSG("tan must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    if ( !is_number(o) ) {
+        WARNING_MSG("tan only accepts number");
+        return NULL;
+    }
+    
+    double out_tan;
+    if ( is_integer(o) ) {
+        out_tan = tan( o->this.number.this.integer );
+    }
+    else {
+        out_tan = tan( o->this.number.this.real );
+    }
+    o = make_real ( out_tan );
     return o;
 }
 object prim_abs ( object o ) {
+    o = sfs_eval(car(o));
+    if ( is_pair(o) ) {
+        WARNING_MSG("abs must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    if ( !is_number(o) ) {
+        WARNING_MSG("abs only accepts number");
+        return NULL;
+    }
+    
+    int out_abs;
+    if ( is_integer(o) ) {
+        out_abs = abs( o->this.number.this.integer );
+    }
+    else {
+        out_abs = fabs( o->this.number.this.real );
+    }
+    o = make_integer ( out_abs );
     return o;
 }
 object prim_exp ( object o ) {
+    o = sfs_eval(car(o));
+    if ( is_pair(o) ) {
+        WARNING_MSG("exp must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    if ( !is_number(o) ) {
+        WARNING_MSG("exp only accepts number");
+        return NULL;
+    }
+    
+    double out_exp;
+    if ( is_integer(o) ) {
+        out_exp = exp( o->this.number.this.integer );
+    }
+    else {
+        out_exp = exp( o->this.number.this.real );
+    }
+    o = make_real ( out_exp );
     return o;
 }
 object prim_sqrt ( object o ) {
+    o = sfs_eval(car(o));
+    if ( is_pair(o) ) {
+        WARNING_MSG("sqrt must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    if ( !is_number(o) ) {
+        WARNING_MSG("sqrt only accepts number");
+        return NULL;
+    }
+    
+    double out_sqrt;
+    if ( is_integer(o) ) {
+        out_sqrt = sqrt( o->this.number.this.integer );
+    }
+    else {
+        out_sqrt = sqrt( o->this.number.this.real );
+    }
+    o = make_real ( out_sqrt );
     return o;
 }
 

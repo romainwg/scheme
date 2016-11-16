@@ -42,7 +42,17 @@ object make_integer( int valeur ) {
     
     object o = NULL;
     o = make_object(SFS_NUMBER);
+    o->this.number.numtype = NUM_INTEGER;
     o->this.number.this.integer = valeur;
+    return o;
+}
+
+object make_real( double valeur ) {
+    
+    object o = NULL;
+    o = make_object(SFS_NUMBER);
+    o->this.number.numtype = NUM_REAL;
+    o->this.number.this.real = valeur;
     return o;
 }
 
