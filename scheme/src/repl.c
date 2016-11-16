@@ -44,7 +44,6 @@ void init_interpreter ( void ) {
     toplevel    = make_pair()           ;
     toplevel->this.pair.car = make_nil();
     toplevel->this.pair.cdr = make_nil();
-    
     init_primitive();
 }
 

@@ -40,7 +40,7 @@ object sfs_eval( object input ) {
     if ( is_pair(input) ) {
         
         if ( is_primitive(eval_car) ) {
-            return input->this.primitive.function( cadr(input) );
+            return input->this.primitive.function( cdr(input) );
         }
         
         if ( is_symbol(eval_car) ) {
