@@ -16,6 +16,7 @@ extern "C" {
 #endif
 
 #include "object.h"
+#include "is_functions.h"
 
 
 void sfs_print      ( object o, uint *root  );

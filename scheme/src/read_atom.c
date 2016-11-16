@@ -21,6 +21,7 @@
 object read_atom_number(char * input, uint *here) {
     
     object atom = NULL;
+    
     num atom_number;
     atom_number.numtype = NUM_INTEGER ;
     

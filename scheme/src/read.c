@@ -356,7 +356,7 @@ object sfs_read_atom( char *input, uint *here ) {
             return sfs_read(input,here);
             break;
             
-        case SFS_NUMBER :
+        case SFS_NUMBER: case SFS_FLOAT:
             return read_atom_number(input,here);
             break;
             

@@ -29,6 +29,31 @@ int is_primitive ( object o ) {
     return 0;
 }
 
+/*NUMBER*/
+int is_number ( object o ) {
+    DEBUG_MSG("JE SUIS UN NBRE o->this.number.this.integer %d",o->this.number.this.integer);
+    if ( o->type == SFS_NUMBER ) {
+        DEBUG_MSG("JE SUIS UN NBRE le retour");
+        return 1;
+    }
+    return 0;
+}
+int is_integer ( object o ) {
+    
+    DEBUG_MSG("o->this.number.numtype : %d",o->this.number.numtype);
+    if ( o->this.number.numtype == NUM_INTEGER ) {
+        return 1;
+    }
+    return 0;
+}
+int is_real ( object o ) {
+    if ( o->this.number.numtype == NUM_REAL ) {
+        return 1;
+    }
+    return 0;
+}
+
+/*OTHER*/
 int is_symbol ( object eval_car ) {
     if ( eval_car->type == SFS_SYMBOL ) {
         return 1;
