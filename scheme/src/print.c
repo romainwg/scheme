@@ -16,8 +16,12 @@ void sfs_print_atom( object o ) {
     
     switch (o->type) {
         case SFS_NUMBER :
-            
-            printf("%d",o->this.number.this.integer);
+            if ( is_real(o) ) {
+                printf("%lf",o->this.number.this.real);
+            }
+            else {
+                printf("%d",o->this.number.this.integer);
+            }
             break;
             
         case SFS_BOOLEAN :

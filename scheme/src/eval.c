@@ -36,9 +36,7 @@ object sfs_eval( object input ) {
     }
     
     if ( is_pair(input) ) {
-        
         object eval_car = car(input);
-        
         if ( is_primitive(eval_car) ) {
             return eval_primitive(input);
         }
