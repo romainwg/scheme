@@ -48,35 +48,45 @@ void init_primitive ( void ) {
 
 
 object prim_plus ( object o ) {
-	/*FLOAT*/
-	/* (+ 3) -> 3
+	/* GESTION actuelle :
+	 * var non déclarée
+	 * evaluation des terms
+	 * un ou multi arg
+	 * entrée/sortie : int et real
+	 */
 	
-	Verification : si un nombre à pour type : float -> sortie float
-	*/		
-		double sommeDouble = 0;
+		double sommeDouble = 0; /*VOIR SI ON NE PEUT PAS DIRECTEMENT RESTER SUR DOUBLE (condition sur la taille du double)*/
 		int sommeInt = 0;
 		int integerOuDouble = 0; /*0 si integer passe a 1 si presence d'un double*/
 		
-		object obj_eval = o;
-		object resultat = NULL;
+		object obj_temp = o; /* "Curseur" de déplacement en object */
+		object obj_eval = NULL; /* Var object d'évaluation */
 		
 	if(car(o)!=NULL){
+		obj_eval = sfs_eval(car(obj_temp));
 		
-		if(car(obj_eval)->type == SFS_NUMBER){
-			/* Si le premier chiffre est un double*/
-			if(car(obj_eval)->this.number.numtype == NUM_REAL){
+		/* verification que l'évaluation donne quelque chose */
+		if ( obj_eval == NULL){
+			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
+			return NULL;
+		}
+		/* verification que l'évaluation donne bien un nombre */
+		if ( !is_number(obj_eval) ) {
+			WARNING_MSG("only accepts number");
+			return NULL;
+		}
+		
+		if(obj_eval->type == SFS_NUMBER){
+			/* Si le premier chiffre est un double -> SWITCH en sortie flottante*/
+			if(obj_eval->this.number.numtype == NUM_REAL){
 				integerOuDouble = 1;
 			}
 			
-			printf("\n\n%d\n\n", integerOuDouble);
-			
-			/* Si int ou double : choix var
-			 * VOIR SI ON NE PEUT PAS DIRECTEMENT RESTER SUR DOUBLE
-			 */
+			/* Si int ou double : choix var */
 			if(integerOuDouble){
-				sommeDouble = car(obj_eval)->this.number.this.real;
+				sommeDouble = obj_eval->this.number.this.real;
 			}else{
-				sommeInt = car(obj_eval)->this.number.this.integer;
+				sommeInt = obj_eval->this.number.this.integer;
 			}
 			
 		}else{
@@ -84,21 +94,38 @@ object prim_plus ( object o ) {
 			return NULL;
 		}
 		
-		
-		while(!is_nil(cdr(obj_eval))){
+		while(!is_nil(cdr(obj_temp))){
+			obj_eval = sfs_eval(cadr(obj_temp));
 			
-			printf("\n\n%d\n\n", integerOuDouble);
+			/* verification que l'évaluation donne quelque chose */
+			if ( obj_eval == NULL){
+				WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
+				return NULL;
+			}
+			/* verification que l'évaluation donne bien un nombre */
+			if ( !is_number(obj_eval) ) {
+				WARNING_MSG("only accepts number");
+				return NULL;
+			}
 			
-			if(cadr(obj_eval)->type == SFS_NUMBER){
-				if(cadr(obj_eval)->this.number.numtype == NUM_REAL && integer != 1){
+			if(obj_eval->type == SFS_NUMBER){
+				/* Si un chiffre est un double -> SWITCH en sortie flottante // cette opération ne peut se faire qu'une fois */
+				if(obj_eval->this.number.numtype == NUM_REAL && integerOuDouble != 1){
 					integerOuDouble = 1;
-					sommeDouble = sommeInt; /* Changement de variable */
+					sommeDouble = sommeInt; /* Changement de variable : int -> double*/
 				}
 				
+				/* Adaptation du calcul : int ou double d'après les chiffres antécédants */
 				if(integerOuDouble){
-					sommeDouble += cadr(obj_eval)->this.number.this.real;
+					/* On travaille avec une sortie en Double mais les entrées peuvent encore etre int*/
+					if(obj_eval->this.number.numtype == NUM_REAL){
+						sommeDouble += obj_eval->this.number.this.real;
+					}else{
+						sommeDouble += obj_eval->this.number.this.integer;
+					}
+					
 				}else{
-					sommeInt += cadr(obj_eval)->this.number.this.integer;
+					sommeInt += obj_eval->this.number.this.integer;
 				}
 			
 			}else{
@@ -106,19 +133,19 @@ object prim_plus ( object o ) {
 				return NULL;
 			}
 			
-			obj_eval = cdr(obj_eval);
-			
+			obj_temp = cdr(obj_temp);
 		}
 		
+		/* Creation de la sortie en fonction du type de sortie calculé */
 		if(integerOuDouble){
-			resultat = make_real(sommeDouble);
+			obj_temp = make_real(sommeDouble);
 		}else{
-			resultat = make_integer(sommeInt);
+			obj_temp = make_integer(sommeInt);
 		}
 		
 	}
 	
-    return resultat;
+    return obj_temp;
 }
 
 object prim_minus ( object o ) {
