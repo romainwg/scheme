@@ -149,7 +149,114 @@ object prim_plus ( object o ) {
 }
 
 object prim_minus ( object o ) {
-    return o;
+    /* GESTION actuelle :
+	 * var non déclarée
+	 * evaluation des terms
+	 * un ou multi arg
+	 * entrée/sortie : int et real
+	 */
+	
+	double sommeDouble = 0; /*VOIR SI ON NE PEUT PAS DIRECTEMENT RESTER SUR DOUBLE (condition sur la taille du double)*/
+	int sommeInt = 0;
+	int integerOuDouble = 0; /*0 si integer passe a 1 si presence d'un double*/
+		
+	object obj_temp = o; /* "Curseur" de déplacement en object */
+	object obj_eval = NULL; /* Var object d'évaluation */
+		
+	if(car(o)!=NULL){
+		obj_eval = sfs_eval(car(obj_temp));
+		
+		/* verification que l'évaluation donne quelque chose */
+		if ( obj_eval == NULL){
+			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
+			return NULL;
+		}
+		/* verification que l'évaluation donne bien un nombre */
+		if ( !is_number(obj_eval) ) {
+			WARNING_MSG("only accepts number");
+			return NULL;
+		}
+		
+		if(obj_eval->type == SFS_NUMBER){
+			/* Si le premier chiffre est un double -> SWITCH en sortie flottante*/
+			if(obj_eval->this.number.numtype == NUM_REAL){
+				integerOuDouble = 1;
+			}
+			
+			/* Si int ou double : choix var */
+			if(integerOuDouble){
+				sommeDouble = obj_eval->this.number.this.real;
+			}else{
+				sommeInt = obj_eval->this.number.this.integer;
+			}
+			
+		}else{
+			WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
+			return NULL;
+		}
+		
+		
+		if(!is_nil(cdr(obj_temp))){ /*si il y plusieurs arguments : boucle ; sinon sortie = -arg1*/
+			while(!is_nil(cdr(obj_temp))){
+				obj_eval = sfs_eval(cadr(obj_temp));
+				
+				/* verification que l'évaluation donne quelque chose */
+				if ( obj_eval == NULL){
+					WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
+					return NULL;
+				}
+				/* verification que l'évaluation donne bien un nombre */
+				if ( !is_number(obj_eval) ) {
+					WARNING_MSG("only accepts number");
+					return NULL;
+				}
+				
+				if(obj_eval->type == SFS_NUMBER){
+					/* Si un chiffre est un double -> SWITCH en sortie flottante // cette opération ne peut se faire qu'une fois */
+					if(obj_eval->this.number.numtype == NUM_REAL && integerOuDouble != 1){
+						integerOuDouble = 1;
+						sommeDouble = sommeInt; /* Changement de variable : int -> double*/
+					}
+					
+					/* Adaptation du calcul : int ou double d'après les chiffres antécédants */
+					if(integerOuDouble){
+						/* On travaille avec une sortie en Double mais les entrées peuvent encore etre int*/
+						if(obj_eval->this.number.numtype == NUM_REAL){
+							sommeDouble -= obj_eval->this.number.this.real;
+						}else{
+							sommeDouble -= obj_eval->this.number.this.integer;
+						}
+						
+					}else{
+						sommeInt -= obj_eval->this.number.this.integer;
+					}
+				
+				}else{
+					WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
+					return NULL;
+				}
+				
+				obj_temp = cdr(obj_temp);
+			}
+		}else{ /*si il y plusieurs arguments : boucle ; sinon sortie = -arg1*/
+			if(integerOuDouble){
+				sommeDouble = -sommeDouble;
+			}else{
+				sommeInt = -sommeInt;
+			}
+		}
+		
+		/* Creation de la sortie en fonction du type de sortie calculé */
+		if(integerOuDouble){
+			obj_temp = make_real(sommeDouble);
+		}else{
+			obj_temp = make_integer(sommeInt);
+		}
+		
+	}
+	
+    return obj_temp;
+	return o;
 }
 object prim_times ( object o ) {
     return o;
