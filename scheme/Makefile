@@ -25,6 +25,11 @@ SRC=$(wildcard $(SRCDIR)/*.c)
 OBJ_DBG=$(SRC:.c=.dbg)
 OBJ_RLS=$(SRC:.c=.rls)
 
+t : 
+	make clean
+	make debug
+	$(RM) $(SRCDIR)/*.orig $(SRCDIR)/*.dbg $(SRCDIR)/*.rls $(GARBAGE) scheme-`whoami`-*.tgz
+
 all : 
 	@echo "in " $(DIRNAME)
 	@echo ""
