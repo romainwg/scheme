@@ -31,7 +31,6 @@ void init_primitive ( void ) {
     make_primitive( "symbol?"    , &prim_is_symbol     );
     make_primitive( "char?"      , &prim_is_char       );
     make_primitive( "number?"    , &prim_is_number     );
-    make_primitive( "list?"      , &prim_is_list       );
     make_primitive( "procedure?" , &prim_is_procedure  );
     
     make_primitive( "integer->char" , &prim_int_char         );
@@ -205,43 +204,111 @@ object prim_sqrt ( object o ) {
 
 
 object prim_is_boolean ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("boolean? must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( is_boolean (o) ) {
-        o = make_boolean( TRUE );
+        o = vrai;
     }
     else {
-        o = make_boolean( FALSE );
+        o = faux;
     }
-    
     return o;
 }
 object prim_is_char ( object o ) {
-    return o;
-}
-object prim_is_list ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("char? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( is_char (o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_null ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("null? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( o==NULL ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_symbol ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("symbol? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( is_symbol(o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_number ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("number? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( is_number(o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_pair ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("number? must have 1 and just 1 argument");
+        return NULL;
+    }
+
+    if ( is_pair(o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_procedure ( object o ) {
-    return o;
+    WARNING_MSG("Procedure : not evaluable for the moment (Increment4)");
+    return NULL;
 }
 object prim_is_string ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("string? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( is_string(o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 

@@ -21,7 +21,7 @@ int is_primitive ( object o ) {
     
     object EnvCopy = car(toplevel);
     while ( !is_nil(EnvCopy) ) {
-        if ( cdar(EnvCopy)->type == SFS_PRIMITIVE ) {
+        if ( strcmp(o->this.symbol,caar(EnvCopy)->this.symbol) == 0 && cdar(EnvCopy)->type == SFS_PRIMITIVE ) {
             return 1;
         }
         EnvCopy = cdr(EnvCopy);
@@ -116,6 +116,7 @@ int is_set( string function ) {
 }
 
 int is_if( string function ) {
+    DEBUG_MSG("is_if ?");
     if ( strcmp(function,"if") == 0 ) {
         return 1;
     }
