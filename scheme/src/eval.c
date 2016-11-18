@@ -21,8 +21,6 @@
 
 object sfs_eval( object input ) {
     DEBUG_MSG("input %p %d", input, input->type);
-
-    object eval_car = car(input);
     
     if (input == NULL) {
         return NULL;
@@ -38,6 +36,12 @@ object sfs_eval( object input ) {
     }
     
     if ( is_pair(input) ) {
+        
+        object eval_car = car(input);
+        
+        if ( is_primitive(eval_car) ) {
+            return eval_primitive(input);
+        }
         
         if ( is_symbol(eval_car) ) {
             string function;
@@ -61,12 +65,12 @@ object sfs_eval( object input ) {
             else if (is_and(function)) {
                 return eval_and(input);
             }
-            else if (is_calcul_operator(function)) {
+       /*     else if (is_calcul_operator(function)) {
                 return eval_calc_operator(input);
             }
             else if (is_cmp_operator(function)) {
                 return eval_cmp_operator(input);
-            }
+            } */
         }
         
         else {

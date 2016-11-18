@@ -19,6 +19,8 @@
 #include "read.h"
 #include "eval.h"
 #include "print.h"
+#include "primitive.h"
+#include "aux_eval.h"
 
 /* mode d'interaction avec l'interpreteur (exemple)*/
 typedef enum {INTERACTIF,SCRIPT} inter_mode;
@@ -43,7 +45,8 @@ void init_interpreter ( void ) {
     toplevel    = make_pair()           ;
     toplevel->this.pair.car = make_nil();
     toplevel->this.pair.cdr = make_nil();
-
+    init_primitive();
+    print_environment();
 }
 
 

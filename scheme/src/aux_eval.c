@@ -314,6 +314,19 @@ object eval_cmp_operator( object input ) {
     return atom_boolean;
 }
 
+object eval_primitive( object input ) {
+    
+    object EnvCopy = car(toplevel);
+    while ( !is_nil(EnvCopy) ) {
+        if ( strcmp(car(input)->this.symbol,caar(EnvCopy)->this.symbol) == 0 && cdar(EnvCopy)->type == SFS_PRIMITIVE ) {
+            return cdar(EnvCopy)->this.primitive.function( cdr(input) );
+        }
+        EnvCopy = cdr(EnvCopy);
+    }
+    return NULL;
+    
+}
+
 /* FONCTIONS ENVIRONNEMENTALES */
 
 object newEnvironment( object toplevel ) {
@@ -347,4 +360,14 @@ void changeVarEnvironment( string symbol, object valeur ) {
         }
         EnvCopy = cdr(EnvCopy);
     }
+}
+
+void print_environment( void ) {
+    
+    object EnvCopy = car(toplevel);
+    while ( !is_nil(EnvCopy) ) {
+        printf("%s          \n",caar(EnvCopy)->this.symbol);
+        EnvCopy = cdr(EnvCopy);
+    }
+    
 }

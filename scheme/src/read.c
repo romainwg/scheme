@@ -344,6 +344,7 @@ object sfs_read_atom( char *input, uint *here ) {
     uint type_input;
     type_input=typeInput(input,here);
     
+    
     DEBUG_MSG("type input %d",type_input);
     
     switch (type_input) {
@@ -356,7 +357,7 @@ object sfs_read_atom( char *input, uint *here ) {
             return sfs_read(input,here);
             break;
             
-        case SFS_NUMBER :
+        case SFS_NUMBER:
             return read_atom_number(input,here);
             break;
             
@@ -375,7 +376,6 @@ object sfs_read_atom( char *input, uint *here ) {
         case SFS_SYMBOL :
             return read_atom_symbol(input,here);
             break;
-            
     }
 
     return atom;
@@ -398,20 +398,24 @@ object sfs_read_pair( char *input, uint *here ) {
     pair = make_pair();
     
     pair->this.pair.car = sfs_read( input, here ) ;
+    if ( pair->this.pair.car ==  NULL ) {
+        return NULL;
+    }
     
     SpaceCancel(input,here);
     
     DEBUG_MSG("read pair input[*here] %c",input[*here]);
     
     if ( input[*here] == ')' ) {
-        
         pair->this.pair.cdr = make_nil();
         (*here)++;
     }
 
     else {
-
         pair->this.pair.cdr = sfs_read_pair( input, here );
+        if ( pair->this.pair.cdr ==  NULL ) {
+            return NULL;
+        }
         
     }
     

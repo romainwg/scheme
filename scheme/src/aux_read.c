@@ -57,8 +57,6 @@ int size_number ( int valeur ) {
 
 uint typeInput(char *input, uint *here) {
     
-    uint type_input=SFS_NOTYPE;
-    
     char first_char=input[*here];
     
     /* STRING */
@@ -68,16 +66,6 @@ uint typeInput(char *input, uint *here) {
     if ( first_char == guillemet ) {
         
         return SFS_STRING;
-    }
-    
-    /* NUMBER */
-    
-    char *p_end;
-    strtol(input + *here, &p_end, 10);
-    
-    if ( isspace(p_end[0]) || iscntrl(p_end[0]) || p_end[0] == ')' || p_end[0] == '(' || p_end[0] == '\"' ) {
-        
-        return SFS_NUMBER;
     }
     
     
@@ -104,11 +92,24 @@ uint typeInput(char *input, uint *here) {
         return SFS_SYMBOL;
     }
     
+    
+    /* NUMBER */
+    
+    char *p_end1;
+    char *p_end2;
+    strtol(input + *here, &p_end1, 10);
+    strtod(input + *here, &p_end2);
+    
+    if ( isspace(p_end1[0]) || iscntrl(p_end1[0]) || p_end1[0] == ')' || p_end1[0] == '(' || p_end1[0] == '\"' || isspace(p_end2[0]) || iscntrl(p_end2[0]) || p_end2[0] == ')' || p_end2[0] == '(' || p_end2[0] == '\"') {
+        return SFS_NUMBER;
+    }
+    
+    
     /* NOT A READABLE TYPE */
     
     else {
         WARNING_MSG("TYPE_ERROR : not a readable type");
+        (*here)++;
+        return SFS_NOTYPE;
     }
-    
-    return type_input;
 }

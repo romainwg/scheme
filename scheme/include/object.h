@@ -16,7 +16,8 @@ extern "C" {
 #endif
 
 #include "number.h"
-#include <ctype.h>
+#include <ctype.h>  
+
 
 typedef struct object_t {
 
@@ -35,21 +36,30 @@ typedef struct object_t {
         }                pair;
 
         struct object_t *special;
+        
+        struct {
+            struct object_t * (*function)( struct object_t * );
+        } primitive;
 
     } this;
 
 } *object;
-    
 
-object make_object      (   uint type           );
-object make_nil         (   void                );
-object make_pair        (   void                );
-object make_integer     (   int valeur          );
-object make_string      (   char* chaine, int i );
-object make_character   (   char character      );
-object make_boolean     (   int b               );
-object make_symbol      (   char* symbol, int i );
-    
+
+
+object make_object      ( uint type           );
+object make_nil         ( void                );
+object make_pair        ( void                );
+object make_integer     ( int valeur          );
+object make_real        ( double valeur       );
+object make_string      ( char* chaine, int i );
+object make_character   ( char character      );
+object make_boolean     ( int b               );
+object make_symbol      ( char* symbol, int i );
+
+object make_primitive   ( string symbol, object (*function)(object) );
+
+
     /* CAR/CDR */
     object car    ( object o );
     object cdr    ( object o );
@@ -93,6 +103,8 @@ object make_symbol      (   char* symbol, int i );
 #define SFS_BOOLEAN      0x05
 #define SFS_SYMBOL       0x06
 #define SFS_NOTYPE       0x07
+#define SFS_PRIMITIVE    0x08
+#define SFS_FLOAT        0x09
 
 
 extern object nil;
