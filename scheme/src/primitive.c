@@ -684,7 +684,7 @@ object prim_sin ( object o ) {
     
     o = sfs_eval(car(o));
     
-    if ( !is_number(o) ) {
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("sin only accepts number");
         return NULL;
     }
@@ -706,7 +706,7 @@ object prim_cos ( object o ) {
     }
     
     o = sfs_eval(car(o));
-    if ( !is_number(o) ) {
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("cos only accepts number");
         return NULL;
     }
@@ -728,7 +728,7 @@ object prim_tan ( object o ) {
     }
     
     o = sfs_eval(car(o));
-    if ( !is_number(o) ) {
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("tan only accepts number");
         return NULL;
     }
@@ -750,7 +750,7 @@ object prim_abs ( object o ) {
     }
     
     o = sfs_eval(car(o));
-    if ( !is_number(o) ) {
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("abs only accepts number");
         return NULL;
     }
@@ -772,7 +772,7 @@ object prim_exp ( object o ) {
     }
     
     o = sfs_eval(car(o));
-    if ( !is_number(o) ) {
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("exp only accepts number");
         return NULL;
     }
@@ -794,7 +794,7 @@ object prim_sqrt ( object o ) {
     }
     
     o = sfs_eval(car(o));
-    if ( !is_number(o) ) {
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("sqrt only accepts number");
         return NULL;
     }
@@ -820,7 +820,7 @@ object prim_is_boolean ( object o ) {
     }
     
     o = sfs_eval(car(o));
-    if ( is_boolean (o) ) {
+    if ( o != NULL && is_boolean (o) ) {
         o = vrai;
     }
     else {
@@ -835,7 +835,7 @@ object prim_is_char ( object o ) {
     }
     
     o = sfs_eval(car(o));
-    if ( is_char (o) ) {
+    if ( o != NULL && is_char (o) ) {
         o = vrai;
     }
     else {
@@ -865,7 +865,7 @@ object prim_is_symbol ( object o ) {
     }
     
     o = sfs_eval(car(o));
-    if ( is_symbol(o) ) {
+    if ( o != NULL && is_symbol(o) ) {
         o = vrai;
     }
     else {
@@ -880,7 +880,7 @@ object prim_is_number ( object o ) {
     }
     
     o = sfs_eval(car(o));
-    if ( is_number(o) ) {
+    if ( o != NULL && is_number(o) ) {
         o = vrai;
     }
     else {
@@ -894,7 +894,7 @@ object prim_is_pair ( object o ) {
         return NULL;
     }
 
-    if ( is_pair(o) ) {
+    if ( o != NULL && is_pair(o) ) {
         o = vrai;
     }
     else {
@@ -913,7 +913,7 @@ object prim_is_string ( object o ) {
     }
     
     o = sfs_eval(car(o));
-    if ( is_string(o) ) {
+    if ( o != NULL && is_string(o) ) {
         o = vrai;
     }
     else {
@@ -933,7 +933,7 @@ object prim_int_char ( object o ) {
     
     o=sfs_eval(car(o));
     
-    if ( is_integer(o) ) {
+    if ( o != NULL && is_integer(o) ) {
         char integer = o->this.number.this.integer;
         o = make_character(integer);
     }
@@ -952,7 +952,7 @@ object prim_char_int ( object o ) {
     
     o=sfs_eval(car(o));
     
-    if ( is_char(o) ) {
+    if ( o != NULL && is_char(o) ) {
         int character = o->this.character;
         o = make_integer(character);
     }
@@ -973,10 +973,10 @@ object prim_num_string ( object o ) {
     int size=0;
     char str_number[STRLEN];
     str_number[0]='"';
-    if ( is_integer(o) ) {
+    if ( o != NULL || is_integer(o) ) {
         size = snprintf( str_number + 1, STRLEN-1, "%d", o->this.number.this.integer );
     }
-    else if ( is_real(o) ) {
+    else if ( o != NULL || is_real(o) ) {
         size = snprintf( str_number + 1, STRLEN-1, "%lf", o->this.number.this.real );
     }
     else {
@@ -1000,10 +1000,17 @@ object prim_string_num ( object o ) {
     }
     
     o=sfs_eval(car(o));
-    if ( is_string(o) ) {
+    if ( o != NULL && is_string(o) ) {
         uint i=0;
+        int size = strlen(o->this.string);
+        o->this.string[size-1] = ' ';
         char* str_number = o->this.string + 1;
-        o = read_atom_number(str_number,&i);
+        o = sfs_read(str_number,&i);
+        SpaceCancel(str_number,&i);
+        if ( !iscntrl(str_number[i]) ) {
+            WARNING_MSG("string->number : not a proper number");
+            return NULL;
+        }
     }
     else {
         WARNING_MSG("string->number only evaluates strings");
@@ -1013,9 +1020,42 @@ object prim_string_num ( object o ) {
     return o;
 }
 object prim_symbol_string ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("symbol->string must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o=sfs_eval(car(o));
+    if ( o == NULL || !is_symbol(o) ) {
+        WARNING_MSG("symbol->string only evaluates quoted symbols");
+        return NULL;
+    }
     return o;
 }
 object prim_string_symbol ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("string->symbol must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o=sfs_eval(car(o));
+    if ( o != NULL && is_string(o) ) {
+        uint i=0;
+        int size = strlen(o->this.string);
+        o->this.string[size-1] = ' ';
+        char* str_symbol = o->this.string + 1;
+        o = sfs_read(str_symbol,&i);
+        SpaceCancel(str_symbol,&i);
+        if ( !iscntrl(str_symbol[i]) ) {
+            WARNING_MSG("string->symbol : not a proper symbol");
+            return NULL;
+        }
+    }
+    else {
+        WARNING_MSG("string->symbol only evaluates strings");
+        return NULL;
+    }
+    
     return o;
 }
 object prim_string_list ( object o ) {

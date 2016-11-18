@@ -15,6 +15,8 @@
 #include "eval.h"
 #include "math.h"
 #include "read_atom.h"
+#include "read.h"
+#include "aux_read.h"
 
 void init_primitive ( void );
 
