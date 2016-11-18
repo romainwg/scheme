@@ -12,6 +12,8 @@
 
 #include <stdio.h>
 
+
+
 void sfs_print_atom( object o ) {
     
     switch (o->type) {
@@ -36,7 +38,6 @@ void sfs_print_atom( object o ) {
             break;
             
         case SFS_CHARACTER :
-            
             if ( '\n' == o->this.character ) {
                 printf("#\\newline");
             }
@@ -50,14 +51,15 @@ void sfs_print_atom( object o ) {
             break;
             
         case SFS_STRING :
-            
             printf("%s",o->this.string);
             break;
             
         case SFS_SYMBOL :
-            
             printf("%s",o->this.symbol);
             break;
+            
+        case SFS_PRIMITIVE :
+            printf("#<Function>");
 
     }
 }
