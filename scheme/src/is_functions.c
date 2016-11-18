@@ -21,7 +21,7 @@ int is_primitive ( object o ) {
     
     object EnvCopy = car(toplevel);
     while ( !is_nil(EnvCopy) ) {
-        if ( cdar(EnvCopy)->type == SFS_PRIMITIVE ) {
+        if ( strcmp(o->this.symbol,caar(EnvCopy)->this.symbol) == 0 && cdar(EnvCopy)->type == SFS_PRIMITIVE ) {
             return 1;
         }
         EnvCopy = cdr(EnvCopy);
@@ -31,9 +31,7 @@ int is_primitive ( object o ) {
 
 /*NUMBER*/
 int is_number ( object o ) {
-    DEBUG_MSG("JE SUIS UN NBRE o->this.number.this.integer %d",o->this.number.this.integer);
     if ( o->type == SFS_NUMBER ) {
-        DEBUG_MSG("JE SUIS UN NBRE le retour");
         return 1;
     }
     return 0;
@@ -54,6 +52,34 @@ int is_real ( object o ) {
 }
 
 /*OTHER*/
+int is_boolean ( object eval_car ) {
+    if ( eval_car->type == SFS_BOOLEAN ) {
+        return 1;
+    }
+    return 0;
+}
+
+int is_char ( object eval_car ) {
+    if ( eval_car->type == SFS_CHARACTER ) {
+        return 1;
+    }
+    return 0;
+}
+
+int is_string ( object eval_car ) {
+    if ( eval_car->type == SFS_STRING ) {
+        return 1;
+    }
+    return 0;
+}
+
+int is_null ( object eval_car ) {
+    if ( eval_car == NULL ) {
+        return 1;
+    }
+    return 0;
+}
+
 int is_symbol ( object eval_car ) {
     if ( eval_car->type == SFS_SYMBOL ) {
         return 1;
@@ -90,6 +116,7 @@ int is_set( string function ) {
 }
 
 int is_if( string function ) {
+    DEBUG_MSG("is_if ?");
     if ( strcmp(function,"if") == 0 ) {
         return 1;
     }

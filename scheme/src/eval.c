@@ -20,7 +20,7 @@
  **/
 
 object sfs_eval( object input ) {
-    DEBUG_MSG("input %p %d", input, input->type);
+    DEBUG_MSG("eval input %p %d", input, input->type);
     
     if (input == NULL) {
         return NULL;
@@ -37,9 +37,12 @@ object sfs_eval( object input ) {
     
     if ( is_pair(input) ) {
         
+        DEBUG_MSG("is_pair eval ?");
+        
         object eval_car = car(input);
         
         if ( is_primitive(eval_car) ) {
+            DEBUG_MSG("is_primtivie eval ?");
             return eval_primitive(input);
         }
         
@@ -57,6 +60,7 @@ object sfs_eval( object input ) {
                 return eval_set(input);
             }
             else if (is_if(function)) {
+                DEBUG_MSG("is if function");
                 return eval_if(input);
             }
             else if (is_or(function)) {
