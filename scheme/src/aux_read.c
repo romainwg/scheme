@@ -1,11 +1,11 @@
 /*
-  aux_read.c
+ aux_read.c
  
-
-  Created by Jérémy Hraman on 01/10/2016.
-  SICOM-A
  
-*/
+ Created by Jérémy Hraman on 01/10/2016.
+ SICOM-A
+ 
+ */
 
 #include "aux_read.h"
 

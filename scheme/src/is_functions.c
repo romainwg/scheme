@@ -1,10 +1,10 @@
 /*
-  is_functions.c
-
-
-  Created by Jérémy Hraman on 20/10/2016.
-
-*/
+ is_functions.c
+ 
+ 
+ Created by Jérémy Hraman on 20/10/2016.
+ 
+ */
 
 #include "is_functions.h"
 

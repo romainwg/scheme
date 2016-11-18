@@ -1,0 +1,24 @@
+
+//regarder les clefs existantes
+ls -lAF ~/.ssh
+
+//créer une nouvelle clef
+ssh-keygen -t dsa
+
+//ex :
+-> /home/%user/.ssh/id_dsa_git
+-> mdp/passphrase
+
+//changer de mdp/passphrase
+ssh-keygen -p -f ~/.ssh/le_fichier_de_cle
+
+//vérifier qu'il existe un agent ssh
+ssh-agent
+
+//lancer un agent manuellement
+ssh-agent
+
+//eval test agent
+eval `ssh-agent`
+//NOTE : SSH_AUTH_SOCK et SSH_AGENT_PID
+

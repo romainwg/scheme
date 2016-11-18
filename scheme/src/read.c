@@ -328,15 +328,15 @@ object sfs_read( char *input, uint *here ) {
 }
 
 /* SFS READ ATOM */
- 
-/*  
-    lit un atome dans la chaine input a partir *here
-    et retourne l'object c qui represente cet atome
-    ou retourne null si erreur 
-*/
+
+/*
+ lit un atome dans la chaine input a partir *here
+ et retourne l'object c qui represente cet atome
+ ou retourne null si erreur
+ */
 
 object sfs_read_atom( char *input, uint *here ) {
-
+    
     object atom = NULL;
     
     SpaceCancel(input,here);
@@ -377,18 +377,18 @@ object sfs_read_atom( char *input, uint *here ) {
             return read_atom_symbol(input,here);
             break;
     }
-
+    
     return atom;
 }
 
 /* READ PAIR */
 
 /*
-    Lit une paire si input à *here est une paire
-    Crée un car et un cdr à la pair pour stocker l'object
-    Si fin de liste, crée un nil sinon continue de créer l'arbre object
-    retourne NULL si pas une paire 
-*/
+ Lit une paire si input à *here est une paire
+ Crée un car et un cdr à la pair pour stocker l'object
+ Si fin de liste, crée un nil sinon continue de créer l'arbre object
+ retourne NULL si pas une paire
+ */
 
 object sfs_read_pair( char *input, uint *here ) {
     
@@ -410,7 +410,7 @@ object sfs_read_pair( char *input, uint *here ) {
         pair->this.pair.cdr = make_nil();
         (*here)++;
     }
-
+    
     else {
         pair->this.pair.cdr = sfs_read_pair( input, here );
         if ( pair->this.pair.cdr ==  NULL ) {

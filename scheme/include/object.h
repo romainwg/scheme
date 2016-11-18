@@ -103,7 +103,6 @@ object make_primitive   ( string symbol, object (*function)(object) );
 #define SFS_SYMBOL       0x06
 #define SFS_NOTYPE       0x07
 #define SFS_PRIMITIVE    0x08
-#define SFS_FLOAT        0x09
 
 
 extern object nil;

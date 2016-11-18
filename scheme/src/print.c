@@ -43,8 +43,8 @@ void sfs_print_atom( object o ) {
             }
             else if ( ' ' == o->this.character ) {
                 printf("#\\space");
-            } 
-                
+            }
+            
             else {
                 printf("#\\%c",o->this.character);
             }
@@ -60,7 +60,11 @@ void sfs_print_atom( object o ) {
             
         case SFS_PRIMITIVE :
             printf("#<Function>");
+<<<<<<< HEAD
+            
+=======
 
+>>>>>>> 781de67407fc02e8100e6733a18e0d018779f293
     }
 }
 
@@ -79,13 +83,13 @@ void sfs_print_pair( object o , uint *root) {
     if ( (o->this.pair).cdr->type != SFS_NIL ) {
         printf(" ");
     }
-
+    
     sfs_print( (o->this.pair).cdr , root);
     
     if ( (o->this.pair).cdr->type == SFS_NIL ) {
         printf(")");
     }
-
+    
 }
 
 
