@@ -68,12 +68,12 @@ object prim_modulo ( object o ) {
 
 
 object prim_sin ( object o ) {
-    
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("sin must have 1 and just 1 argument");
         return NULL;
     }
+    
+    o = sfs_eval(car(o));
     
     if ( !is_number(o) ) {
         WARNING_MSG("sin only accepts number");
@@ -91,12 +91,12 @@ object prim_sin ( object o ) {
     return o;
 }
 object prim_cos ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("cos must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( !is_number(o) ) {
         WARNING_MSG("cos only accepts number");
         return NULL;
@@ -113,12 +113,12 @@ object prim_cos ( object o ) {
     return o;
 }
 object prim_tan ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("tan must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( !is_number(o) ) {
         WARNING_MSG("tan only accepts number");
         return NULL;
@@ -135,12 +135,12 @@ object prim_tan ( object o ) {
     return o;
 }
 object prim_abs ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("abs must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( !is_number(o) ) {
         WARNING_MSG("abs only accepts number");
         return NULL;
@@ -157,12 +157,12 @@ object prim_abs ( object o ) {
     return o;
 }
 object prim_exp ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("exp must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( !is_number(o) ) {
         WARNING_MSG("exp only accepts number");
         return NULL;
@@ -179,12 +179,12 @@ object prim_exp ( object o ) {
     return o;
 }
 object prim_sqrt ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("sqrt must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( !is_number(o) ) {
         WARNING_MSG("sqrt only accepts number");
         return NULL;
@@ -205,6 +205,19 @@ object prim_sqrt ( object o ) {
 
 
 object prim_is_boolean ( object o ) {
+    o = sfs_eval(car(o));
+    if ( is_pair(o) ) {
+        WARNING_MSG("boolean? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    if ( is_boolean (o) ) {
+        o = make_boolean( TRUE );
+    }
+    else {
+        o = make_boolean( FALSE );
+    }
+    
     return o;
 }
 object prim_is_char ( object o ) {

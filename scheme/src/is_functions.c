@@ -31,9 +31,7 @@ int is_primitive ( object o ) {
 
 /*NUMBER*/
 int is_number ( object o ) {
-    DEBUG_MSG("JE SUIS UN NBRE o->this.number.this.integer %d",o->this.number.this.integer);
     if ( o->type == SFS_NUMBER ) {
-        DEBUG_MSG("JE SUIS UN NBRE le retour");
         return 1;
     }
     return 0;
@@ -54,6 +52,34 @@ int is_real ( object o ) {
 }
 
 /*OTHER*/
+int is_boolean ( object eval_car ) {
+    if ( eval_car->type == SFS_BOOLEAN ) {
+        return 1;
+    }
+    return 0;
+}
+
+int is_char ( object eval_car ) {
+    if ( eval_car->type == SFS_CHARACTER ) {
+        return 1;
+    }
+    return 0;
+}
+
+int is_string ( object eval_car ) {
+    if ( eval_car->type == SFS_STRING ) {
+        return 1;
+    }
+    return 0;
+}
+
+int is_null ( object eval_car ) {
+    if ( eval_car == NULL ) {
+        return 1;
+    }
+    return 0;
+}
+
 int is_symbol ( object eval_car ) {
     if ( eval_car->type == SFS_SYMBOL ) {
         return 1;
