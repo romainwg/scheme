@@ -14,6 +14,7 @@
 #include "is_functions.h"
 #include "eval.h"
 #include "math.h"
+#include "read_atom.h"
 
 void init_primitive ( void );
 

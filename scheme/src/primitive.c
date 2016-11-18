@@ -970,20 +970,45 @@ object prim_num_string ( object o ) {
     }
     
     o=sfs_eval(car(o));
-    
+    int size=0;
+    char str_number[STRLEN];
+    str_number[0]='"';
     if ( is_integer(o) ) {
-        char integer = o->this.number.this.integer;
-        o = make_character(integer);
+        size = snprintf( str_number + 1, STRLEN-1, "%d", o->this.number.this.integer );
+    }
+    else if ( is_real(o) ) {
+        size = snprintf( str_number + 1, STRLEN-1, "%lf", o->this.number.this.real );
     }
     else {
-        WARNING_MSG("number->string only evaluates number");
+        WARNING_MSG("number->string only evaluates numbers");
         return NULL;
     }
     
+    if ( size >= STRLEN-2 ) {
+        WARNING_MSG("number->string : number too long");
+        return NULL;
+    }
+    str_number[size+1]='"';
+    
+    o = make_string(str_number,size+2);
     return o;
 }
 object prim_string_num ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("string->number must have 1 and just 1 argument");
+        return NULL;
+    }
     
+    o=sfs_eval(car(o));
+    if ( is_string(o) ) {
+        uint i=0;
+        char* str_number = o->this.string + 1;
+        o = read_atom_number(str_number,&i);
+    }
+    else {
+        WARNING_MSG("string->number only evaluates strings");
+        return NULL;
+    }
     
     return o;
 }
