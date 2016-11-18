@@ -37,12 +37,9 @@ object sfs_eval( object input ) {
     
     if ( is_pair(input) ) {
         
-        DEBUG_MSG("is_pair eval ?");
-        
         object eval_car = car(input);
         
         if ( is_primitive(eval_car) ) {
-            DEBUG_MSG("is_primtivie eval ?");
             return eval_primitive(input);
         }
         
@@ -60,22 +57,14 @@ object sfs_eval( object input ) {
                 return eval_set(input);
             }
             else if (is_if(function)) {
-                DEBUG_MSG("is if function");
                 return eval_if(input);
             }
             else if (is_or(function)) {
                 return eval_or(input);
             }
             else if (is_and(function)) {
-                DEBUG_MSG("is and eval");
                 return eval_and(input);
             }
-            /*     else if (is_calcul_operator(function)) {
-             return eval_calc_operator(input);
-             }
-             else if (is_cmp_operator(function)) {
-             return eval_cmp_operator(input);
-             } */
         }
         
         else {
