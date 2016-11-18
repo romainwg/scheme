@@ -1,16 +1,16 @@
 /*
  
-  aux_eval.c
+ aux_eval.c
  
-
-  Created by Jérémy Hraman on 12/10/2016.
-
-*/
+ 
+ Created by Jérémy Hraman on 12/10/2016.
+ 
+ */
 
 #include "aux_eval.h"
 
 object eval_symbol ( object input ) {
-
+    
     if ( is_in_Env(input->this.symbol ) ) {
         object EnvCopy = car(toplevel);
         while ( !is_nil(EnvCopy) ) {
@@ -30,9 +30,9 @@ object eval_symbol ( object input ) {
 object eval_quote( object input ) {
     
     /*if ( !is_nil(cddr(input)) ) {
-        WARNING_MSG("%s accepts only 1 argument",car(input)->this.symbol);
-        return NULL;
-    }*/
+     WARNING_MSG("%s accepts only 1 argument",car(input)->this.symbol);
+     return NULL;
+     }*/
     return input->this.pair.cdr->this.pair.car;
 }
 
@@ -46,6 +46,10 @@ object eval_define( object input ) {
     if ( cadr(input) == NULL || !is_symbol(cadr(input)) ) {
         WARNING_MSG("Cannot use Define, not a symbol");
         return NULL;
+    }
+    
+    if ( is_primitive(cadr(input)) ) {
+        WARNING_MSG("%s is a primitive, cannot be defined",cadr(input)->this.symbol);
     }
     
     if (is_in_Env(cadr(input)->this.symbol)) {
@@ -68,14 +72,18 @@ object eval_define( object input ) {
 
 object eval_set( object input ) {
     
-    if ( !is_nil(cdddr(input)) ) {
+    if ( cdddr(input) == NULL || !is_nil(cdddr(input)) ) {
         WARNING_MSG("%s accepts only 1 symbol with 1 atom",car(input)->this.symbol);
         return NULL;
     }
     
-    if ( !is_symbol(cadr(input)) ) {
+    if ( cadr(input) == NULL || !is_symbol(cadr(input)) ) {
         WARNING_MSG("Cannot use set, not a symbol");
         return NULL;
+    }
+    
+    if ( is_primitive(cadr(input)) ) {
+        WARNING_MSG("%s is a primitive, cannot be set!",cadr(input)->this.symbol);
     }
     
     if (!is_in_Env(cadr(input)->this.symbol)) {
@@ -223,7 +231,7 @@ object eval_calc_operator( object input ) {
         atom_number = make_integer(res);
         return atom_number;
     }
-                        
+    
     
     if ( !is_nil(cdddr(input)) ) {
         WARNING_MSG("%s operator accepts only 2 arguments",car(input)->this.symbol);
@@ -334,7 +342,7 @@ object newEnvironment( object toplevel ) {
     object newEnv = make_pair();
     newEnv->this.pair.car = make_nil();
     newEnv->this.pair.cdr = toplevel;
-
+    
     return newEnv;
 }
 

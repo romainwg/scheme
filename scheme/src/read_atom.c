@@ -1,11 +1,11 @@
-/*  
+/*
  read_atom.c
  
  
- Created by Jérémy Hraman on 15/09/2016. 
+ Created by Jérémy Hraman on 15/09/2016.
  SICOM-A
-
-*/
+ 
+ */
 
 #include "read_atom.h"
 #include "aux_read.h"
@@ -20,19 +20,39 @@
 
 object read_atom_number(char * input, uint *here) {
     
+    char *p_end=NULL;
+    char *p_end1=NULL;
+    char *p_end2=NULL;
     object atom = NULL;
-    
     num atom_number;
-    atom_number.numtype = NUM_INTEGER ;
     
     if (input[*here] == '+') {
         (*here)++;
     }
     
-    char * p_end=NULL;
-    atom_number.this.integer = strtol(input + *here, &p_end, 10);
-    *here = *here + size_number( atom_number.this.integer );
-    atom = make_integer( atom_number.this.integer );
+    DEBUG_MSG("read atom");
+    
+    strtol(input + *here, &p_end1, 10);
+    strtod(input + *here, &p_end2);
+    
+    if ( isspace(p_end1[0]) || iscntrl(p_end1[0]) || p_end1[0] == ')' || p_end1[0] == '(' || p_end1[0] == '\"') {
+        
+        atom_number.numtype = NUM_INTEGER;
+        atom_number.this.integer = strtol(input + *here, &p_end, 10);
+        *here = *here + size_number( atom_number.this.integer );
+        atom = make_integer( atom_number.this.integer );
+    }
+    
+    else if ( isspace(p_end2[0]) || iscntrl(p_end2[0]) || p_end2[0] == ')' || p_end2[0] == '(' || p_end2[0] == '\"' ) {
+        char *p_end;
+        atom_number.numtype = NUM_REAL;
+        atom_number.this.real = strtod(input + *here, &p_end);
+        *here = *here + (p_end - (input + *here));
+        atom = make_real( atom_number.this.real );
+    }
+    else {
+        WARNING_MSG("Error atom : not a number");
+    }
     
     return atom;
 }
@@ -112,11 +132,11 @@ object read_atom_character(char *input,uint *here){
             (*here)++;
             i++;
         }
-            
+        
         if ( strncmp (ch1,"newline",7) == 0 ) {
             character = '\n';
         }
-            
+        
         else {
             WARNING_MSG("Error read_atom_character : not a character");
             return NULL;
@@ -136,7 +156,7 @@ object read_atom_character(char *input,uint *here){
         
         char ch2[5];
         ch2[0] = 's';
-    
+        
         while ( i<5 ) {
             ch2[i]=input[*here];
             (*here)++;
@@ -165,7 +185,7 @@ object read_atom_character(char *input,uint *here){
             return NULL;
         }
     }
-
+    
     atom = make_character(character);
     return atom;
 }

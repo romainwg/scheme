@@ -32,7 +32,6 @@ void init_primitive ( void ) {
     make_primitive( "symbol?"    , &prim_is_symbol     );
     make_primitive( "char?"      , &prim_is_char       );
     make_primitive( "number?"    , &prim_is_number     );
-    make_primitive( "list?"      , &prim_is_list       );
     make_primitive( "procedure?" , &prim_is_procedure  );
     
     make_primitive( "integer->char" , &prim_int_char         );
@@ -678,12 +677,12 @@ object prim_modulo ( object o ) {
 
 
 object prim_sin ( object o ) {
-    
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("sin must have 1 and just 1 argument");
         return NULL;
     }
+    
+    o = sfs_eval(car(o));
     
     if ( !is_number(o) ) {
         WARNING_MSG("sin only accepts number");
@@ -701,12 +700,12 @@ object prim_sin ( object o ) {
     return o;
 }
 object prim_cos ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("cos must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( !is_number(o) ) {
         WARNING_MSG("cos only accepts number");
         return NULL;
@@ -723,12 +722,12 @@ object prim_cos ( object o ) {
     return o;
 }
 object prim_tan ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("tan must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( !is_number(o) ) {
         WARNING_MSG("tan only accepts number");
         return NULL;
@@ -745,12 +744,12 @@ object prim_tan ( object o ) {
     return o;
 }
 object prim_abs ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("abs must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( !is_number(o) ) {
         WARNING_MSG("abs only accepts number");
         return NULL;
@@ -767,12 +766,12 @@ object prim_abs ( object o ) {
     return o;
 }
 object prim_exp ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("exp must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( !is_number(o) ) {
         WARNING_MSG("exp only accepts number");
         return NULL;
@@ -789,12 +788,12 @@ object prim_exp ( object o ) {
     return o;
 }
 object prim_sqrt ( object o ) {
-    o = sfs_eval(car(o));
-    if ( is_pair(o) ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
         WARNING_MSG("sqrt must have 1 and just 1 argument");
         return NULL;
     }
     
+    o = sfs_eval(car(o));
     if ( !is_number(o) ) {
         WARNING_MSG("sqrt only accepts number");
         return NULL;
@@ -815,30 +814,111 @@ object prim_sqrt ( object o ) {
 
 
 object prim_is_boolean ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("boolean? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( is_boolean (o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_char ( object o ) {
-    return o;
-}
-object prim_is_list ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("char? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( is_char (o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_null ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("null? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( o==NULL ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_symbol ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("symbol? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( is_symbol(o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_number ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("number? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( is_number(o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_pair ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("number? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    if ( is_pair(o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 object prim_is_procedure ( object o ) {
-    return o;
+    WARNING_MSG("Procedure : not evaluable for the moment (Increment4)");
+    return NULL;
 }
 object prim_is_string ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("string? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = sfs_eval(car(o));
+    if ( is_string(o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
     return o;
 }
 
@@ -846,15 +926,65 @@ object prim_is_string ( object o ) {
 
 
 object prim_int_char ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("integer->char must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o=sfs_eval(car(o));
+    
+    if ( is_integer(o) ) {
+        char integer = o->this.number.this.integer;
+        o = make_character(integer);
+    }
+    else {
+        WARNING_MSG("integer->char only evaluates number");
+        return NULL;
+    }
+    
     return o;
 }
 object prim_char_int ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("char->integer must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o=sfs_eval(car(o));
+    
+    if ( is_char(o) ) {
+        int character = o->this.character;
+        o = make_integer(character);
+    }
+    else {
+        WARNING_MSG("char->integer only evaluates number");
+        return NULL;
+    }
+    
     return o;
 }
 object prim_num_string ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("number->string must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o=sfs_eval(car(o));
+    
+    if ( is_integer(o) ) {
+        char integer = o->this.number.this.integer;
+        o = make_character(integer);
+    }
+    else {
+        WARNING_MSG("number->string only evaluates number");
+        return NULL;
+    }
+    
     return o;
 }
 object prim_string_num ( object o ) {
+    
+    
     return o;
 }
 object prim_symbol_string ( object o ) {
@@ -866,8 +996,6 @@ object prim_string_symbol ( object o ) {
 object prim_string_list ( object o ) {
     return o;
 }
-
-
 
 
 

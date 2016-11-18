@@ -328,21 +328,22 @@ object sfs_read( char *input, uint *here ) {
 }
 
 /* SFS READ ATOM */
- 
-/*  
-    lit un atome dans la chaine input a partir *here
-    et retourne l'object c qui represente cet atome
-    ou retourne null si erreur 
-*/
+
+/*
+ lit un atome dans la chaine input a partir *here
+ et retourne l'object c qui represente cet atome
+ ou retourne null si erreur
+ */
 
 object sfs_read_atom( char *input, uint *here ) {
-
+    
     object atom = NULL;
     
     SpaceCancel(input,here);
     
     uint type_input;
     type_input=typeInput(input,here);
+    
     
     DEBUG_MSG("type input %d",type_input);
     
@@ -356,7 +357,7 @@ object sfs_read_atom( char *input, uint *here ) {
             return sfs_read(input,here);
             break;
             
-        case SFS_NUMBER: case SFS_FLOAT:
+        case SFS_NUMBER:
             return read_atom_number(input,here);
             break;
             
@@ -376,18 +377,18 @@ object sfs_read_atom( char *input, uint *here ) {
             return read_atom_symbol(input,here);
             break;
     }
-
+    
     return atom;
 }
 
 /* READ PAIR */
 
 /*
-    Lit une paire si input à *here est une paire
-    Crée un car et un cdr à la pair pour stocker l'object
-    Si fin de liste, crée un nil sinon continue de créer l'arbre object
-    retourne NULL si pas une paire 
-*/
+ Lit une paire si input à *here est une paire
+ Crée un car et un cdr à la pair pour stocker l'object
+ Si fin de liste, crée un nil sinon continue de créer l'arbre object
+ retourne NULL si pas une paire
+ */
 
 object sfs_read_pair( char *input, uint *here ) {
     
@@ -397,20 +398,24 @@ object sfs_read_pair( char *input, uint *here ) {
     pair = make_pair();
     
     pair->this.pair.car = sfs_read( input, here ) ;
+    if ( pair->this.pair.car ==  NULL ) {
+        return NULL;
+    }
     
     SpaceCancel(input,here);
     
     DEBUG_MSG("read pair input[*here] %c",input[*here]);
     
     if ( input[*here] == ')' ) {
-        
         pair->this.pair.cdr = make_nil();
         (*here)++;
     }
-
+    
     else {
-
         pair->this.pair.cdr = sfs_read_pair( input, here );
+        if ( pair->this.pair.cdr ==  NULL ) {
+            return NULL;
+        }
         
     }
     

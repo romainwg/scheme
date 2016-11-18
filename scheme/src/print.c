@@ -12,6 +12,8 @@
 
 #include <stdio.h>
 
+
+
 void sfs_print_atom( object o ) {
     
     switch (o->type) {
@@ -36,29 +38,29 @@ void sfs_print_atom( object o ) {
             break;
             
         case SFS_CHARACTER :
-            
             if ( '\n' == o->this.character ) {
                 printf("#\\newline");
             }
             else if ( ' ' == o->this.character ) {
                 printf("#\\space");
-            } 
-                
+            }
+            
             else {
                 printf("#\\%c",o->this.character);
             }
             break;
             
         case SFS_STRING :
-            
             printf("%s",o->this.string);
             break;
             
         case SFS_SYMBOL :
-            
             printf("%s",o->this.symbol);
             break;
-
+            
+        case SFS_PRIMITIVE :
+            printf("#<Function>");
+            
     }
 }
 
@@ -77,13 +79,13 @@ void sfs_print_pair( object o , uint *root) {
     if ( (o->this.pair).cdr->type != SFS_NIL ) {
         printf(" ");
     }
-
+    
     sfs_print( (o->this.pair).cdr , root);
     
     if ( (o->this.pair).cdr->type == SFS_NIL ) {
         printf(")");
     }
-
+    
 }
 
 

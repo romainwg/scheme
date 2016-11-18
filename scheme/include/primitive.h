@@ -1,10 +1,10 @@
 /*
-  primitive.h
-  
-
-  Created by Jérémy Hraman on 15/11/2016.
-
-*/
+ primitive.h
+ 
+ 
+ Created by Jérémy Hraman on 15/11/2016.
+ 
+ */
 
 #ifndef primitive_h
 #define primitive_h
@@ -35,7 +35,6 @@ object prim_sqrt ( object o );
 
 object prim_is_boolean ( object o );
 object prim_is_char ( object o );
-object prim_is_list ( object o );
 object prim_is_null ( object o );
 object prim_is_number ( object o );
 object prim_is_symbol ( object o );
