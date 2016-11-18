@@ -893,7 +893,11 @@ object prim_is_pair ( object o ) {
         WARNING_MSG("number? must have 1 and just 1 argument");
         return NULL;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 781de67407fc02e8100e6733a18e0d018779f293
     if ( is_pair(o) ) {
         o = vrai;
     }
