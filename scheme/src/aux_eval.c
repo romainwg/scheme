@@ -48,6 +48,10 @@ object eval_define( object input ) {
         return NULL;
     }
     
+    if ( is_primitive(cadr(input)) ) {
+        WARNING_MSG("%s is a primitive, cannot be defined",cadr(input)->this.symbol);
+    }
+    
     if (is_in_Env(cadr(input)->this.symbol)) {
         WARNING_MSG("Cannot use Define, variable already defined");
         return NULL;
@@ -68,14 +72,18 @@ object eval_define( object input ) {
 
 object eval_set( object input ) {
     
-    if ( !is_nil(cdddr(input)) ) {
+    if ( cdddr(input) == NULL || !is_nil(cdddr(input)) ) {
         WARNING_MSG("%s accepts only 1 symbol with 1 atom",car(input)->this.symbol);
         return NULL;
     }
     
-    if ( !is_symbol(cadr(input)) ) {
+    if ( cadr(input) == NULL || !is_symbol(cadr(input)) ) {
         WARNING_MSG("Cannot use set, not a symbol");
         return NULL;
+    }
+    
+    if ( is_primitive(cadr(input)) ) {
+        WARNING_MSG("%s is a primitive, cannot be set!",cadr(input)->this.symbol);
     }
     
     if (!is_in_Env(cadr(input)->this.symbol)) {

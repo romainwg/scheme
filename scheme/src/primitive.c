@@ -316,6 +316,22 @@ object prim_is_string ( object o ) {
 
 
 object prim_int_char ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("integer->char must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o=sfs_eval(car(o));
+    
+    if ( is_integer(o) ) {
+        char integer = o->this.number.this.integer;
+        o = make_character(integer);
+    }
+    else {
+        WARNING_MSG("integer->char only evaluates number");
+        return NULL;
+    }
+    
     return o;
 }
 object prim_char_int ( object o ) {

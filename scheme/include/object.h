@@ -16,8 +16,7 @@ extern "C" {
 #endif
 
 #include "number.h"
-#include <ctype.h>  
-
+#include <ctype.h>
 
 typedef struct object_t {
 

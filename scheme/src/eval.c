@@ -67,6 +67,7 @@ object sfs_eval( object input ) {
                 return eval_or(input);
             }
             else if (is_and(function)) {
+                DEBUG_MSG("is and eval");
                 return eval_and(input);
             }
        /*     else if (is_calcul_operator(function)) {
@@ -82,5 +83,5 @@ object sfs_eval( object input ) {
             return NULL;
         }
     }
-    return input;
+    return NULL;
 }
