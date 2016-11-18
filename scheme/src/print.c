@@ -60,11 +60,7 @@ void sfs_print_atom( object o ) {
             
         case SFS_PRIMITIVE :
             printf("#<Function>");
-<<<<<<< HEAD
-            
-=======
 
->>>>>>> 781de67407fc02e8100e6733a18e0d018779f293
     }
 }
 
