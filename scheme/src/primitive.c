@@ -42,6 +42,13 @@ void init_primitive ( void ) {
     make_primitive( "string->symbol", &prim_string_symbol    );
     make_primitive( "string->list"  , &prim_string_list      );
     
+    make_primitive( "car"       , &prim_car     );
+    make_primitive( "cdr"       , &prim_cdr     );
+    make_primitive( "cons"      , &prim_cons    );
+    make_primitive( "set-car!"  , &prim_set_car );
+    make_primitive( "set-cdr!"  , &prim_set_cdr );
+    make_primitive( "list"      , &prim_list    );
+    
 }
 
 
@@ -1061,6 +1068,27 @@ object prim_string_symbol ( object o ) {
 object prim_string_list ( object o ) {
     return o;
 }
+
+
+object prim_car ( object o ) {
+    return o;
+}
+object prim_cdr ( object o ) {
+    return o;
+}
+object prim_cons ( object o ) {
+    return o;
+}
+object prim_set_car ( object o ) {
+    return o;
+}
+object prim_set_cdr ( object o ) {
+    return o;
+}
+object prim_list ( object o ) {
+    return o;
+}
+
 
 
 

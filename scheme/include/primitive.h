@@ -33,7 +33,7 @@ object prim_cos ( object o );
 object prim_tan ( object o );
 object prim_abs ( object o );
 object prim_exp ( object o );
-object prim_sqrt ( object o );
+object prim_sqrt( object o );
 
 
 object prim_is_boolean ( object o );
@@ -53,5 +53,12 @@ object prim_string_num ( object o );
 object prim_symbol_string ( object o );
 object prim_string_symbol ( object o );
 object prim_string_list ( object o );
+
+object prim_car ( object o );
+object prim_cdr ( object o );
+object prim_cons ( object o );
+object prim_set_car ( object o );
+object prim_set_cdr ( object o );
+object prim_list ( object o );
 
 #endif /* primitive_h */
