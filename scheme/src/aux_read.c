@@ -87,7 +87,7 @@ uint typeInput(char *input, uint *here) {
     
     /* SYMBOL */
     
-    if ( isalpha(input[*here]) != 0 || is_special_initial(input[*here]) == 1 || input[*here] == '+' || input[*here] == '-' ) {
+    if ( isalpha(input[*here]) != 0 || is_special_initial(input[*here]) == 1 || input[*here] == '+' || ( input[*here] == '-' && !isdigit(input[*here+1]) ) ) {
         
         return SFS_SYMBOL;
     }

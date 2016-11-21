@@ -900,7 +900,8 @@ object prim_is_pair ( object o ) {
         WARNING_MSG("number? must have 1 and just 1 argument");
         return NULL;
     }
-
+    
+    o = sfs_eval(car(o));
     if ( o != NULL && is_pair(o) ) {
         o = vrai;
     }
@@ -1054,7 +1055,7 @@ object prim_string_symbol ( object o ) {
         o = sfs_read(str_symbol,&i);
         SpaceCancel(str_symbol,&i);
         if ( !iscntrl(str_symbol[i]) ) {
-            WARNING_MSG("string->symbol : not a proper symbol");
+            WARNING_MSG("string->symbol : not a proper string");
             return NULL;
         }
     }
@@ -1071,6 +1072,7 @@ object prim_string_list ( object o ) {
 
 
 object prim_car ( object o ) {
+    
     return o;
 }
 object prim_cdr ( object o ) {
@@ -1086,6 +1088,7 @@ object prim_set_cdr ( object o ) {
     return o;
 }
 object prim_list ( object o ) {
+    
     return o;
 }
 

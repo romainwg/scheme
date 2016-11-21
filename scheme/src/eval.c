@@ -68,7 +68,7 @@ object sfs_eval( object input ) {
         }
         
         else {
-            WARNING_MSG("SFS_EVAL WARNING : not evaluable (for the moment ...)");
+            WARNING_MSG("SFS_EVAL WARNING : not valid evaluable expression");
             return NULL;
         }
     }
