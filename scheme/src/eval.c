@@ -26,8 +26,7 @@ object sfs_eval( object input ) {
         return NULL;
     }
     
-    if ( !is_symbol(input) && !is_pair(input)
-        && (input->type != SFS_NIL) ) {
+    if ( !is_symbol(input) && !is_pair(input) ) {
         return input;
     }
     
