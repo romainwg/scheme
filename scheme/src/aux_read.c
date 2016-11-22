@@ -87,18 +87,18 @@ uint typeInput(char *input, uint *here) {
     
     /* SYMBOL */
     
-    if ( isalpha(input[*here]) != 0 || is_special_initial(input[*here]) == 1 || input[*here] == '+' || ( input[*here] == '-' && !isdigit(input[*here+1]) ) ) {
+    char *p_end1;
+    char *p_end2;
+    strtol(input + *here, &p_end1, 10);
+    strtod(input + *here, &p_end2);
+    
+    if ( isalpha(input[*here]) != 0 || is_special_initial(input[*here]) == 1 || (( input[*here] == '+' ||  input[*here] == '-' ) && ( ( !isspace(p_end1[0]) && !iscntrl(p_end1[0]) && p_end1[0] != ')' && p_end1[0] != '(' && p_end1[0] != '\"' ) || ( !isspace(p_end2[0]) && !iscntrl(p_end2[0]) && p_end2[0] != ')' && p_end2[0] != '(' && p_end2[0] != '\"' ) ) ) ) {
         
         return SFS_SYMBOL;
     }
     
     
     /* NUMBER */
-    
-    char *p_end1;
-    char *p_end2;
-    strtol(input + *here, &p_end1, 10);
-    strtod(input + *here, &p_end2);
     
     if ( isspace(p_end1[0]) || iscntrl(p_end1[0]) || p_end1[0] == ')' || p_end1[0] == '(' || p_end1[0] == '\"' || isspace(p_end2[0]) || iscntrl(p_end2[0]) || p_end2[0] == ')' || p_end2[0] == '(' || p_end2[0] == '\"') {
         return SFS_NUMBER;

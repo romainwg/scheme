@@ -1027,11 +1027,18 @@ object prim_symbol_string ( object o ) {
     }
     else {
         int size = strlen(o->this.symbol);
+        int i=0;
         if ( size >= STRLEN-2 ) {
             WARNING_MSG("symbol->string : symbol too long");
             return NULL;
         }
-        
+        char str_symbol[size+2];
+        str_symbol[0]='"';
+        for (i=0 ; i<size ; i++) {
+            str_symbol[i+1]=o->this.symbol[i];
+        }
+        str_symbol[size+1]='"';
+        o = make_string(str_symbol,size+2);
     }
     return o;
 }
