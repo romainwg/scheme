@@ -38,6 +38,10 @@ object sfs_eval( object input ) {
         
         object eval_car = car(input);
         
+        if ( is_nil(cdr(input)) ) {
+            return eval_car;
+        }
+        
         if ( is_primitive(eval_car) ) {
             return eval_primitive(input);
         }

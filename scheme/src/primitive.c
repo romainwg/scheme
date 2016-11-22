@@ -1025,6 +1025,14 @@ object prim_symbol_string ( object o ) {
         WARNING_MSG("symbol->string only evaluates quoted symbols");
         return NULL;
     }
+    else {
+        int size = strlen(o->this.symbol);
+        if ( size >= STRLEN-2 ) {
+            WARNING_MSG("symbol->string : symbol too long");
+            return NULL;
+        }
+        
+    }
     return o;
 }
 object prim_string_symbol ( object o ) {
@@ -1103,11 +1111,18 @@ object prim_cons ( object o ) {
     
     object pair = make_pair();
     pair->this.pair.car = sfs_eval(car(o));
-    pair->this.pair.cdr = make_pair();
-    pair->this.pair.cdr->this.pair.car = sfs_eval(cadr(o));
-    pair->this.pair.cdr->this.pair.cdr = make_nil();
     
-    if (pair->this.pair.car == NULL || pair->this.pair.cdr == NULL ) {
+    if ( !is_pair(cadr(o)) && !is_nil(cadr(o)) ) {
+        pair->this.pair.cdr = make_pair();
+        pair->this.pair.cdr->this.pair.car = sfs_eval(cadr(o));
+        DEBUG_MSG("ici");
+        pair->this.pair.cdr->this.pair.cdr = make_nil();
+    }
+    else {
+        pair->this.pair.cdr = sfs_eval(cadr(o));
+    }
+    
+    if ( car(pair) == NULL || cdr(pair) == NULL || cadr(pair) == NULL ) {
         WARNING_MSG("arguments of the pair cons are NULL");
         return NULL;
     }
