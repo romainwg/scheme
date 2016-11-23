@@ -13,7 +13,7 @@ exp1
 exp2
 (define exp3 (+ 3 4))
 exp3
-(define exp4 (< 4 3))
+(define exp4 54433.4)
 exp4
 (define exp5 (+ 3 (- (/ 5 5) (* 3 2))))
 exp5

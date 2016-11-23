@@ -109,6 +109,44 @@ object eval_set( object input, object meta_environment ) {
     return o;
 }
 
+
+object eval_primitive( object input, object meta_environment ) {
+    
+    object EnvCopy = car(toplevel);
+    while ( !is_nil(EnvCopy) ) {
+        if ( strcmp(car(input)->this.symbol,caar(EnvCopy)->this.symbol) == 0 && cdar(EnvCopy)->type == SFS_PRIMITIVE ) {
+            input = cdr(input);
+            input = eval_argument(input,meta_environment);
+            DEBUG_MSG("eval primitive après eval argument");
+            return cdar(EnvCopy)->this.primitive.function( input );
+        }
+        EnvCopy = cdr(EnvCopy);
+    }
+    return NULL;
+    
+}
+
+object eval_argument(object input, object meta_environment) {
+    if ( input == NULL ) {
+        WARNING_MSG("No argument, input is NULL");
+        return NULL;
+    }
+    if ( !is_pair (input) ) {
+        return sfs_eval( input, meta_environment );
+    }
+    
+    if ( is_pair(input) ) {
+        if ( is_nil( cdr(input) ) ) {
+            input->this.pair.car = sfs_eval(car(input), meta_environment );
+        }
+        else {
+            input->this.pair.car = sfs_eval(car(input), meta_environment );
+            input->this.pair.cdr = eval_argument(cdr(input), meta_environment );
+        }
+    }
+    return input;
+}
+
 object eval_if( object input, object meta_environment ) {
     
     
@@ -209,19 +247,6 @@ object eval_or( object input, object meta_environment ) {
 }
 
 
-
-object eval_primitive( object input ) {
-    
-    object EnvCopy = car(toplevel);
-    while ( !is_nil(EnvCopy) ) {
-        if ( strcmp(car(input)->this.symbol,caar(EnvCopy)->this.symbol) == 0 && cdar(EnvCopy)->type == SFS_PRIMITIVE ) {
-            return cdar(EnvCopy)->this.primitive.function( cdr(input) );
-        }
-        EnvCopy = cdr(EnvCopy);
-    }
-    return NULL;
-    
-}
 
 /* FONCTIONS ENVIRONNEMENTALES */
 

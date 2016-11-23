@@ -18,7 +18,7 @@
 
 /* FONCTIONS AUXILIAIRES DE L'EVALUATION */
 
-object eval_primitive( object input );
+object eval_primitive( object input, object meta_environment );
 
 /* SYMBOL */
 object eval_symbol  ( object input, object meta_environment );
@@ -28,6 +28,7 @@ object eval_set     ( object input, object meta_environment );
 object eval_if      ( object input, object meta_environment );
 object eval_and     ( object input, object meta_environment );
 object eval_or      ( object input, object meta_environment );
+object eval_argument( object input, object meta_environment );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */
