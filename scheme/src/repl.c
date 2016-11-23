@@ -164,9 +164,7 @@ int main ( int argc, char *argv[] ) {
         
         if ( output->type != SFS_NOTYPE ) {
             printf( "==> " );
-        }
-        sfs_print( output , &root );
-        if ( output->type != SFS_NOTYPE ) {
+            sfs_print( output , &root );
             printf( "\n" );
         }
     }
