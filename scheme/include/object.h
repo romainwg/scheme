@@ -55,6 +55,7 @@ object make_string      ( char* chaine, int i );
 object make_character   ( char character      );
 object make_boolean     ( int b               );
 object make_symbol      ( char* symbol, int i );
+object make_notype      ( void                );
 
 object make_primitive   ( string symbol, object (*function)(object) );
 

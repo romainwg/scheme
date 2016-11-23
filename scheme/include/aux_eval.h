@@ -35,10 +35,10 @@ object eval_cmp_operator    ( object input );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */
-object newEnvironment       ( object levelInf              );
+object newEnvironment     ( object levelInf              );
 void newVarEnvironment    ( string symbol, object valeur );
 void changeVarEnvironment ( string symbol, object valeur );
-void print_environment( void );
+void print_environment    ( object meta_environment      );
 
 
 

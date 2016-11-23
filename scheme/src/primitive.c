@@ -1122,7 +1122,6 @@ object prim_cons ( object o ) {
     if ( !is_pair(cadr(o)) && !is_nil(cadr(o)) ) {
         pair->this.pair.cdr = make_pair();
         pair->this.pair.cdr->this.pair.car = sfs_eval(cadr(o));
-        DEBUG_MSG("ici");
         pair->this.pair.cdr->this.pair.cdr = make_nil();
     }
     else {

@@ -46,7 +46,7 @@ void init_interpreter ( void ) {
     toplevel->this.pair.car = make_nil();
     toplevel->this.pair.cdr = make_nil();
     init_primitive();
-    /*print_environment();*/
+    /*print_environment( toplevel );*/
 }
 
 
@@ -152,19 +152,23 @@ int main ( int argc, char *argv[] ) {
         
         output = sfs_eval( sexpr );
         if( NULL == output) {
-            /* si fichier alors on sort
+            /* si fichier alors on sort */
             if (mode == SCRIPT) {
                 fclose( fp );
-                *macro ERROR_MSG : message d'erreur puis fin de programme ! 
+                /*macro ERROR_MSG : message d'erreur puis fin de programme !*/
                 ERROR_MSG("Error while evaluating input --- Aborts");
             }
-            sinon on rend la main à l'utilisateur */
+            /* sinon on rend la main à l'utilisateur */
             continue ;
         }
-
-        printf( "==> " );
+        
+        if ( output->type != SFS_NOTYPE ) {
+            printf( "==> " );
+        }
         sfs_print( output , &root );
-        printf( "\n" );
+        if ( output->type != SFS_NOTYPE ) {
+            printf( "\n" );
+        }
     }
 
     if (mode == SCRIPT) {

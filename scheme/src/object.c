@@ -114,6 +114,12 @@ object make_primitive ( string symbol, object (*function)(object) ) {
     
 }
 
+object make_notype ( void ) {
+    object o = NULL;
+    o=make_object( SFS_NOTYPE );
+    return o;
+}
+
 /* FONCTIONS CAR/CDR */
 
 object car ( object o ) {

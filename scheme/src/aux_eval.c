@@ -67,7 +67,8 @@ object eval_define( object input ) {
     }
     
     newVarEnvironment( symbol, valeur );
-    return NULL;
+    object o = make_notype();
+    return o;
 }
 
 object eval_set( object input ) {
@@ -104,7 +105,8 @@ object eval_set( object input ) {
     if (toplevel == NULL) {
         ERROR_MSG("Problem with changeVarEnvironment");
     }
-    return NULL;
+    object o = make_notype();
+    return o;
 }
 
 object eval_if( object input ) {
@@ -223,11 +225,11 @@ object eval_primitive( object input ) {
 
 /* FONCTIONS ENVIRONNEMENTALES */
 
-object newEnvironment( object toplevel ) {
+object newEnvironment( object meta_environment ) {
     
     object newEnv = make_pair();
     newEnv->this.pair.car = make_nil();
-    newEnv->this.pair.cdr = toplevel;
+    newEnv->this.pair.cdr = meta_environment;
     
     return newEnv;
 }
@@ -256,9 +258,9 @@ void changeVarEnvironment( string symbol, object valeur ) {
     }
 }
 
-void print_environment( void ) {
+void print_environment( object meta_environment ) {
     
-    object EnvCopy = car(toplevel);
+    object EnvCopy = car(meta_environment);
     while ( !is_nil(EnvCopy) ) {
         printf("%s          \n",caar(EnvCopy)->this.symbol);
         EnvCopy = cdr(EnvCopy);
