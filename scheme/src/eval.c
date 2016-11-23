@@ -43,7 +43,7 @@ object sfs_eval( object input, object meta_environment ) {
         }
         
         if ( is_primitive(eval_car) ) {
-            return eval_primitive(input);
+            return eval_primitive(input,meta_environment);
         }
         
         if ( is_symbol(eval_car) ) {
