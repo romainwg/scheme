@@ -69,7 +69,7 @@ object prim_plus ( object o ) {
 		object obj_eval = NULL; /* Var object d'évaluation */
 		
 	if(car(o)!=NULL){
-		obj_eval = sfs_eval(car(obj_temp));
+		obj_eval = sfs_eval(car(obj_temp),toplevel);
 		/* verification que l'évaluation donne quelque chose */
 		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
@@ -101,7 +101,7 @@ object prim_plus ( object o ) {
 		}
 		
 		while ( !is_nil( cdr(obj_temp) ) ) {
-			obj_eval = sfs_eval(cadr(obj_temp));
+			obj_eval = sfs_eval(cadr(obj_temp),toplevel);
 			/* verification que l'évaluation donne quelque chose */
 			if ( obj_eval == NULL ) {
 				WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
@@ -172,7 +172,7 @@ object prim_minus ( object o ) {
 	object obj_eval = NULL; /* Var object d'évaluation */
 		
 	if (car(o)!=NULL) {
-		obj_eval = sfs_eval(car(obj_temp));
+		obj_eval = sfs_eval(car(obj_temp),toplevel);
 		/* verification que l'évaluation donne quelque chose */
 		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
@@ -205,7 +205,7 @@ object prim_minus ( object o ) {
 		
 		if(!is_nil(cdr(obj_temp))){ /*si il y plusieurs arguments : boucle ; sinon sortie = -arg1*/
 			while ( !is_nil(cdr(obj_temp)) ) {
-				obj_eval = sfs_eval(cadr(obj_temp));
+				obj_eval = sfs_eval(cadr(obj_temp),toplevel);
 				/* verification que l'évaluation donne quelque chose */
 				if ( obj_eval == NULL ) {
 					WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
@@ -284,7 +284,7 @@ object prim_times ( object o ) {
 	object obj_eval = NULL; /* Var object d'évaluation */
 		
 	if ( car(o)!=NULL ) {
-		obj_eval = sfs_eval(car(obj_temp));
+		obj_eval = sfs_eval(car(obj_temp),toplevel);
 		/* verification que l'évaluation donne quelque chose */
 		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
@@ -316,7 +316,7 @@ object prim_times ( object o ) {
 		}
 		
 		while(!is_nil(cdr(obj_temp))){
-			obj_eval = sfs_eval(cadr(obj_temp));
+			obj_eval = sfs_eval(cadr(obj_temp),toplevel);
 			
 			/* verification que l'évaluation donne quelque chose */
 			if ( obj_eval == NULL ) {
@@ -397,7 +397,7 @@ object prim_divide ( object o ) {
 	object obj_eval = NULL; /* Var object d'évaluation */
 		
 	if ( car(o)!=NULL ) {
-		obj_eval = sfs_eval(car(obj_temp));
+		obj_eval = sfs_eval(car(obj_temp),toplevel);
 		
 		/* verification que l'évaluation donne quelque chose */
 		if ( obj_eval == NULL ) {
@@ -427,7 +427,7 @@ object prim_divide ( object o ) {
 		
 		if ( !is_nil(cdr(obj_temp)) ){ /*si il y plusieurs arguments : boucle ; sinon sortie = 1/arg1*/
 			while ( !is_nil(cdr(obj_temp)) ) {
-				obj_eval = sfs_eval(cadr(obj_temp));
+				obj_eval = sfs_eval(cadr(obj_temp),toplevel);
 				
 				/* verification que l'évaluation donne quelque chose */
 				if ( obj_eval == NULL ) {
@@ -494,7 +494,7 @@ object prim_quotient ( object o ) {
 	object obj_eval = NULL; /* Var object d'évaluation */
 		
 	if ( car(o)!=NULL ){
-		obj_eval = sfs_eval(car(obj_temp));
+		obj_eval = sfs_eval(car(obj_temp),toplevel);
 		/* verification que l'évaluation donne quelque chose */
 		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
@@ -521,7 +521,7 @@ object prim_quotient ( object o ) {
 		}
 		if ( !is_nil( cdr(obj_temp) ) ) { /*si il y plusieurs arguments : boucle ; sinon sortie = 1/arg1*/
 			while( !is_nil( cdr(obj_temp) ) ) {
-				obj_eval = sfs_eval(cadr(obj_temp));
+				obj_eval = sfs_eval(cadr(obj_temp),toplevel);
 				/* verification que l'évaluation donne quelque chose */
 				if ( obj_eval == NULL) {
 					WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
@@ -586,7 +586,7 @@ object prim_modulo ( object o ) {
 	object obj_eval = NULL; /* Var object d'évaluation */
 		
 	if ( car(o)!=NULL ) {
-		obj_eval = sfs_eval(car(obj_temp));
+		obj_eval = sfs_eval(car(obj_temp),toplevel);
 		/* verification que l'évaluation donne quelque chose */
 		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
@@ -615,7 +615,7 @@ object prim_modulo ( object o ) {
 		
 		if ( !is_nil( cdr(obj_temp) ) ) { /*si il y plusieurs arguments : boucle ; sinon sortie = 1%arg1*/
 			while( !is_nil( cdr(obj_temp) ) ) { /* Boucle : modulo du modulo du ... cadr */
-				obj_eval = sfs_eval(cadr(obj_temp));
+				obj_eval = sfs_eval(cadr(obj_temp),toplevel);
 				/* verification que l'évaluation donne quelque chose */
 				if ( obj_eval == NULL ) {
 					WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
@@ -676,7 +676,7 @@ object prim_sin ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     
     if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("sin only accepts number");
@@ -699,7 +699,7 @@ object prim_cos ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("cos only accepts number");
         return NULL;
@@ -721,7 +721,7 @@ object prim_tan ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("tan only accepts number");
         return NULL;
@@ -743,7 +743,7 @@ object prim_abs ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("abs only accepts number");
         return NULL;
@@ -765,7 +765,7 @@ object prim_exp ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("exp only accepts number");
         return NULL;
@@ -787,7 +787,7 @@ object prim_sqrt ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("sqrt only accepts number");
         return NULL;
@@ -813,7 +813,7 @@ object prim_is_boolean ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o != NULL && is_boolean (o) ) {
         o = vrai;
     }
@@ -828,7 +828,7 @@ object prim_is_char ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o != NULL && is_char (o) ) {
         o = vrai;
     }
@@ -843,7 +843,7 @@ object prim_is_null ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o==NULL ) {
         o = vrai;
     }
@@ -858,7 +858,7 @@ object prim_is_symbol ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o != NULL && is_symbol(o) ) {
         o = vrai;
     }
@@ -873,7 +873,7 @@ object prim_is_number ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o != NULL && is_number(o) ) {
         o = vrai;
     }
@@ -888,7 +888,7 @@ object prim_is_pair ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o != NULL && is_pair(o) ) {
         o = vrai;
     }
@@ -907,7 +907,7 @@ object prim_is_string ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = sfs_eval(car(o),toplevel);
     if ( o != NULL && is_string(o) ) {
         o = vrai;
     }
@@ -926,8 +926,7 @@ object prim_int_char ( object o ) {
         return NULL;
     }
     
-    o=sfs_eval(car(o));
-    
+    o=sfs_eval(car(o),toplevel);
     if ( o != NULL && is_integer(o) ) {
         char integer = o->this.number.this.integer;
         o = make_character(integer);
@@ -945,7 +944,7 @@ object prim_char_int ( object o ) {
         return NULL;
     }
     
-    o=sfs_eval(car(o));
+    o=sfs_eval(car(o),toplevel);
     
     if ( o != NULL && is_char(o) ) {
         int character = o->this.character;
@@ -964,7 +963,7 @@ object prim_num_string ( object o ) {
         return NULL;
     }
     
-    o=sfs_eval(car(o));
+    o=sfs_eval(car(o),toplevel);
     int size=0;
     char str_number[STRLEN];
     str_number[0]='"';
@@ -994,7 +993,7 @@ object prim_string_num ( object o ) {
         return NULL;
     }
     
-    o=sfs_eval(car(o));
+    o=sfs_eval(car(o),toplevel);
     if ( o != NULL && is_string(o) ) {
         uint i=0;
         int size = strlen(o->this.string);
@@ -1020,7 +1019,7 @@ object prim_symbol_string ( object o ) {
         return NULL;
     }
     
-    o=sfs_eval(car(o));
+    o=sfs_eval(car(o),toplevel);
     if ( o == NULL || !is_symbol(o) ) {
         WARNING_MSG("symbol->string only evaluates quoted symbols");
         return NULL;
@@ -1048,7 +1047,7 @@ object prim_string_symbol ( object o ) {
         return NULL;
     }
     
-    o=sfs_eval(car(o));
+    o=sfs_eval(car(o),toplevel);
     if ( o != NULL && is_string(o) ) {
         uint i=0;
         int size = strlen(o->this.string);
@@ -1078,7 +1077,7 @@ object prim_car ( object o ) {
         WARNING_MSG("car must have 1 and just 1 argument");
         return NULL;
     }
-    o=sfs_eval(car(o));
+    o=sfs_eval(car(o),toplevel);
     if ( o != NULL && is_pair(o) ) {
         o=car(o);
     }
@@ -1093,7 +1092,7 @@ object prim_cdr ( object o ) {
         WARNING_MSG("car must have 1 and just 1 argument");
         return NULL;
     }
-    o=sfs_eval(car(o));
+    o=sfs_eval(car(o),toplevel);
     if ( o != NULL && is_pair(o) ) {
         o=cdr(o);
     }
@@ -1117,15 +1116,15 @@ object prim_cons ( object o ) {
     DEBUG_MSG("cadr(o)->type %d",cadr(o)->type);
     
     object pair = make_pair();
-    pair->this.pair.car = sfs_eval(car(o));
+    pair->this.pair.car = sfs_eval(car(o),toplevel);
     
     if ( !is_pair(cadr(o)) && !is_nil(cadr(o)) ) {
         pair->this.pair.cdr = make_pair();
-        pair->this.pair.cdr->this.pair.car = sfs_eval(cadr(o));
+        pair->this.pair.cdr->this.pair.car = sfs_eval(cadr(o),toplevel);
         pair->this.pair.cdr->this.pair.cdr = make_nil();
     }
     else {
-        pair->this.pair.cdr = sfs_eval(cadr(o));
+        pair->this.pair.cdr = sfs_eval(cadr(o),toplevel);
     }
     
     if ( car(pair) == NULL || cdr(pair) == NULL || cadr(pair) == NULL ) {

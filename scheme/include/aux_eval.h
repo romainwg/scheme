@@ -21,23 +21,19 @@
 object eval_primitive( object input );
 
 /* SYMBOL */
-object eval_symbol  ( object input );
+object eval_symbol  ( object input, object meta_environment );
 object eval_quote   ( object input ); /*prend en argument l'object input et renvoie l'object car(cdr(input)) sans l'évaluer*/
-object eval_define  ( object input );
-object eval_set     ( object input );
-object eval_if      ( object input );
-object eval_and     ( object input );
-object eval_or      ( object input );
-
-/* OPERATOR */
-object eval_calc_operator   ( object input );
-object eval_cmp_operator    ( object input );
+object eval_define  ( object input, object meta_environment );
+object eval_set     ( object input, object meta_environment );
+object eval_if      ( object input, object meta_environment );
+object eval_and     ( object input, object meta_environment );
+object eval_or      ( object input, object meta_environment );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */
 object newEnvironment     ( object levelInf              );
-void newVarEnvironment    ( string symbol, object valeur );
-void changeVarEnvironment ( string symbol, object valeur );
+void newVarEnvironment    ( string symbol, object valeur, object meta_environment );
+void changeVarEnvironment ( string symbol, object valeur, object meta_environment );
 void print_environment    ( object meta_environment      );
 
 

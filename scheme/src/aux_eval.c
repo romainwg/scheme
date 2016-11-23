@@ -9,10 +9,10 @@
 
 #include "aux_eval.h"
 
-object eval_symbol ( object input ) {
+object eval_symbol ( object input, object meta_environment ) {
     
-    if ( is_in_Env(input->this.symbol ) ) {
-        object EnvCopy = car(toplevel);
+    if ( is_in_Env(input->this.symbol, meta_environment) ) {
+        object EnvCopy = car(meta_environment);
         while ( !is_nil(EnvCopy) ) {
             if ( strcmp(input->this.symbol,caar(EnvCopy)->this.symbol) == 0 ) {
                 return cdar(EnvCopy);
@@ -36,7 +36,7 @@ object eval_quote( object input ) {
     return input->this.pair.cdr->this.pair.car;
 }
 
-object eval_define( object input ) {
+object eval_define( object input, object meta_environment ) {
     
     if ( cdddr(input) == NULL || !is_nil(cdddr(input)) ) {
         WARNING_MSG("%s accepts only 1 symbol with 1 atom",car(input)->this.symbol);
@@ -52,26 +52,26 @@ object eval_define( object input ) {
         WARNING_MSG("%s is a primitive, cannot be defined",cadr(input)->this.symbol);
     }
     
-    if (is_in_Env(cadr(input)->this.symbol)) {
+    if (is_in_Env(cadr(input)->this.symbol,meta_environment)) {
         WARNING_MSG("Cannot use Define, variable already defined");
         return NULL;
     }
     
     string symbol;
     strcpy(symbol,cadr(input)->this.symbol);
-    object valeur = sfs_eval(caddr(input));
+    object valeur = sfs_eval(caddr(input),meta_environment);
     
     if (valeur == NULL) {
         WARNING_MSG("Cannot use Define, valeur is NULL");
         return NULL;
     }
     
-    newVarEnvironment( symbol, valeur );
+    newVarEnvironment( symbol, valeur, meta_environment );
     object o = make_notype();
     return o;
 }
 
-object eval_set( object input ) {
+object eval_set( object input, object meta_environment ) {
     
     if ( cdddr(input) == NULL || !is_nil(cdddr(input)) ) {
         WARNING_MSG("%s accepts only 1 symbol with 1 atom",car(input)->this.symbol);
@@ -87,29 +87,29 @@ object eval_set( object input ) {
         WARNING_MSG("%s is a primitive, cannot be set!",cadr(input)->this.symbol);
     }
     
-    if (!is_in_Env(cadr(input)->this.symbol)) {
+    if (!is_in_Env(cadr(input)->this.symbol,meta_environment) ) {
         WARNING_MSG("Cannot use set, variable not defined");
         return NULL;
     }
     
     string symbol;
     strcpy(symbol,cadr(input)->this.symbol);
-    object valeur = sfs_eval(caddr(input));
+    object valeur = sfs_eval(caddr(input),meta_environment);
     
     if (valeur == NULL) {
         WARNING_MSG("Cannot use set, valeur is NULL");
         return NULL;
     }
     
-    changeVarEnvironment( symbol, valeur );
-    if (toplevel == NULL) {
+    changeVarEnvironment( symbol, valeur, meta_environment );
+    if (meta_environment == NULL) {
         ERROR_MSG("Problem with changeVarEnvironment");
     }
     object o = make_notype();
     return o;
 }
 
-object eval_if( object input ) {
+object eval_if( object input, object meta_environment ) {
     
     
     if ( cdddr(input) == NULL ) {
@@ -121,7 +121,7 @@ object eval_if( object input ) {
         return NULL;
     }
     
-    object o_first_arg = sfs_eval(cadr(input));
+    object o_first_arg = sfs_eval(cadr(input),meta_environment);
     
     if (o_first_arg->type != SFS_BOOLEAN) {
         WARNING_MSG("EVAL_IF cannot be used, first argument is not a boolean");
@@ -130,7 +130,7 @@ object eval_if( object input ) {
     
     if ( is_nil(cdddr(input)) ) {
         if ( o_first_arg == vrai ) {
-            return sfs_eval(caddr(input));
+            return sfs_eval(caddr(input),meta_environment);
         }
         else {
             return faux;
@@ -139,14 +139,14 @@ object eval_if( object input ) {
     
     else if ( cddddr(input) != NULL && is_nil(cddddr(input)) ) {
         if ( o_first_arg == vrai ) {
-            return sfs_eval(caddr(input));
+            return sfs_eval(caddr(input),meta_environment);
         }
         else {
             if ( is_nil(cdddr(input)) ) {
                 return faux;
             }
             else {
-                return sfs_eval(cadddr(input));
+                return sfs_eval(cadddr(input),meta_environment);
             }
         }
     }
@@ -154,7 +154,7 @@ object eval_if( object input ) {
     return NULL;
 }
 
-object eval_and( object input ) {
+object eval_and( object input, object meta_environment ) {
     
     if ( is_nil(cdr(input)) ) {
         return faux;
@@ -165,23 +165,23 @@ object eval_and( object input ) {
     while ( !is_nil(cddr(o_and)) ) {
         o_and = cdr(o_and);
         
-        if ( sfs_eval(car(o_and)) == NULL
-            || sfs_eval(car(o_and))->type != SFS_BOOLEAN ) {
+        if ( sfs_eval(car(o_and),meta_environment) == NULL
+            || sfs_eval(car(o_and),meta_environment)->type != SFS_BOOLEAN ) {
             WARNING_MSG("EVAL_AND cannot be used, 1 argument is not a boolean");
             return NULL;
         }
         
-        if ( sfs_eval(car(o_and)) == faux ) {
+        if ( sfs_eval(car(o_and),meta_environment) == faux ) {
             return faux;
         }
     }
-    if (sfs_eval(cadr(o_and)) == faux) {
+    if (sfs_eval(cadr(o_and),meta_environment) == faux) {
         return faux;
     }
     return vrai;
 }
 
-object eval_or( object input ) {
+object eval_or( object input, object meta_environment ) {
     
     if ( is_nil(cdr(input)) ) {
         return vrai;
@@ -192,17 +192,17 @@ object eval_or( object input ) {
     while ( !is_nil(cddr(o_or)) ) {
         o_or = cdr(o_or);
         
-        if ( sfs_eval(car(o_or)) == NULL
-            || sfs_eval(car(o_or))->type != SFS_BOOLEAN ) {
+        if ( sfs_eval(car(o_or),meta_environment) == NULL
+            || sfs_eval(car(o_or),meta_environment)->type != SFS_BOOLEAN ) {
             WARNING_MSG("EVAL_OR cannot be used, 1 argument is not a boolean");
             return NULL;
         }
         
-        if ( sfs_eval(car(o_or)) == vrai ) {
+        if ( sfs_eval(car(o_or),meta_environment) == vrai ) {
             return vrai;
         }
     }
-    if (sfs_eval(cadr(o_or)) == vrai) {
+    if (sfs_eval(cadr(o_or),meta_environment) == vrai) {
         return vrai;
     }
     return faux;
@@ -235,7 +235,7 @@ object newEnvironment( object meta_environment ) {
 }
 
 
-void newVarEnvironment( string symbol, object valeur ) {
+void newVarEnvironment( string symbol, object valeur, object meta_environment ) {
     
     object newPair = make_pair();
     
@@ -243,13 +243,13 @@ void newVarEnvironment( string symbol, object valeur ) {
     newPair->this.pair.car = make_pair();
     newPair->this.pair.car->this.pair.car = read_atom_symbol(symbol,&i);
     newPair->this.pair.car->this.pair.cdr = valeur;
-    newPair->this.pair.cdr = toplevel->this.pair.car;
-    toplevel->this.pair.car = newPair;
+    newPair->this.pair.cdr = meta_environment->this.pair.car;
+    meta_environment->this.pair.car = newPair;
 }
 
-void changeVarEnvironment( string symbol, object valeur ) {
+void changeVarEnvironment( string symbol, object valeur, object meta_environment ) {
     
-    object EnvCopy = car(toplevel);
+    object EnvCopy = car(meta_environment);
     while ( !is_nil(EnvCopy) ) {
         if ( strcmp(symbol,caar(EnvCopy)->this.symbol) == 0 ) {
             EnvCopy->this.pair.car->this.pair.cdr=valeur;
