@@ -90,11 +90,14 @@ uint typeInput(char *input, uint *here) {
     char *p_end1;
     char *p_end2;
     strtol(input + *here, &p_end1, 10);
-    strtod(input + *here, &p_end2);
+    double num = strtod(input + *here, &p_end2);
     
-    if ( isalpha(input[*here]) != 0 || is_special_initial(input[*here]) == 1 || (( input[*here] == '+' ||  input[*here] == '-' ) && ( ( !isspace(p_end1[0]) && !iscntrl(p_end1[0]) && p_end1[0] != ')' && p_end1[0] != '(' && p_end1[0] != '\"' ) || ( !isspace(p_end2[0]) && !iscntrl(p_end2[0]) && p_end2[0] != ')' && p_end2[0] != '(' && p_end2[0] != '\"' ) ) ) ) {
+    if ( isalpha(input[*here]) != 0 || is_special_initial(input[*here]) == 1 || input[*here] == '+' ||  input[*here] == '-'  ) {
         
+        if ( ( !isspace(p_end1[0]) && !iscntrl(p_end1[0]) && p_end1[0] != ')' && p_end1[0] != '(' && p_end1[0] != '\"' ) && ( !isspace(p_end2[0]) && !iscntrl(p_end2[0]) && p_end2[0] != ')' && p_end2[0] != '(' && p_end2[0] != '\"' ) ) {
+        DEBUG_MSG("p_end2 %s num %lf",p_end2,num);
         return SFS_SYMBOL;
+        }
     }
     
     
