@@ -138,12 +138,16 @@ object eval_argument(object input, object meta_environment) {
     if ( is_pair(input) ) {
         if ( is_nil( cdr(input) ) ) {
             input->this.pair.car = sfs_eval(car(input), meta_environment );
+            if (is_null(input->this.pair.car)) return NULL;
         }
         else {
             input->this.pair.car = sfs_eval(car(input), meta_environment );
+            if (is_null(input->this.pair.car)) return NULL;
             input->this.pair.cdr = eval_argument(cdr(input), meta_environment );
+            if (is_null(input->this.pair.cdr)) return NULL;
         }
     }
+    
     return input;
 }
 

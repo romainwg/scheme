@@ -749,14 +749,18 @@ object prim_abs ( object o ) {
         return NULL;
     }
     
-    int out_abs;
+    
     if ( is_integer(o) ) {
+        int out_abs;
         out_abs = abs( o->this.number.this.integer );
+        o = make_integer ( out_abs );
     }
     else {
+        double out_abs;
         out_abs = fabs( o->this.number.this.real );
+        o = make_real ( out_abs );
     }
-    o = make_integer ( out_abs );
+    
     return o;
 }
 object prim_exp ( object o ) {
@@ -1142,7 +1146,10 @@ object prim_set_cdr ( object o ) {
     return o;
 }
 object prim_list ( object o ) {
-    
+    if ( o == NULL ) {
+        WARNING_MSG("Cannot be a list, object o is NULL");
+        return NULL;
+    }
     return o;
 }
 
