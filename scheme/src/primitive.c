@@ -1127,12 +1127,13 @@ object prim_cons ( object o ) {
         pair->this.pair.cdr = cadr(o);
     }
     
-    if ( car(pair) == NULL || cdr(pair) == NULL || cadr(pair) == NULL ) {
+    if ( car(pair) == NULL || cdr(pair) == NULL ) {
         WARNING_MSG("arguments of the pair cons are NULL");
         return NULL;
     }
     
     return pair;
+
 }
 object prim_set_car ( object o ) {
     return o;
