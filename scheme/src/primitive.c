@@ -20,6 +20,12 @@ void init_primitive ( void ) {
     make_primitive( "quotient"  , &prim_quotient );
     make_primitive( "modulo"    , &prim_modulo   );
     
+    make_primitive( "<"         , &prim_inferior );
+    make_primitive( ">"         , &prim_superior );
+    make_primitive( "="         , &prim_equal    );
+    make_primitive( "<="        , &prim_eq_inf   );
+    make_primitive( ">="        , &prim_eq_sup   );
+    
     make_primitive( "sin"   , &prim_sin  );
     make_primitive( "cos"   , &prim_cos  );
     make_primitive( "tan"   , &prim_tan  );
@@ -670,6 +676,222 @@ object prim_modulo ( object o ) {
 	return obj_temp;
 }
 
+object prim_inferior ( object o ) {
+    if ( cdr(o) == NULL || !is_pair(cdr(o))) {
+        WARNING_MSG("< must have at least 2 arguments");
+        return NULL;
+    }
+    
+    int int_to_compare;
+    double real_to_compare;
+    if ( is_integer(car(o)) ) {
+        int_to_compare = car(o)->this.number.this.integer;
+    }
+    else if ( is_real(car(o)) ) {
+        real_to_compare = car(o)->this.number.this.real;
+    }
+    else {
+        WARNING_MSG("< accepts only numbers");
+        return NULL;
+    }
+    
+    int compare_int;
+    double compare_real;
+    
+    while ( cdr(o) != NULL && !is_nil(cdr(o)) ) {
+        o = cdr(o);
+        if ( car(o) == NULL || !is_number(car(o)) ) {
+            WARNING_MSG("< accepts only numbers");
+            return NULL;
+        }
+        if ( is_integer(car(o)) ) {
+            compare_int = car(o)->this.number.this.integer;
+            if ( int_to_compare >= compare_int || real_to_compare >= compare_int ) {
+                return faux;
+            }
+        }
+        else {
+            compare_real = car(o)->this.number.this.real;
+            if ( int_to_compare >= compare_real || real_to_compare >= compare_real ) {
+                return faux;
+            }
+        }
+    }
+    return vrai;
+}
+object prim_superior ( object o ) {
+    if ( cdr(o) == NULL || !is_pair(cdr(o))) {
+        WARNING_MSG("< must have at least 2 arguments");
+        return NULL;
+    }
+    
+    int int_to_compare;
+    double real_to_compare;
+    if ( is_integer(car(o)) ) {
+        int_to_compare = car(o)->this.number.this.integer;
+    }
+    else if ( is_real(car(o)) ) {
+        real_to_compare = car(o)->this.number.this.real;
+    }
+    else {
+        WARNING_MSG("< accepts only numbers");
+        return NULL;
+    }
+    
+    int compare_int;
+    double compare_real;
+    
+    while ( cdr(o) != NULL && !is_nil(cdr(o)) ) {
+        o = cdr(o);
+        if ( car(o) == NULL || !is_number(car(o)) ) {
+            WARNING_MSG("< accepts only numbers");
+            return NULL;
+        }
+        if ( is_integer(car(o)) ) {
+            compare_int = car(o)->this.number.this.integer;
+            if ( int_to_compare <= compare_int || real_to_compare <= compare_int ) {
+                return faux;
+            }
+        }
+        else {
+            compare_real = car(o)->this.number.this.real;
+            if ( int_to_compare <= compare_real || real_to_compare <= compare_real ) {
+                return faux;
+            }
+        }
+    }
+    return vrai;
+}
+object prim_equal ( object o ) {
+    if ( cdr(o) == NULL || !is_pair(cdr(o))) {
+        WARNING_MSG("< must have at least 2 arguments");
+        return NULL;
+    }
+    
+    int int_to_compare;
+    double real_to_compare;
+    if ( is_integer(car(o)) ) {
+        int_to_compare = car(o)->this.number.this.integer;
+    }
+    else if ( is_real(car(o)) ) {
+        real_to_compare = car(o)->this.number.this.real;
+    }
+    else {
+        WARNING_MSG("< accepts only numbers");
+        return NULL;
+    }
+    
+    int compare_int;
+    double compare_real;
+    
+    while ( cdr(o) != NULL && !is_nil(cdr(o)) ) {
+        o = cdr(o);
+        if ( car(o) == NULL || !is_number(car(o)) ) {
+            WARNING_MSG("< accepts only numbers");
+            return NULL;
+        }
+        if ( is_integer(car(o)) ) {
+            compare_int = car(o)->this.number.this.integer;
+            if ( int_to_compare != compare_int && real_to_compare != compare_int ) {
+                return faux;
+            }
+        }
+        else {
+            compare_real = car(o)->this.number.this.real;
+            if ( int_to_compare != compare_real && real_to_compare != compare_real ) {
+                return faux;
+            }
+        }
+    }
+    return vrai;
+}
+object prim_eq_inf ( object o ) {
+    if ( cdr(o) == NULL || !is_pair(cdr(o))) {
+        WARNING_MSG("< must have at least 2 arguments");
+        return NULL;
+    }
+    
+    int int_to_compare;
+    double real_to_compare;
+    if ( is_integer(car(o)) ) {
+        int_to_compare = car(o)->this.number.this.integer;
+    }
+    else if ( is_real(car(o)) ) {
+        real_to_compare = car(o)->this.number.this.real;
+    }
+    else {
+        WARNING_MSG("< accepts only numbers");
+        return NULL;
+    }
+    
+    int compare_int;
+    double compare_real;
+    
+    while ( cdr(o) != NULL && !is_nil(cdr(o)) ) {
+        o = cdr(o);
+        if ( car(o) == NULL || !is_number(car(o)) ) {
+            WARNING_MSG("< accepts only numbers");
+            return NULL;
+        }
+        if ( is_integer(car(o)) ) {
+            compare_int = car(o)->this.number.this.integer;
+            if ( int_to_compare > compare_int || real_to_compare > compare_int ) {
+                return faux;
+            }
+        }
+        else {
+            compare_real = car(o)->this.number.this.real;
+            if ( int_to_compare > compare_real || real_to_compare > compare_real ) {
+                return faux;
+            }
+        }
+    }
+    return vrai;
+}
+object prim_eq_sup ( object o ) {
+    if ( cdr(o) == NULL || !is_pair(cdr(o))) {
+        WARNING_MSG("< must have at least 2 arguments");
+        return NULL;
+    }
+    
+    int int_to_compare;
+    double real_to_compare;
+    if ( is_integer(car(o)) ) {
+        int_to_compare = car(o)->this.number.this.integer;
+    }
+    else if ( is_real(car(o)) ) {
+        real_to_compare = car(o)->this.number.this.real;
+    }
+    else {
+        WARNING_MSG("< accepts only numbers");
+        return NULL;
+    }
+    
+    int compare_int;
+    double compare_real;
+    
+    while ( cdr(o) != NULL && !is_nil(cdr(o)) ) {
+        o = cdr(o);
+        if ( car(o) == NULL || !is_number(car(o)) ) {
+            WARNING_MSG("< accepts only numbers");
+            return NULL;
+        }
+        if ( is_integer(car(o)) ) {
+            compare_int = car(o)->this.number.this.integer;
+            if ( int_to_compare < compare_int || real_to_compare < compare_int ) {
+                return faux;
+            }
+        }
+        else {
+            compare_real = car(o)->this.number.this.real;
+            if ( int_to_compare < compare_real || real_to_compare < compare_real ) {
+                return faux;
+            }
+        }
+    }
+    return vrai;
+}
+
 
 
 object prim_sin ( object o ) {
@@ -1060,6 +1282,10 @@ object prim_string_symbol ( object o ) {
         o->this.string[size-1] = ' ';
         char* str_symbol = o->this.string + 1;
         o = sfs_read(str_symbol,&i);
+        if (o->type != SFS_SYMBOL) {
+            WARNING_MSG("string->symbol : not a symbol");
+            return NULL;
+        }
         SpaceCancel(str_symbol,&i);
         if ( !iscntrl(str_symbol[i]) ) {
             WARNING_MSG("string->symbol : not a proper string");
@@ -1142,10 +1368,45 @@ object prim_cons ( object o ) {
 
 }
 object prim_set_car ( object o ) {
-    return o;
+    if ( cddr(o)==NULL || is_pair(cddr(o)) ) {
+        WARNING_MSG("set-car! must have 2 and just 2 arguments");
+        return NULL;
+    }
+    if (car(o) == NULL || cadr(o) == NULL ) {
+        WARNING_MSG("arguments of set-car! are NULL");
+        return NULL;
+    }
+    if (is_pair(car(o))) {
+        o->this.pair.car->this.pair.car = cadr(o);
+    }
+    else {
+        WARNING_MSG("1st argument of set-car! are not a pair");
+        return NULL;
+    }
+    
+    object o_notype = make_notype();
+    return o_notype;
 }
 object prim_set_cdr ( object o ) {
-    return o;
+    if ( cddr(o)==NULL || is_pair(cddr(o)) ) {
+        WARNING_MSG("set-cdr! must have 2 and just 2 arguments");
+        return NULL;
+    }
+    if (car(o) == NULL || cadr(o) == NULL ) {
+        WARNING_MSG("arguments of set-cdr! are NULL");
+        return NULL;
+    }
+    if (is_pair(car(o))) {
+        o->this.pair.car->this.pair.cdr->this.pair.car = cadr(o);
+        o->this.pair.car->this.pair.cdr->this.pair.cdr = make_nil();
+    }
+    else {
+        WARNING_MSG("1st argument of set-cdr! are not a pair");
+        return NULL;
+    }
+    
+    object o_notype = make_notype();
+    return o_notype;
 }
 object prim_list ( object o ) {
     if ( o == NULL ) {
@@ -1154,10 +1415,3 @@ object prim_list ( object o ) {
     }
     return o;
 }
-
-
-
-
-
-
-

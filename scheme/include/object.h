@@ -39,10 +39,18 @@ typedef struct object_t {
         struct {
             struct object_t * (*function)( struct object_t * );
         } primitive;
+        
+        struct {
+            struct object_t *param;
+            struct object_t *body;
+            struct object_t *env;
+        } compound;
 
     } this;
 
 } *object;
+    
+typedef struct object_t np_object;
 
 
 
@@ -56,6 +64,7 @@ object make_character   ( char character      );
 object make_boolean     ( int b               );
 object make_symbol      ( char* symbol, int i );
 object make_notype      ( void                );
+object make_compound    ( object param, object body, object env );
 
 object make_primitive   ( string symbol, object (*function)(object) );
 
@@ -104,6 +113,7 @@ object make_primitive   ( string symbol, object (*function)(object) );
 #define SFS_SYMBOL       0x06
 #define SFS_NOTYPE       0x07
 #define SFS_PRIMITIVE    0x08
+#define SFS_COMPOUND     0x09
 
 
 extern object nil;

@@ -18,9 +18,10 @@
 
 /* FONCTIONS AUXILIAIRES DE L'EVALUATION */
 
+object eval_argument( object input, object meta_environment );
 object eval_primitive( object input, object meta_environment );
 
-/* SYMBOL */
+/* FORMS */
 object eval_symbol  ( object input, object meta_environment );
 object eval_quote   ( object input ); /*prend en argument l'object input et renvoie l'object car(cdr(input)) sans l'évaluer*/
 object eval_define  ( object input, object meta_environment );
@@ -28,7 +29,10 @@ object eval_set     ( object input, object meta_environment );
 object eval_if      ( object input, object meta_environment );
 object eval_and     ( object input, object meta_environment );
 object eval_or      ( object input, object meta_environment );
-object eval_argument( object input, object meta_environment );
+object eval_begin   ( object input, object meta_environment );
+object eval_lambda  ( object input, object meta_environment );
+object eval_let     ( object input, object meta_environment );
+object eval_compound( object input,object meta_environment );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */

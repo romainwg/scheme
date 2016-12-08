@@ -28,6 +28,13 @@ object prim_quotient ( object o );
 object prim_modulo ( object o );
 
 
+object prim_inferior ( object o );
+object prim_superior ( object o );
+object prim_equal    ( object o );
+object prim_eq_inf   ( object o );
+object prim_eq_sup   ( object o );
+
+
 object prim_sin ( object o );
 object prim_cos ( object o );
 object prim_tan ( object o );

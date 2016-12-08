@@ -46,7 +46,7 @@ void init_interpreter ( void ) {
     toplevel->this.pair.car = make_nil();
     toplevel->this.pair.cdr = make_nil();
     init_primitive();
-    /*print_environment( toplevel );*/
+    print_environment( toplevel );
 }
 
 
@@ -162,7 +162,10 @@ int main ( int argc, char *argv[] ) {
             continue ;
         }
         
+        DEBUG_MSG("output type %d",output->type);
+        
         if ( output->type != SFS_NOTYPE ) {
+            DEBUG_MSG("sfs_print");
             printf( "==> " );
             sfs_print( output , &root );
             printf( "\n" );
