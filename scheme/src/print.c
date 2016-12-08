@@ -60,6 +60,10 @@ void sfs_print_atom( object o ) {
             
         case SFS_PRIMITIVE :
             printf("#<Function>");
+            break;
+        case SFS_COMPOUND :
+            printf("#<Procedure>");
+            break;
 
     }
 }

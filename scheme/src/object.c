@@ -114,6 +114,15 @@ object make_primitive ( string symbol, object (*function)(object) ) {
     
 }
 
+object make_compound ( object param, object body, object env ) {
+    object o = NULL;
+    o=make_object( SFS_COMPOUND );
+    o->this.compound.param = param;
+    o->this.compound.body = body;
+    o->this.compound.env = env;
+    return o;
+}
+
 object make_notype ( void ) {
     object o = NULL;
     o=make_object( SFS_NOTYPE );

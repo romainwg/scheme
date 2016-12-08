@@ -17,7 +17,6 @@
 int is_pair     ( object o        );
 int is_symbol   ( object eval_car );
 int is_nil      ( object eval_car );
-int is_primitive( object o        );
 int is_boolean  ( object eval_car );
 int is_char     ( object eval_car );
 int is_string   ( object eval_car );
@@ -27,16 +26,24 @@ int is_number   ( object o );
 int is_integer  ( object o );
 int is_real     ( object o );
 
-/* FUNCTIONS - SPECIAL SYMBOL */
-int is_quote	( string function ); /*vérifie que la forme quote est utilisée*/
+int is_compound ( object o );
+
+/* FUNCTIONS - FORMS */
+int is_quote	( string function );
 int is_define   ( string function );
 int is_set      ( string function );
 int is_if       ( string function );
 int is_or       ( string function );
 int is_and      ( string function );
+int is_begin    ( string function );
+int is_lambda   ( string function );
+int is_let      ( string function );
 
+/* FUNCTION - PRIMITIVE */
+int is_primitive( object o );
 
-/* FUNCTIONS - RECHERCHE D'UNE VARIABLE */
+/* FUNCTION - IN ENVIRONMENT - LEVELS */
+int is_in_current_Env(string function, object meta_environment);
 int is_in_Env( string function, object meta_environment );
 
 #endif /* is_functions_h */
