@@ -13,7 +13,7 @@ bob
 bob
 (set! bob (+ 3 4))
 bob
-(set! bob (< 4 3))
+(set! bob 54433.4)
 bob
 (set! bob (+ 3 (- (/ 5 5) (* 3 2))))
 bob

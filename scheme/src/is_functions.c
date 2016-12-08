@@ -159,9 +159,9 @@ int is_cmp_operator( string input ) {
 }
 
 
-int is_in_Env( string function ) {
+int is_in_Env( string function, object meta_environment ) {
     
-    object EnvCopy = car(toplevel);
+    object EnvCopy = car(meta_environment);
     while ( !is_nil(EnvCopy) ) {
         if ( strcmp(function,caar(EnvCopy)->this.symbol) == 0 ) {
             return 1;

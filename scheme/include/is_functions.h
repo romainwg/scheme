@@ -35,11 +35,8 @@ int is_if       ( string function );
 int is_or       ( string function );
 int is_and      ( string function );
 
-/* SPECIAL SYMBOL - OPERATOR */
-int is_calcul_operator ( string input );
-int is_cmp_operator    ( string input );
 
 /* FUNCTIONS - RECHERCHE D'UNE VARIABLE */
-int is_in_Env( string function );
+int is_in_Env( string function, object meta_environment );
 
 #endif /* is_functions_h */

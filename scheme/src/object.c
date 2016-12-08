@@ -109,9 +109,15 @@ object make_primitive ( string symbol, object (*function)(object) ) {
     object o = NULL;
     o = make_object( SFS_PRIMITIVE );
     o->this.primitive.function = function;
-    newVarEnvironment( symbol, o );
+    newVarEnvironment( symbol, o, toplevel );
     return o;
     
+}
+
+object make_notype ( void ) {
+    object o = NULL;
+    o=make_object( SFS_NOTYPE );
+    return o;
 }
 
 /* FONCTIONS CAR/CDR */

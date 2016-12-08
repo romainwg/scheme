@@ -21,7 +21,7 @@ extern "C" {
 #include "is_functions.h"
     
 /* EVAL FUNCTION */
-object sfs_eval( object input );
+object sfs_eval( object input, object meta_environment );
 
 #ifdef __cplusplus
 }

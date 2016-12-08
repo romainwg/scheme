@@ -19,31 +19,31 @@
  * This function evaluates an expression in a fiven environem. As required by Rnrs, speciale care has been with recursive calls (no goto)
  **/
 
-object sfs_eval( object input ) {
+object sfs_eval( object input, object meta_environment ) {
     DEBUG_MSG("eval input %p %d", input, input->type);
     
     if (input == NULL) {
         return NULL;
     }
     
-    if ( !is_symbol(input) && !is_pair(input)
-        && (input->type != SFS_NIL) ) {
+    if ( !is_symbol(input) && !is_pair(input) ) {
         return input;
     }
     
     if ( is_symbol(input) ) {
-        return eval_symbol(input);
+        return eval_symbol(input,meta_environment);
     }
     
     if ( is_pair(input) ) {
         
-        DEBUG_MSG("is_pair eval ?");
-        
         object eval_car = car(input);
         
+        if ( is_nil(cdr(input)) ) {
+            return eval_car;
+        }
+        
         if ( is_primitive(eval_car) ) {
-            DEBUG_MSG("is_primtivie eval ?");
-            return eval_primitive(input);
+            return eval_primitive(input,meta_environment);
         }
         
         if ( is_symbol(eval_car) ) {
@@ -54,32 +54,24 @@ object sfs_eval( object input ) {
                 return eval_quote(input);
             }
             else if (is_define(function)) {
-                return eval_define(input);
+                return eval_define(input,meta_environment);
             }
             else if (is_set(function)) {
-                return eval_set(input);
+                return eval_set(input,meta_environment);
             }
             else if (is_if(function)) {
-                DEBUG_MSG("is if function");
-                return eval_if(input);
+                return eval_if(input,meta_environment);
             }
             else if (is_or(function)) {
-                return eval_or(input);
+                return eval_or(input,meta_environment);
             }
             else if (is_and(function)) {
-                DEBUG_MSG("is and eval");
-                return eval_and(input);
+                return eval_and(input,meta_environment);
             }
-            /*     else if (is_calcul_operator(function)) {
-             return eval_calc_operator(input);
-             }
-             else if (is_cmp_operator(function)) {
-             return eval_cmp_operator(input);
-             } */
         }
         
         else {
-            WARNING_MSG("SFS_EVAL WARNING : not evaluable (for the moment ...)");
+            WARNING_MSG("SFS_EVAL WARNING : not valid evaluable expression");
             return NULL;
         }
     }

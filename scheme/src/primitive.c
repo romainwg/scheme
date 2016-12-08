@@ -6,6 +6,8 @@
 
 */
 
+#include <stdio.h>
+#include <stdlib.h>
 #include "primitive.h"
 
 
@@ -42,6 +44,13 @@ void init_primitive ( void ) {
     make_primitive( "string->symbol", &prim_string_symbol    );
     make_primitive( "string->list"  , &prim_string_list      );
     
+    make_primitive( "car"       , &prim_car     );
+    make_primitive( "cdr"       , &prim_cdr     );
+    make_primitive( "cons"      , &prim_cons    );
+    make_primitive( "set-car!"  , &prim_set_car );
+    make_primitive( "set-cdr!"  , &prim_set_cdr );
+    make_primitive( "list"      , &prim_list    );
+    
 }
 
 
@@ -62,10 +71,9 @@ object prim_plus ( object o ) {
 		object obj_eval = NULL; /* Var object d'évaluation */
 		
 	if(car(o)!=NULL){
-		obj_eval = sfs_eval(car(obj_temp));
-		
+		obj_eval = car(obj_temp);
 		/* verification que l'évaluation donne quelque chose */
-		if ( obj_eval == NULL){
+		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 			return NULL;
 		}
@@ -74,7 +82,7 @@ object prim_plus ( object o ) {
 			WARNING_MSG("only accepts number");
 			return NULL;
 		}
-		
+
 		if(obj_eval->type == SFS_NUMBER){
 			/* Si le premier chiffre est un double -> SWITCH en sortie flottante*/
 			if(obj_eval->this.number.numtype == NUM_REAL){
@@ -84,20 +92,20 @@ object prim_plus ( object o ) {
 			/* Si int ou double : choix var */
 			if(integerOuDouble){
 				sommeDouble = obj_eval->this.number.this.real;
-			}else{
+			}
+            else {
 				sommeInt = obj_eval->this.number.this.integer;
 			}
-			
-		}else{
+		}
+        else {
 			WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
 			return NULL;
 		}
 		
-		while(!is_nil(cdr(obj_temp))){
-			obj_eval = sfs_eval(cadr(obj_temp));
-			
+		while ( !is_nil( cdr(obj_temp) ) ) {
+			obj_eval = cadr(obj_temp);
 			/* verification que l'évaluation donne quelque chose */
-			if ( obj_eval == NULL){
+			if ( obj_eval == NULL ) {
 				WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 				return NULL;
 			}
@@ -107,46 +115,46 @@ object prim_plus ( object o ) {
 				return NULL;
 			}
 			
-			if(obj_eval->type == SFS_NUMBER){
+			if ( obj_eval->type == SFS_NUMBER ) {
 				/* Si un chiffre est un double -> SWITCH en sortie flottante // cette opération ne peut se faire qu'une fois */
-				if(obj_eval->this.number.numtype == NUM_REAL && integerOuDouble != 1){
+				if ( obj_eval->this.number.numtype == NUM_REAL && integerOuDouble != 1 ) {
 					integerOuDouble = 1;
 					sommeDouble = sommeInt; /* Changement de variable : int -> double*/
 				}
-				
 				/* Adaptation du calcul : int ou double d'après les chiffres antécédants */
 				if(integerOuDouble){
 					/* On travaille avec une sortie en Double mais les entrées peuvent encore etre int*/
-					if(obj_eval->this.number.numtype == NUM_REAL){
+					if ( obj_eval->this.number.numtype == NUM_REAL ) {
 						sommeDouble += obj_eval->this.number.this.real;
-					}else{
+					}
+                    else {
 						sommeDouble += obj_eval->this.number.this.integer;
 					}
-					
-				}else{
+				}
+                else {
 					sommeInt += obj_eval->this.number.this.integer;
 				}
 			
-			}else{
+			}
+            else {
 				WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
 				return NULL;
 			}
-			
 			obj_temp = cdr(obj_temp);
 		}
 		
 		/* Creation de la sortie en fonction du type de sortie calculé */
 		if(integerOuDouble){
 			obj_temp = make_real(sommeDouble);
-		}else{
+		}
+        else {
 			obj_temp = make_integer(sommeInt);
 		}
-		
-	}else{
+	}
+    else {
 		WARNING_MSG("PRIM WARNING : car(o) NULL");
 		return NULL;
 	}
-	
     return obj_temp;
 }
 
@@ -165,11 +173,10 @@ object prim_minus ( object o ) {
 	object obj_temp = o; /* "Curseur" de déplacement en object */
 	object obj_eval = NULL; /* Var object d'évaluation */
 		
-	if(car(o)!=NULL){
-		obj_eval = sfs_eval(car(obj_temp));
-		
+	if (car(o)!=NULL) {
+		obj_eval = car(obj_temp);
 		/* verification que l'évaluation donne quelque chose */
-		if ( obj_eval == NULL){
+		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 			return NULL;
 		}
@@ -179,31 +186,30 @@ object prim_minus ( object o ) {
 			return NULL;
 		}
 		
-		if(obj_eval->type == SFS_NUMBER){
+		if ( obj_eval->type == SFS_NUMBER ) {
 			/* Si le premier chiffre est un double -> SWITCH en sortie flottante*/
-			if(obj_eval->this.number.numtype == NUM_REAL){
+			if ( obj_eval->this.number.numtype == NUM_REAL ) {
 				integerOuDouble = 1;
 			}
-			
 			/* Si int ou double : choix var */
-			if(integerOuDouble){
+			if (integerOuDouble) {
 				sommeDouble = obj_eval->this.number.this.real;
-			}else{
+			}
+            else {
 				sommeInt = obj_eval->this.number.this.integer;
 			}
-			
-		}else{
+		}
+        else {
 			WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
 			return NULL;
 		}
 		
 		
 		if(!is_nil(cdr(obj_temp))){ /*si il y plusieurs arguments : boucle ; sinon sortie = -arg1*/
-			while(!is_nil(cdr(obj_temp))){
-				obj_eval = sfs_eval(cadr(obj_temp));
-				
+			while ( !is_nil(cdr(obj_temp)) ) {
+				obj_eval = cadr(obj_temp);
 				/* verification que l'évaluation donne quelque chose */
-				if ( obj_eval == NULL){
+				if ( obj_eval == NULL ) {
 					WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 					return NULL;
 				}
@@ -212,54 +218,55 @@ object prim_minus ( object o ) {
 					WARNING_MSG("only accepts number");
 					return NULL;
 				}
-				
+                
 				if(obj_eval->type == SFS_NUMBER){
 					/* Si un chiffre est un double -> SWITCH en sortie flottante // cette opération ne peut se faire qu'une fois */
-					if(obj_eval->this.number.numtype == NUM_REAL && integerOuDouble != 1){
+					if (obj_eval->this.number.numtype == NUM_REAL
+                        && integerOuDouble != 1) {
 						integerOuDouble = 1;
 						sommeDouble = sommeInt; /* Changement de variable : int -> double*/
 					}
-					
 					/* Adaptation du calcul : int ou double d'après les chiffres antécédants */
-					if(integerOuDouble){
+					if (integerOuDouble) {
 						/* On travaille avec une sortie en Double mais les entrées peuvent encore etre int*/
-						if(obj_eval->this.number.numtype == NUM_REAL){
+						if (obj_eval->this.number.numtype == NUM_REAL) {
 							sommeDouble -= obj_eval->this.number.this.real;
-						}else{
+						}
+                        else {
 							sommeDouble -= obj_eval->this.number.this.integer;
 						}
-						
-					}else{
+					}
+                    else {
 						sommeInt -= obj_eval->this.number.this.integer;
 					}
-				
-				}else{
+				}
+                else {
 					WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
 					return NULL;
 				}
-				
 				obj_temp = cdr(obj_temp);
 			}
-		}else{ /*si il y plusieurs arguments : boucle ; sinon sortie = -arg1*/
-			if(integerOuDouble){
+		}
+        else { /*si il y plusieurs arguments : boucle ; sinon sortie = -arg1*/
+			if (integerOuDouble) {
 				sommeDouble = -sommeDouble;
-			}else{
+			}
+            else {
 				sommeInt = -sommeInt;
 			}
 		}
-		
 		/* Creation de la sortie en fonction du type de sortie calculé */
 		if(integerOuDouble){
 			obj_temp = make_real(sommeDouble);
-		}else{
+		}
+        else {
 			obj_temp = make_integer(sommeInt);
 		}
-		
-	}else{
+	}
+    else {
 		WARNING_MSG("PRIM WARNING : car(o) NULL");
 		return NULL;
 	}
-	
     return obj_temp;
 }
 
@@ -278,11 +285,10 @@ object prim_times ( object o ) {
 	object obj_temp = o; /* "Curseur" de déplacement en object */
 	object obj_eval = NULL; /* Var object d'évaluation */
 		
-	if(car(o)!=NULL){
-		obj_eval = sfs_eval(car(obj_temp));
-		
+	if ( car(o)!=NULL ) {
+		obj_eval = car(obj_temp);
 		/* verification que l'évaluation donne quelque chose */
-		if ( obj_eval == NULL){
+		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 			return NULL;
 		}
@@ -292,29 +298,30 @@ object prim_times ( object o ) {
 			return NULL;
 		}
 		
-		if(obj_eval->type == SFS_NUMBER){
+		if ( obj_eval->type == SFS_NUMBER ) {
 			/* Si le premier chiffre est un double -> SWITCH en sortie flottante*/
-			if(obj_eval->this.number.numtype == NUM_REAL){
+			if ( obj_eval->this.number.numtype == NUM_REAL ) {
 				integerOuDouble = 1;
 			}
 			
 			/* Si int ou double : choix var */
-			if(integerOuDouble){
+			if (integerOuDouble) {
 				produitDouble = obj_eval->this.number.this.real;
-			}else{
+			}
+            else {
 				produitInt = obj_eval->this.number.this.integer;
 			}
-			
-		}else{
+		}
+        else {
 			WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
 			return NULL;
 		}
 		
 		while(!is_nil(cdr(obj_temp))){
-			obj_eval = sfs_eval(cadr(obj_temp));
+			obj_eval = cadr(obj_temp);
 			
 			/* verification que l'évaluation donne quelque chose */
-			if ( obj_eval == NULL){
+			if ( obj_eval == NULL ) {
 				WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 				return NULL;
 			}
@@ -324,46 +331,46 @@ object prim_times ( object o ) {
 				return NULL;
 			}
 			
-			if(obj_eval->type == SFS_NUMBER){
+			if ( obj_eval->type == SFS_NUMBER ) {
 				/* Si un chiffre est un double -> SWITCH en sortie flottante // cette opération ne peut se faire qu'une fois */
-				if(obj_eval->this.number.numtype == NUM_REAL && integerOuDouble != 1){
+				if ( obj_eval->this.number.numtype == NUM_REAL
+                    && integerOuDouble != 1 ) {
 					integerOuDouble = 1;
 					produitDouble = produitInt; /* Changement de variable : int -> double*/
 				}
 				
 				/* Adaptation du calcul : int ou double d'après les chiffres antécédants */
-				if(integerOuDouble){
+				if (integerOuDouble) {
 					/* On travaille avec une sortie en Double mais les entrées peuvent encore etre int*/
-					if(obj_eval->this.number.numtype == NUM_REAL){
+					if ( obj_eval->this.number.numtype == NUM_REAL ) {
 						produitDouble *= obj_eval->this.number.this.real;
-					}else{
+					}
+                    else {
 						produitDouble *= obj_eval->this.number.this.integer;
 					}
-					
-				}else{
+				}
+                else {
 					produitInt *= obj_eval->this.number.this.integer;
 				}
-			
-			}else{
+			}
+            else {
 				WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
 				return NULL;
 			}
-			
 			obj_temp = cdr(obj_temp);
 		}
-		
 		/* Creation de la sortie en fonction du type de sortie calculé */
-		if(integerOuDouble){
+		if (integerOuDouble) {
 			obj_temp = make_real(produitDouble);
-		}else{
+		}
+        else {
 			obj_temp = make_integer(produitInt);
 		}
-		
-	}else{
+	}
+    else {
 		WARNING_MSG("PRIM WARNING : car(o) NULL");
 		return NULL;
 	}
-	
     return obj_temp;
 }
 
@@ -391,11 +398,11 @@ object prim_divide ( object o ) {
 	object obj_temp = o; /* "Curseur" de déplacement en object */
 	object obj_eval = NULL; /* Var object d'évaluation */
 		
-	if(car(o)!=NULL){
-		obj_eval = sfs_eval(car(obj_temp));
+	if ( car(o)!=NULL ) {
+		obj_eval = car(obj_temp);
 		
 		/* verification que l'évaluation donne quelque chose */
-		if ( obj_eval == NULL){
+		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 			return NULL;
 		}
@@ -405,26 +412,27 @@ object prim_divide ( object o ) {
 			return NULL;
 		}
 		
-		if(obj_eval->type == SFS_NUMBER){
+		if ( obj_eval->type == SFS_NUMBER ) {
 			
 			/* Stockage du 1 arg */
-			if(obj_eval->this.number.numtype == NUM_REAL){
+			if ( obj_eval->this.number.numtype == NUM_REAL ) {
 				divisionDouble = obj_eval->this.number.this.real;
-			}else{
+			}
+            else {
 				divisionDouble = obj_eval->this.number.this.integer;
 			}
-			
-		}else{
+		}
+        else {
 			WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
 			return NULL;
 		}
 		
 		if ( !is_nil(cdr(obj_temp)) ){ /*si il y plusieurs arguments : boucle ; sinon sortie = 1/arg1*/
-			while(!is_nil(cdr(obj_temp))){
-				obj_eval = sfs_eval(cadr(obj_temp));
+			while ( !is_nil(cdr(obj_temp)) ) {
+				obj_eval = cadr(obj_temp);
 				
 				/* verification que l'évaluation donne quelque chose */
-				if ( obj_eval == NULL){
+				if ( obj_eval == NULL ) {
 					WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 					return NULL;
 				}
@@ -434,48 +442,47 @@ object prim_divide ( object o ) {
 					return NULL;
 				}
 				
-				if(obj_eval->type == SFS_NUMBER){
-					
+				if ( obj_eval->type == SFS_NUMBER ) {
 					/* On travaille avec une sortie en Double mais les entrées peuvent encore etre int*/
-					if(obj_eval->this.number.numtype == NUM_REAL){
+					if ( obj_eval->this.number.numtype == NUM_REAL ) {
 						if(obj_eval->this.number.this.real==0.0){
 							WARNING_MSG("Division par 0 interdite (for the moment...)");
 							return NULL;
 						}
 						divisionDouble /= obj_eval->this.number.this.real;
-					}else{
-						if(obj_eval->this.number.this.integer==0){
+					}
+                    else {
+						if ( obj_eval->this.number.this.integer==0 ) {
 							WARNING_MSG("Division par 0 interdite (for the moment...)");
 							return NULL;
 						}
 						divisionDouble /= obj_eval->this.number.this.integer;
 					}
-					
-				}else{
+				}
+                else {
 					WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
 					return NULL;
 				}
-				
 				obj_temp = cdr(obj_temp);
 			}
-		}else{ /*si il y plusieurs arguments : boucle ; sinon sortie = 1/arg1*/
+		}
+        else { /*si il y plusieurs arguments : boucle ; sinon sortie = 1/arg1*/
 			 /* Division par l'élément neutre si juste arg1 */
-			if(divisionDouble == 0.0){
+			if ( divisionDouble == 0.0 ) {
 				WARNING_MSG("Division par 0 interdite (for the moment...)");
 				return NULL;
-			}else{
+			}
+            else {
 				divisionDouble = 1/divisionDouble;
 			}
 		}
-		
 		/* Creation de la sortie en fonction de la sortie calculée */
 			obj_temp = make_real(divisionDouble);
-		
-	}else{
+	}
+    else {
 		WARNING_MSG("PRIM WARNING : car(o) NULL");
 		return NULL;
 	}
-	
 	return obj_temp;
 }
 
@@ -488,11 +495,10 @@ object prim_quotient ( object o ) {
 	object obj_temp = o; /* "Curseur" de déplacement en object */
 	object obj_eval = NULL; /* Var object d'évaluation */
 		
-	if(car(o)!=NULL){
-		obj_eval = sfs_eval(car(obj_temp));
-		
+	if ( car(o)!=NULL ){
+		obj_eval = car(obj_temp);
 		/* verification que l'évaluation donne quelque chose */
-		if ( obj_eval == NULL){
+		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 			return NULL;
 		}
@@ -501,27 +507,25 @@ object prim_quotient ( object o ) {
 			WARNING_MSG("only accepts number");
 			return NULL;
 		}
-		
-		if(obj_eval->type == SFS_NUMBER){
+		if ( obj_eval->type == SFS_NUMBER ) {
 			
 			/* Stockage du 1 arg */
-			if(obj_eval->this.number.numtype == NUM_REAL){
+			if ( obj_eval->this.number.numtype == NUM_REAL ) {
 				divisionDouble = obj_eval->this.number.this.real;
-			}else{
+			}
+            else {
 				divisionDouble = obj_eval->this.number.this.integer;
 			}
-			
-		}else{
+		}
+        else {
 			WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
 			return NULL;
 		}
-		
-		if ( !is_nil(cdr(obj_temp)) ){ /*si il y plusieurs arguments : boucle ; sinon sortie = 1/arg1*/
-			while(!is_nil(cdr(obj_temp))){
-				obj_eval = sfs_eval(cadr(obj_temp));
-				
+		if ( !is_nil( cdr(obj_temp) ) ) { /*si il y plusieurs arguments : boucle ; sinon sortie = 1/arg1*/
+			while( !is_nil( cdr(obj_temp) ) ) {
+				obj_eval = cadr(obj_temp);
 				/* verification que l'évaluation donne quelque chose */
-				if ( obj_eval == NULL){
+				if ( obj_eval == NULL) {
 					WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 					return NULL;
 				}
@@ -531,68 +535,62 @@ object prim_quotient ( object o ) {
 					return NULL;
 				}
 				
-				if(obj_eval->type == SFS_NUMBER){
-					
+				if ( obj_eval->type == SFS_NUMBER ) {
 					/* On travaille avec une sortie en Double mais les entrées peuvent encore etre int*/
-					if(obj_eval->this.number.numtype == NUM_REAL){
-						if(obj_eval->this.number.this.real==0.0){
+					if( obj_eval->this.number.numtype == NUM_REAL ){
+						if( obj_eval->this.number.this.real==0.0 ) {
 							WARNING_MSG("Division par 0 interdite (for the moment...)");
 							return NULL;
 						}
 						divisionDouble /= obj_eval->this.number.this.real;
-					}else{
-						if(obj_eval->this.number.this.integer==0){
+					}
+                    else {
+						if( obj_eval->this.number.this.integer==0 ) {
 							WARNING_MSG("Division par 0 interdite (for the moment...)");
 							return NULL;
 						}
 						divisionDouble /= obj_eval->this.number.this.integer;
 					}
-					
-				}else{
+				}
+                else {
 					WARNING_MSG("PRIM_PLUS WARNING : not evaluable nonumber type");
 					return NULL;
 				}
-				
 				obj_temp = cdr(obj_temp);
 			}
-		}else{ /*si il y plusieurs arguments : boucle ; sinon sortie = 1/arg1*/
+		}
+        else { /*si il y plusieurs arguments : boucle ; sinon sortie = 1/arg1*/
 			 /* Division par l'élément neutre si juste arg1 */
-			if(divisionDouble == 0.0){
+			if( divisionDouble == 0.0 ){
 				WARNING_MSG("Division par 0 interdite (for the moment...)");
 				return NULL;
-			}else{
+			}
+            else {
 				divisionDouble = 1/divisionDouble;
 			}
 		}
-		
 		/* Creation de la sortie en fonction de la sortie calculée */
-		
 		/*QUOTIENT = PARTIE ENTIERE ????*/
-			
 			divisionInt = divisionDouble; /* passage en int / partie entière  */
-			
 			obj_temp = make_integer(divisionInt);
-		
-	}else{
+	}
+    else {
 		WARNING_MSG("PRIM WARNING : car(o) NULL");
 		return NULL;
 	}
-	
 	return obj_temp;
 }
 
 object prim_modulo ( object o ) {
 	
-	int moduloInt	= 0;
-	
+	int moduloInt = 0;
 	object obj_temp = o; /* "Curseur" de déplacement en object */
 	object obj_eval = NULL; /* Var object d'évaluation */
 		
-	if(car(o)!=NULL){
-		obj_eval = sfs_eval(car(obj_temp));
-		
+	if ( car(o)!=NULL ) {
+		obj_eval = car(obj_temp);
 		/* verification que l'évaluation donne quelque chose */
-		if ( obj_eval == NULL){
+		if ( obj_eval == NULL ) {
 			WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 			return NULL;
 		}
@@ -602,28 +600,26 @@ object prim_modulo ( object o ) {
 			return NULL;
 		}
 		
-		if(obj_eval->type == SFS_NUMBER){
-			
+		if ( obj_eval->type == SFS_NUMBER ) {
 			/* Stockage du 1 arg */
 			if(obj_eval->this.number.numtype == NUM_INTEGER){
 				moduloInt = obj_eval->this.number.this.integer;
-			}else{
+			}
+            else {
 				WARNING_MSG("PRIM_DIVIDE WARNING : not evaluable nointeger type");
 				return NULL;
 			}
-			
-		}else{
+		}
+        else {
 			WARNING_MSG("PRIM_DIVIDE WARNING : not evaluable nonumber type");
 			return NULL;
 		}
 		
-		if ( !is_nil(cdr(obj_temp)) ){ /*si il y plusieurs arguments : boucle ; sinon sortie = 1%arg1*/
-			
-			while(!is_nil(cdr(obj_temp))){ /* Boucle : modulo du modulo du ... cadr */
-				obj_eval = sfs_eval(cadr(obj_temp));
-				
+		if ( !is_nil( cdr(obj_temp) ) ) { /*si il y plusieurs arguments : boucle ; sinon sortie = 1%arg1*/
+			while( !is_nil( cdr(obj_temp) ) ) { /* Boucle : modulo du modulo du ... cadr */
+				obj_eval = cadr(obj_temp);
 				/* verification que l'évaluation donne quelque chose */
-				if ( obj_eval == NULL){
+				if ( obj_eval == NULL ) {
 					WARNING_MSG("Erreur d'évaluation : la variable n'est peut être pas définie");
 					return NULL;
 				}
@@ -633,7 +629,7 @@ object prim_modulo ( object o ) {
 					return NULL;
 				}
 				
-				if(obj_eval->type == SFS_NUMBER){
+				if ( obj_eval->type == SFS_NUMBER ) {
 			
 					/* Stockage du 1 arg */
 					if(obj_eval->this.number.numtype == NUM_INTEGER){
@@ -653,24 +649,24 @@ object prim_modulo ( object o ) {
 				obj_temp = cdr(obj_temp);
 			}
 			
-		}else{ /*si il y plusieurs arguments : boucle ; sinon sortie = 1%arg1*/
+		}
+        else { /*si il y plusieurs arguments : boucle ; sinon sortie = 1%arg1*/
 			 /* Modulo avec l'élément neutre si juste arg1 */
 			if(moduloInt == 0){
 				WARNING_MSG("Division par 0 interdite -> modulo inderterminé (for the moment...)");
 				return NULL;
-			}else{
+			}
+            else {
 				moduloInt = 1 % moduloInt;
 			}
-		
 		}
 		/* Creation de la sortie en fonction de la sortie calculée */
-			obj_temp = make_integer(moduloInt);
-		
-	}else{
+        obj_temp = make_integer(moduloInt);
+	}
+    else {
 		WARNING_MSG("PRIM WARNING : car(o) NULL");
 		return NULL;
 	}
-	
 	return obj_temp;
 }
 
@@ -682,9 +678,9 @@ object prim_sin ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = car(o);
     
-    if ( !is_number(o) ) {
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("sin only accepts number");
         return NULL;
     }
@@ -705,8 +701,8 @@ object prim_cos ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
-    if ( !is_number(o) ) {
+    o = car(o);
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("cos only accepts number");
         return NULL;
     }
@@ -727,8 +723,8 @@ object prim_tan ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
-    if ( !is_number(o) ) {
+    o = car(o);
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("tan only accepts number");
         return NULL;
     }
@@ -749,20 +745,24 @@ object prim_abs ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
-    if ( !is_number(o) ) {
+    o = car(o);
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("abs only accepts number");
         return NULL;
     }
     
-    int out_abs;
+    
     if ( is_integer(o) ) {
+        int out_abs;
         out_abs = abs( o->this.number.this.integer );
+        o = make_integer ( out_abs );
     }
     else {
+        double out_abs;
         out_abs = fabs( o->this.number.this.real );
+        o = make_real ( out_abs );
     }
-    o = make_integer ( out_abs );
+    
     return o;
 }
 object prim_exp ( object o ) {
@@ -771,8 +771,8 @@ object prim_exp ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
-    if ( !is_number(o) ) {
+    o = car(o);
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("exp only accepts number");
         return NULL;
     }
@@ -793,8 +793,8 @@ object prim_sqrt ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
-    if ( !is_number(o) ) {
+    o = car(o);
+    if ( o == NULL || !is_number(o) ) {
         WARNING_MSG("sqrt only accepts number");
         return NULL;
     }
@@ -819,8 +819,8 @@ object prim_is_boolean ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
-    if ( is_boolean (o) ) {
+    o = car(o);
+    if ( o != NULL && is_boolean (o) ) {
         o = vrai;
     }
     else {
@@ -834,8 +834,8 @@ object prim_is_char ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
-    if ( is_char (o) ) {
+    o = car(o);
+    if ( o != NULL && is_char (o) ) {
         o = vrai;
     }
     else {
@@ -849,7 +849,7 @@ object prim_is_null ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
+    o = car(o);
     if ( o==NULL ) {
         o = vrai;
     }
@@ -864,8 +864,8 @@ object prim_is_symbol ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
-    if ( is_symbol(o) ) {
+    o = car(o);
+    if ( o != NULL && is_symbol(o) ) {
         o = vrai;
     }
     else {
@@ -879,8 +879,8 @@ object prim_is_number ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
-    if ( is_number(o) ) {
+    o = car(o);
+    if ( o != NULL && is_number(o) ) {
         o = vrai;
     }
     else {
@@ -893,12 +893,9 @@ object prim_is_pair ( object o ) {
         WARNING_MSG("number? must have 1 and just 1 argument");
         return NULL;
     }
-<<<<<<< HEAD
     
-=======
-
->>>>>>> 781de67407fc02e8100e6733a18e0d018779f293
-    if ( is_pair(o) ) {
+    o = car(o);
+    if ( o != NULL && is_pair(o) ) {
         o = vrai;
     }
     else {
@@ -916,8 +913,8 @@ object prim_is_string ( object o ) {
         return NULL;
     }
     
-    o = sfs_eval(car(o));
-    if ( is_string(o) ) {
+    o = car(o);
+    if ( o != NULL && is_string(o) ) {
         o = vrai;
     }
     else {
@@ -935,9 +932,8 @@ object prim_int_char ( object o ) {
         return NULL;
     }
     
-    o=sfs_eval(car(o));
-    
-    if ( is_integer(o) ) {
+    o=car(o);
+    if ( o != NULL && is_integer(o) ) {
         char integer = o->this.number.this.integer;
         o = make_character(integer);
     }
@@ -954,9 +950,9 @@ object prim_char_int ( object o ) {
         return NULL;
     }
     
-    o=sfs_eval(car(o));
+    o=car(o);
     
-    if ( is_char(o) ) {
+    if ( o != NULL && is_char(o) ) {
         int character = o->this.character;
         o = make_integer(character);
     }
@@ -973,33 +969,192 @@ object prim_num_string ( object o ) {
         return NULL;
     }
     
-    o=sfs_eval(car(o));
-    
-    if ( is_integer(o) ) {
-        char integer = o->this.number.this.integer;
-        o = make_character(integer);
+    o=car(o);
+    int size=0;
+    char str_number[STRLEN];
+    str_number[0]='"';
+    if ( o != NULL && is_integer(o) ) {
+        size = snprintf( str_number + 1, STRLEN-1, "%d", o->this.number.this.integer );
+    }
+    else if ( o != NULL && is_real(o) ) {
+        size = snprintf( str_number + 1, STRLEN-1, "%lf", o->this.number.this.real );
     }
     else {
-        WARNING_MSG("number->string only evaluates number");
+        WARNING_MSG("number->string only evaluates numbers");
+        return NULL;
+    }
+    
+    if ( size >= STRLEN-2 ) {
+        WARNING_MSG("number->string : number too long");
+        return NULL;
+    }
+    str_number[size+1]='"';
+    
+    o = make_string(str_number,size+2);
+    return o;
+}
+object prim_string_num ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("string->number must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o=car(o);
+    if ( o != NULL && is_string(o) ) {
+        uint i=0;
+        int size = strlen(o->this.string);
+        o->this.string[size-1] = ' ';
+        char* str_number = o->this.string + 1;
+        o = sfs_read(str_number,&i);
+        SpaceCancel(str_number,&i);
+        if ( !iscntrl(str_number[i]) ) {
+            WARNING_MSG("string->number : not a proper number");
+            return NULL;
+        }
+    }
+    else {
+        WARNING_MSG("string->number only evaluates strings");
         return NULL;
     }
     
     return o;
 }
-object prim_string_num ( object o ) {
-    
-    
-    return o;
-}
 object prim_symbol_string ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("symbol->string must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o=car(o);
+    if ( o == NULL || !is_symbol(o) ) {
+        WARNING_MSG("symbol->string only evaluates quoted symbols");
+        return NULL;
+    }
+    else {
+        int size = strlen(o->this.symbol);
+        int i=0;
+        if ( size >= STRLEN-2 ) {
+            WARNING_MSG("symbol->string : symbol too long");
+            return NULL;
+        }
+        char str_symbol[size+2];
+        str_symbol[0]='"';
+        for (i=0 ; i<size ; i++) {
+            str_symbol[i+1]=o->this.symbol[i];
+        }
+        str_symbol[size+1]='"';
+        o = make_string(str_symbol,size+2);
+    }
     return o;
 }
 object prim_string_symbol ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("string->symbol must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o=car(o);
+    if ( o != NULL && is_string(o) ) {
+        uint i=0;
+        int size = strlen(o->this.string);
+        o->this.string[size-1] = ' ';
+        char* str_symbol = o->this.string + 1;
+        o = sfs_read(str_symbol,&i);
+        SpaceCancel(str_symbol,&i);
+        if ( !iscntrl(str_symbol[i]) ) {
+            WARNING_MSG("string->symbol : not a proper string");
+            return NULL;
+        }
+    }
+    else {
+        WARNING_MSG("string->symbol only evaluates strings");
+        return NULL;
+    }
+    
     return o;
 }
 object prim_string_list ( object o ) {
     return o;
 }
+
+
+object prim_car ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("car must have 1 and just 1 argument");
+        return NULL;
+    }
+    o=car(o);
+    if ( o != NULL && is_pair(o) ) {
+        o=car(o);
+    }
+    else {
+        WARNING_MSG("car only evaluates pair");
+        return NULL;
+    }
+    return o;
+}
+object prim_cdr ( object o ) {
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("car must have 1 and just 1 argument");
+        return NULL;
+    }
+    o=car(o);
+    if ( o != NULL && is_pair(o) ) {
+        o=cdr(o);
+    }
+    else {
+        WARNING_MSG("cdr only evaluates pair");
+        return NULL;
+    }
+    return o;
+}
+object prim_cons ( object o ) {
+    if ( cddr(o)==NULL || is_pair(cddr(o)) ) {
+        WARNING_MSG("cons must have 2 and just 2 arguments");
+        return NULL;
+    }
+    if (car(o) == NULL || cadr(o) == NULL ) {
+        WARNING_MSG("arguments of cons are NULL");
+        return NULL;
+    }
+    
+    DEBUG_MSG("car(o)->type %d",car(o)->type);
+    DEBUG_MSG("cadr(o)->type %d",cadr(o)->type);
+    
+    object pair = make_pair();
+    pair->this.pair.car = car(o);
+    
+    if ( !is_pair(cadr(o)) && !is_nil(cadr(o)) ) {
+        pair->this.pair.cdr = make_pair();
+        pair->this.pair.cdr->this.pair.car = cadr(o);
+        pair->this.pair.cdr->this.pair.cdr = make_nil();
+    }
+    else {
+        pair->this.pair.cdr = cadr(o);
+    }
+    
+    if ( car(pair) == NULL || cdr(pair) == NULL ) {
+        WARNING_MSG("arguments of the pair cons are NULL");
+        return NULL;
+    }
+    
+    return pair;
+
+}
+object prim_set_car ( object o ) {
+    return o;
+}
+object prim_set_cdr ( object o ) {
+    return o;
+}
+object prim_list ( object o ) {
+    if ( o == NULL ) {
+        WARNING_MSG("Cannot be a list, object o is NULL");
+        return NULL;
+    }
+    return o;
+}
+
 
 
 
