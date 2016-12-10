@@ -32,14 +32,16 @@ object eval_or      ( object input, object meta_environment );
 object eval_begin   ( object input, object meta_environment );
 object eval_lambda  ( object input, object meta_environment );
 object eval_let     ( object input, object meta_environment );
-object eval_compound( object input,object meta_environment );
+object eval_compound( object input, object compound, object meta_environment );
 
 
 /* FONCTIONS ENVIRONNEMENTALES */
 object newEnvironment     ( object levelInf              );
 void newVarEnvironment    ( string symbol, object valeur, object meta_environment );
 void changeVarEnvironment ( string symbol, object valeur, object meta_environment );
+void changeVarAllEnvironment( string symbol, object valeur, object meta_environment );
 void print_environment    ( object meta_environment      );
+void print_all_env( object meta_environment );
 
 
 

@@ -22,9 +22,9 @@
 
 object sfs_eval( object input, object meta_environment ) {
     DEBUG_MSG("eval input %p %d", input, input->type);
-    uint root = 1;
+   /* uint root = 1;
     sfs_print(input,&root);
-    printf("\n");
+    printf("\n"); */
     
     if (input == NULL) {
         return NULL;
@@ -33,7 +33,7 @@ object sfs_eval( object input, object meta_environment ) {
         return input;
     }
     if ( is_symbol(input) ) {
-        DEBUG_MSG("SFS EVAL ICI");
+        DEBUG_MSG("SFS EVAL SYMBOL");
         return eval_symbol(input,meta_environment);
     }
     if ( is_pair(input) ) {
@@ -67,7 +67,7 @@ object sfs_eval( object input, object meta_environment ) {
                 return eval_and(input,meta_environment);
             }
             else if (is_begin(function)) {
-                return eval_begin(input,meta_environment);
+                return eval_begin(cdr(input),meta_environment);
             }
             else if (is_lambda(function)) {
                 return eval_lambda(input,meta_environment);
@@ -75,8 +75,9 @@ object sfs_eval( object input, object meta_environment ) {
             else if (is_let(function)) {
                 return eval_let(input,meta_environment);
             }
-            else if (is_compound(eval_car)){
-                return eval_compound(input,meta_environment);
+            else if (is_compound(eval_symbol(eval_car,meta_environment))){
+                object compound = eval_symbol(eval_car,meta_environment);
+                return eval_compound(input,compound,compound->this.compound.env);
             }
             else {
                 WARNING_MSG("Not a form/primitive");
@@ -84,10 +85,10 @@ object sfs_eval( object input, object meta_environment ) {
             }
         }
         if ( is_pair(eval_car) ) {
-            if ( is_compound(sfs_eval(eval_car,meta_environment)) ) {
-                DEBUG_MSG("EVAL COMPOUND PAIR");
+            if ( is_lambda(car(eval_car)->this.symbol) ) {
+                DEBUG_MSG("SFS_EVAL COMPOUND PAIR");
                 object compound = eval_lambda(eval_car,meta_environment);
-                return eval_compound(compound, meta_environment);
+                return eval_compound(input, compound, compound->this.compound.env);
             }
         }
 

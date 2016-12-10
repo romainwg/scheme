@@ -21,23 +21,24 @@ object eval_argument(object input, object meta_environment) {
         return sfs_eval( input, meta_environment );
     }
     
+    object o_argument = make_pair();
+    
     if ( is_pair(input) ) {
         if ( is_nil( cdr(input) ) ) {
-            /*make pair */
-            input = make_pair();
-            input->this.pair.car = sfs_eval(car(input), meta_environment );
-            if (is_null(input->this.pair.car)) return NULL;
+            o_argument->this.pair.car = sfs_eval(car(input), meta_environment );
+            o_argument->this.pair.cdr = make_nil();
+            if (is_null(o_argument->this.pair.car)) return NULL;
         }
         else {
-            input = make_pair();
-            input->this.pair.car = sfs_eval(car(input), meta_environment );
-            if (is_null(input->this.pair.car)) return NULL;
-            input->this.pair.cdr = eval_argument(cdr(input), meta_environment );
-            if (is_null(input->this.pair.cdr)) return NULL;
+            o_argument->this.pair.car = sfs_eval(car(input), meta_environment );
+            if (is_null(o_argument->this.pair.car)) return NULL;
+            o_argument->this.pair.cdr = eval_argument(cdr(input), meta_environment );
+            if (is_null(o_argument->this.pair.cdr)) return NULL;
         }
     }
-    return input;
+    return o_argument;
 }
+
 
 /* EVAL PRIMITIVE */
 
@@ -60,8 +61,8 @@ object eval_primitive( object input, object meta_environment ) {
 /* EVAL FORMS */
 
 object eval_lambda ( object input, object meta_environment ) {
-    if ( cdddr(input) == NULL || !is_nil(cdddr(input)) ) {
-        WARNING_MSG("Lambda form accepts only 2 arguments");
+    if ( cdddr(input) == NULL || is_nil(cddr(input)) ) {
+        WARNING_MSG("Lambda form accepts at least 2 arguments");
         return NULL;
     }
     input = cdr(input);
@@ -78,7 +79,8 @@ object eval_lambda ( object input, object meta_environment ) {
         param = cdr(param);
     }
     param = car(input);
-    object compound = make_compound(param, caadr(input), meta_environment);
+    
+    object compound = make_compound(param, cdr(input), meta_environment);
     return compound;
 }
 
@@ -88,13 +90,22 @@ object eval_symbol ( object input, object meta_environment ) {
     
     if ( is_in_Env(input->this.symbol, meta_environment) ) {
         DEBUG_MSG("iciciciciciciicicicicici");
-        object EnvCopy = car(meta_environment);
-        while ( !is_nil(EnvCopy) ) {
-            DEBUG_MSG("EVAL SYMBOL ICI");
-            if ( strcmp(input->this.symbol,caar(EnvCopy)->this.symbol) == 0 ) {
-                return cdar(EnvCopy);
+        object EnvCopyLevel = meta_environment;
+        object EnvCopyArguments = car(EnvCopyLevel);
+        
+        while ( !is_nil(EnvCopyLevel) ) {
+            while ( !is_nil( EnvCopyArguments ) ) {
+                DEBUG_MSG("EVAL SYMBOL ICI");
+                if ( strcmp(input->this.symbol,caar(EnvCopyArguments)->this.symbol) == 0 ) {
+                    DEBUG_MSG("Valeur symbol trouvé type %d",cdar(EnvCopyArguments)->type);
+                    return cdar(EnvCopyArguments);
+                }
+                EnvCopyArguments = cdr(EnvCopyArguments);
             }
-            EnvCopy = cdr(EnvCopy);
+            EnvCopyLevel = cdr(EnvCopyLevel);
+            if ( !is_nil(EnvCopyLevel) ) {
+                EnvCopyArguments=car(EnvCopyLevel);
+            }
         }
     }
     else {
@@ -104,13 +115,19 @@ object eval_symbol ( object input, object meta_environment ) {
     return NULL;
 }
 
-object eval_compound ( object input, object meta_environment ) {
+object eval_compound ( object input, object compound, object meta_environment ) {
     
-    object compound = car(input);
     object param = compound->this.compound.param;
-    input = cddr(input);
-    object new_env = newEnvironment(meta_environment);
     
+    input = cdr(input);
+    input = eval_argument(input,meta_environment);
+    
+    if (input == NULL) {
+        return NULL;
+    }
+
+    object new_env = newEnvironment(meta_environment);
+
     while ( !is_nil(input) && !is_nil(param) ) {
         if (car(param) == NULL || car(input) == NULL ) {
             WARNING_MSG("Function haven't the same number of parameters");
@@ -121,6 +138,7 @@ object eval_compound ( object input, object meta_environment ) {
             changeVarEnvironment(car(param)->this.symbol, car(input), new_env);
         }
         else {
+            DEBUG_MSG("NEW VAR ENVIRONMENT EVAL COMPOUND");
             newVarEnvironment(car(param)->this.symbol, car(input), new_env);
         }
         input = cdr(input);
@@ -128,22 +146,13 @@ object eval_compound ( object input, object meta_environment ) {
     }
     
     print_environment(new_env);
-    object res = eval_argument(compound->this.compound.body,new_env);
+    object o_body = eval_begin(compound->this.compound.body,new_env);
+    if (o_body == NULL) {
+        return NULL;
+    }
+    DEBUG_MSG("AVANT FIN EVAL COMPOUND");
     
-    
-    return res;
-    
-    
-    /*object compound = eval_symbol(input->this.pair.car,meta_environment);
-    object env = compound->this.compound.env;
-    
-    object body = compound->this.compound.body;
-    
-    input = cdr(input);
-
-    
-    print_environment(env);
-    return compound;*/
+    return o_body;
 }
 
 object eval_quote( object input ) {
@@ -180,9 +189,9 @@ object eval_define( object input, object meta_environment ) {
         object param = cdadr(input);
         DEBUG_MSG("cdadr param type3 : %d",param->type);
         object env = newEnvironment(meta_environment);
-        uint root2 = 1;
+    /*    uint root2 = 1;
         sfs_print(body,&root2);
-        printf("\n");
+        printf("\n"); */
         input = make_compound(param,body,env);
         newVarEnvironment(symbol->this.symbol, input, meta_environment);
         return make_notype();
@@ -231,8 +240,10 @@ object eval_set( object input, object meta_environment ) {
         WARNING_MSG("%s is a primitive, cannot be set!",cadr(input)->this.symbol);
     }
     
+    print_all_env(meta_environment);
+    
     if (!is_in_Env(cadr(input)->this.symbol,meta_environment) ) {
-        WARNING_MSG("Cannot use set, variable not defined");
+        WARNING_MSG("Cannot use set, variable '%s' not defined",cadr(input)->this.symbol);
         return NULL;
     }
     
@@ -245,7 +256,7 @@ object eval_set( object input, object meta_environment ) {
         return NULL;
     }
     
-    changeVarEnvironment( symbol, valeur, meta_environment );
+    changeVarAllEnvironment( symbol, valeur, meta_environment );
     if (meta_environment == NULL) {
         ERROR_MSG("Problem with changeVarEnvironment");
     }
@@ -354,14 +365,21 @@ object eval_or( object input, object meta_environment ) {
 }
 
 object eval_begin( object input, object meta_environment ) {
-    if ( cdr(input) == NULL || is_nil(cdr(input) ) ) {
+    if ( input == NULL || is_nil(input) ) {
         WARNING_MSG("begin form needs at least one argument");
         return NULL;
     }
-    object o_begin = cdr(input);
+    object o_begin = input;
     o_begin = eval_argument(o_begin,meta_environment);
+    
+    if (o_begin == NULL) {
+            return NULL;
+        }
+
     while ( is_pair(cdr(o_begin)) ) {
+
         o_begin = cdr(o_begin);
+
     }
     return car(o_begin);
 }
@@ -406,6 +424,25 @@ void changeVarEnvironment( string symbol, object valeur, object meta_environment
     }
 }
 
+void changeVarAllEnvironment( string symbol, object valeur, object meta_environment) {
+    object EnvCopyLevel = meta_environment;
+    object EnvCopyArguments = car(EnvCopyLevel);
+    
+    while ( !is_nil(EnvCopyLevel) ) {
+        DEBUG_MSG("ChangeVarAllEnvironment p_Env %p",EnvCopyLevel);
+        while ( !is_nil( EnvCopyArguments ) ) {
+            if ( strcmp(symbol,caar(EnvCopyArguments)->this.symbol) == 0 ) {
+                EnvCopyArguments->this.pair.car->this.pair.cdr=valeur;
+            }
+            EnvCopyArguments = cdr(EnvCopyArguments);
+        }
+        EnvCopyLevel = cdr(EnvCopyLevel);
+        if ( !is_nil(EnvCopyLevel) ) {
+            EnvCopyArguments=car(EnvCopyLevel);
+        }
+    }
+}
+
 void print_environment( object meta_environment ) {
     DEBUG_MSG("***********************");
     DEBUG_MSG("Environnement");
@@ -415,4 +452,25 @@ void print_environment( object meta_environment ) {
         EnvCopy = cdr(EnvCopy);
     }
     DEBUG_MSG("***********************");
+}
+
+void print_all_env( object meta_environment ) {
+    int i = 1;
+    object EnvCopyLevel= meta_environment;
+    object EnvCopyArguments = car(meta_environment);
+    while ( !is_nil(EnvCopyLevel) ) {
+        DEBUG_MSG("***********************");
+        DEBUG_MSG("Environnement %d",i);
+        while (!is_nil(EnvCopyArguments)) {
+            DEBUG_MSG("%s    type %d",caar(EnvCopyArguments)->this.symbol,cdar(EnvCopyArguments)->type);
+            EnvCopyArguments = cdr(EnvCopyArguments);
+        }
+        EnvCopyLevel=cdr(EnvCopyLevel);
+        DEBUG_MSG("***********************");
+        if ( !is_nil(EnvCopyLevel) ) {
+            EnvCopyArguments=car(EnvCopyLevel);
+            i++;
+        }
+    }
+    
 }
