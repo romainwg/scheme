@@ -67,7 +67,7 @@ object eval_lambda ( object input, object meta_environment ) {
     }
     input = cdr(input);
     if ( car(input) == NULL || !is_pair(car(input)) ) {
-        WARNING_MSG("Parameters of lambda form are not in the right format (lambda (<param>) <expr>)");
+        WARNING_MSG("Not in the right format (lambda (<param>) <expr>)");
         return NULL;
     }
     object param = car(input);
@@ -89,7 +89,6 @@ object eval_symbol ( object input, object meta_environment ) {
     print_environment(meta_environment);
     
     if ( is_in_Env(input->this.symbol, meta_environment) ) {
-        DEBUG_MSG("iciciciciciciicicicicici");
         object EnvCopyLevel = meta_environment;
         object EnvCopyArguments = car(EnvCopyLevel);
         
@@ -128,7 +127,7 @@ object eval_compound ( object input, object compound, object meta_environment ) 
 
     object new_env = newEnvironment(meta_environment);
 
-    while ( !is_nil(input) && !is_nil(param) ) {
+    while ( !is_nil(input) || !is_nil(param) ) {
         if (car(param) == NULL || car(input) == NULL ) {
             WARNING_MSG("Function haven't the same number of parameters");
             return NULL;
@@ -166,11 +165,6 @@ object eval_quote( object input ) {
 
 object eval_define( object input, object meta_environment ) {
     
-    if ( cdddr(input) == NULL || !is_nil(cdddr(input)) ) {
-        WARNING_MSG("%s accepts only 2 arguments",car(input)->this.symbol);
-        return NULL;
-    }
-    
     if ( cadr(input) != NULL && is_pair(cadr(input)) ) {
         if ( caadr(input) == NULL || !is_symbol(caadr(input)) ) {
             WARNING_MSG("Cannot use Define, one atom at least ");
@@ -180,21 +174,23 @@ object eval_define( object input, object meta_environment ) {
             WARNING_MSG("Cannot use Define, symbol already defined");
             return NULL;
         }
-        
        
         object symbol = caadr(input);
         DEBUG_MSG("caadr symbol type6 : %d",symbol->type);
-        object body = caddr(input);
+        object body = cddr(input);
         DEBUG_MSG("cddr body type3 : %d",body->type);
         object param = cdadr(input);
         DEBUG_MSG("cdadr param type3 : %d",param->type);
         object env = newEnvironment(meta_environment);
-    /*    uint root2 = 1;
-        sfs_print(body,&root2);
-        printf("\n"); */
-        input = make_compound(param,body,env);
-        newVarEnvironment(symbol->this.symbol, input, meta_environment);
+
+        object compound = make_compound(param,body,env);
+        newVarEnvironment(symbol->this.symbol, compound, meta_environment);
         return make_notype();
+    }
+    
+    if ( cdddr(input) == NULL || !is_nil(cdddr(input)) ) {
+        WARNING_MSG("%s accepts only 2 arguments",car(input)->this.symbol);
+        return NULL;
     }
     
     if ( cadr(input) == NULL || !is_symbol(cadr(input)) ) {

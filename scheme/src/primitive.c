@@ -1126,8 +1126,19 @@ object prim_is_pair ( object o ) {
     return o;
 }
 object prim_is_procedure ( object o ) {
-    WARNING_MSG("Procedure : not evaluable for the moment (Increment4)");
-    return NULL;
+    if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
+        WARNING_MSG("procedure? must have 1 and just 1 argument");
+        return NULL;
+    }
+    
+    o = car(o);
+    if ( o != NULL && is_compound(o) ) {
+        o = vrai;
+    }
+    else {
+        o = faux;
+    }
+    return o;
 }
 object prim_is_string ( object o ) {
     if ( cdr(o)==NULL || is_pair(cdr(o)) ) {
