@@ -38,6 +38,7 @@ int is_and      ( string function );
 int is_begin    ( string function );
 int is_lambda   ( string function );
 int is_let      ( string function );
+int is_map      ( string function );
 
 /* FUNCTION - PRIMITIVE */
 int is_primitive( object o );

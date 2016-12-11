@@ -165,22 +165,22 @@ object eval_quote( object input ) {
 
 object eval_define( object input, object meta_environment ) {
     
-    if ( cadr(input) != NULL && is_pair(cadr(input)) ) {
-        if ( caadr(input) == NULL || !is_symbol(caadr(input)) ) {
+    if ( car(input) != NULL && is_pair(car(input)) ) {
+        if ( caar(input) == NULL || !is_symbol(caar(input)) ) {
             WARNING_MSG("Cannot use Define, one atom at least ");
             return NULL;
         }
-        if ( is_in_Env(caadr(input)->this.symbol, meta_environment) ) {
+        if ( is_in_Env(caar(input)->this.symbol, meta_environment) ) {
             WARNING_MSG("Cannot use Define, symbol already defined");
             return NULL;
         }
        
-        object symbol = caadr(input);
-        DEBUG_MSG("caadr symbol type6 : %d",symbol->type);
-        object body = cddr(input);
-        DEBUG_MSG("cddr body type3 : %d",body->type);
-        object param = cdadr(input);
-        DEBUG_MSG("cdadr param type3 : %d",param->type);
+        object symbol = caar(input);
+        DEBUG_MSG("caar symbol type6 : %d",symbol->type);
+        object body = cdr(input);
+        DEBUG_MSG("cdr body type3 : %d",body->type);
+        object param = cdar(input);
+        DEBUG_MSG("cdar param type3 : %d",param->type);
         object env = newEnvironment(meta_environment);
 
         object compound = make_compound(param,body,env);
@@ -188,27 +188,27 @@ object eval_define( object input, object meta_environment ) {
         return make_notype();
     }
     
-    if ( cdddr(input) == NULL || !is_nil(cdddr(input)) ) {
-        WARNING_MSG("%s accepts only 2 arguments",car(input)->this.symbol);
+    if ( cddr(input) == NULL || !is_nil(cddr(input)) ) {
+        WARNING_MSG("Define accepts only 2 arguments");
         return NULL;
     }
     
-    if ( cadr(input) == NULL || !is_symbol(cadr(input)) ) {
+    if ( car(input) == NULL || !is_symbol(car(input)) ) {
         WARNING_MSG("Cannot use Define, not a symbol");
         return NULL;
     }
-    if ( is_primitive(cadr(input)) ) {
-        WARNING_MSG("%s is a primitive, cannot be defined",cadr(input)->this.symbol);
+    if ( is_primitive(car(input)) ) {
+        WARNING_MSG("%s is a primitive, cannot be defined",car(input)->this.symbol);
         return NULL;
     }
-    if (is_in_Env(cadr(input)->this.symbol,meta_environment) ) {
+    if (is_in_Env(car(input)->this.symbol,meta_environment) ) {
         WARNING_MSG("Cannot use Define, variable already defined");
         return NULL;
     }
     
     string symbol;
-    strcpy(symbol,cadr(input)->this.symbol);
-    object valeur = sfs_eval(caddr(input),meta_environment);
+    strcpy(symbol,car(input)->this.symbol);
+    object valeur = sfs_eval(cadr(input),meta_environment);
     
     if (valeur == NULL) {
         WARNING_MSG("Cannot use Define, valeur is NULL");
@@ -381,6 +381,40 @@ object eval_begin( object input, object meta_environment ) {
 }
 
 object eval_let( object input, object meta_environment ) {
+    if ( input == NULL || is_nil(input) ) {
+        WARNING_MSG("begin form needs at least one argument");
+        return NULL;
+    }
+    object o_param=car(input);
+    if (!is_pair(o_param)) {
+        WARNING_MSG("Not right format : ((<param1> <value1>) (<param2> <value2>)...)");
+        return NULL;
+    }
+    
+    object new_env = newEnvironment(meta_environment);
+    object o_notype = NULL;
+    
+    while ( o_param != NULL && !is_nil(o_param) ) {
+        o_notype = eval_define(car(o_param),new_env);
+        
+        if (o_notype == NULL) {
+            return NULL;
+        }
+        if ( cdr(o_param) == NULL ) {
+            return NULL;
+        }
+        o_param = cdr(o_param);
+    }
+    
+    object o_let = eval_begin(cdr(input),new_env);
+    if (o_let == NULL) {
+        WARNING_MSG("Evaluation of let is NULL");
+        return NULL;
+    }
+    return o_let;
+}
+
+object eval_map( object input, object meta_environment ) {
     return input;
 }
 
@@ -425,7 +459,7 @@ void changeVarAllEnvironment( string symbol, object valeur, object meta_environm
     object EnvCopyArguments = car(EnvCopyLevel);
     
     while ( !is_nil(EnvCopyLevel) ) {
-        DEBUG_MSG("ChangeVarAllEnvironment p_Env %p",EnvCopyLevel);
+        DEBUG_MSG("Address p_Env %p",EnvCopyLevel);
         while ( !is_nil( EnvCopyArguments ) ) {
             if ( strcmp(symbol,caar(EnvCopyArguments)->this.symbol) == 0 ) {
                 EnvCopyArguments->this.pair.car->this.pair.cdr=valeur;
@@ -462,11 +496,11 @@ void print_all_env( object meta_environment ) {
             EnvCopyArguments = cdr(EnvCopyArguments);
         }
         EnvCopyLevel=cdr(EnvCopyLevel);
-        DEBUG_MSG("***********************");
         if ( !is_nil(EnvCopyLevel) ) {
             EnvCopyArguments=car(EnvCopyLevel);
             i++;
         }
     }
+    DEBUG_MSG("***********************");
     
 }

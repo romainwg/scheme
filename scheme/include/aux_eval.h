@@ -32,6 +32,7 @@ object eval_or      ( object input, object meta_environment );
 object eval_begin   ( object input, object meta_environment );
 object eval_lambda  ( object input, object meta_environment );
 object eval_let     ( object input, object meta_environment );
+object eval_map     ( object input, object meta_environment );
 object eval_compound( object input, object compound, object meta_environment );
 
 

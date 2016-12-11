@@ -33,7 +33,6 @@ object sfs_eval( object input, object meta_environment ) {
         return input;
     }
     if ( is_symbol(input) ) {
-        DEBUG_MSG("SFS EVAL SYMBOL");
         return eval_symbol(input,meta_environment);
     }
     if ( is_pair(input) ) {
@@ -52,7 +51,7 @@ object sfs_eval( object input, object meta_environment ) {
                 return eval_quote(input);
             }
             else if (is_define(function)) {
-                return eval_define(input,meta_environment);
+                return eval_define(cdr(input),meta_environment);
             }
             else if (is_set(function)) {
                 return eval_set(input,meta_environment);
@@ -73,7 +72,10 @@ object sfs_eval( object input, object meta_environment ) {
                 return eval_lambda(input,meta_environment);
             }
             else if (is_let(function)) {
-                return eval_let(input,meta_environment);
+                return eval_let(cdr(input),meta_environment);
+            }
+            else if (is_map(function)) {
+                return eval_map(cdr(input),meta_environment);
             }
             else if (is_compound(eval_symbol(eval_car,meta_environment))){
                 object compound = eval_symbol(eval_car,meta_environment);

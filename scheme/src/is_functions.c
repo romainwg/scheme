@@ -142,6 +142,12 @@ int is_let( string function ) {
     }
     return 0;
 }
+int is_map( string function ) {
+    if ( strcmp(function,"map") == 0 ) {
+        return 1;
+    }
+    return 0;
+}
 
 /* FUNCTION - PRIMITIVE */
 
