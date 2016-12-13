@@ -1207,10 +1207,10 @@ object prim_num_string ( object o ) {
     char str_number[STRLEN];
     str_number[0]='"';
     if ( o != NULL && is_integer(o) ) {
-        size = snprintf( str_number + 1, STRLEN-1, "%d", o->this.number.this.integer );
+        /*size = snprintf( str_number + 1, STRLEN-1, "%d", o->this.number.this.integer );*/
     }
     else if ( o != NULL && is_real(o) ) {
-        size = snprintf( str_number + 1, STRLEN-1, "%lf", o->this.number.this.real );
+        /*size = snprintf( str_number + 1, STRLEN-1, "%lf", o->this.number.this.real );*/
     }
     else {
         WARNING_MSG("number->string only evaluates numbers");
