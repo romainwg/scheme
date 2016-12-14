@@ -10,6 +10,8 @@
 #define primitive_h
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "object.h"
 #include "is_functions.h"
 #include "eval.h"

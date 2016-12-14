@@ -6,8 +6,7 @@
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
+
 #include "primitive.h"
 
 
@@ -1204,13 +1203,27 @@ object prim_num_string ( object o ) {
     
     o=car(o);
     int size=0;
+    char buffer_str_number[STRLEN];
     char str_number[STRLEN];
     str_number[0]='"';
     if ( o != NULL && is_integer(o) ) {
-        /*size = snprintf( str_number + 1, STRLEN-1, "%d", o->this.number.this.integer );*/
+        /*snprintf norme 99 non compilable*//*size = snprintf( str_number + 1, STRLEN-1, "%d", o->this.number.this.integer );*/
+	/*sprintf norme 90*/
+	/*le buffer reçoit le nombre / evaluation taille / copie dans chaine finale / ajout des guillemets*/
+
+	sprintf(buffer_str_number, "%d", o->this.number.this.integer);
+	size = strlen(buffer_str_number);
+	strcpy(str_number+1, buffer_str_number);
+	
     }
     else if ( o != NULL && is_real(o) ) {
-        /*size = snprintf( str_number + 1, STRLEN-1, "%lf", o->this.number.this.real );*/
+        /*snprintf norme 99 non compilable*//*size = snprintf( str_number + 1, STRLEN-1, "%lf", o->this.number.this.real );*/
+	/*sprintf norme 90*/
+
+	sprintf(buffer_str_number, "%lf", o->this.number.this.real);
+	size = strlen(buffer_str_number);
+	strcpy(str_number+1, buffer_str_number);
+	
     }
     else {
         WARNING_MSG("number->string only evaluates numbers");
@@ -1222,7 +1235,7 @@ object prim_num_string ( object o ) {
         return NULL;
     }
     str_number[size+1]='"';
-    
+
     o = make_string(str_number,size+2);
     return o;
 }
