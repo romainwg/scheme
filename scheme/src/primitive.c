@@ -683,17 +683,24 @@ object prim_inferior ( object o ) {
     
     int int_to_compare;
     double real_to_compare;
+	
+	int test = 0;
+	
     if ( is_integer(car(o)) ) {
         int_to_compare = car(o)->this.number.this.integer;
+		test = 1;
     }
     else if ( is_real(car(o)) ) {
         real_to_compare = car(o)->this.number.this.real;
+		test = 2;
     }
     else {
         WARNING_MSG("< accepts only numbers");
         return NULL;
     }
     
+	printf("\nvar : %d - %f\n", int_to_compare, real_to_compare);
+	
     int compare_int;
     double compare_real;
     
@@ -705,15 +712,41 @@ object prim_inferior ( object o ) {
         }
         if ( is_integer(car(o)) ) {
             compare_int = car(o)->this.number.this.integer;
-            if ( int_to_compare >= compare_int || real_to_compare >= compare_int ) {
+			
+			if(test==1){ /* si le nombre à comparer est un entier*/
+				if ( int_to_compare >= compare_int ) {
                 return faux;
-            }
+				}
+			}
+			
+			if(test==2){ /* si le nombre à comparer est un reel*/
+				if ( real_to_compare >= compare_int ) {
+                return faux;
+				}
+			}
+			
+            /*if ( int_to_compare >= compare_int || real_to_compare >= compare_int ) {
+                return faux;
+			}*/
         }
         else {
             compare_real = car(o)->this.number.this.real;
-            if ( int_to_compare >= compare_real || real_to_compare >= compare_real ) {
+            
+			if(test==1){
+				if ( int_to_compare >= compare_real ) {
                 return faux;
-            }
+				}
+			}
+			
+			if(test==2){
+				if ( real_to_compare >= compare_real ) {
+                return faux;
+				}
+			}
+			
+			/*if ( int_to_compare >= compare_real || real_to_compare >= compare_real ) {
+                return faux;
+			}*/
         }
     }
     return vrai;
@@ -726,11 +759,16 @@ object prim_superior ( object o ) {
     
     int int_to_compare;
     double real_to_compare;
+	
+	int test = 0;
+	
     if ( is_integer(car(o)) ) {
         int_to_compare = car(o)->this.number.this.integer;
+		test = 1;
     }
     else if ( is_real(car(o)) ) {
         real_to_compare = car(o)->this.number.this.real;
+		test = 2;
     }
     else {
         WARNING_MSG("< accepts only numbers");
@@ -748,15 +786,41 @@ object prim_superior ( object o ) {
         }
         if ( is_integer(car(o)) ) {
             compare_int = car(o)->this.number.this.integer;
-            if ( int_to_compare <= compare_int || real_to_compare <= compare_int ) {
+            
+			if(test==1){ /* si le nombre à comparer est un entier*/
+				if ( int_to_compare >= compare_int ) {
                 return faux;
-            }
+				}
+			}
+			
+			if(test==2){ /* si le nombre à comparer est un reel*/
+				if ( real_to_compare >= compare_int ) {
+                return faux;
+				}
+			}
+			
+			/*if ( int_to_compare <= compare_int || real_to_compare <= compare_int ) {
+                return faux;
+             }*/
         }
         else {
             compare_real = car(o)->this.number.this.real;
-            if ( int_to_compare <= compare_real || real_to_compare <= compare_real ) {
+            
+			if(test==1){ /* si le nombre à comparer est un entier*/
+				if ( int_to_compare >= compare_real ) {
                 return faux;
-            }
+				}
+			}
+			
+			if(test==2){ /* si le nombre à comparer est un reel*/
+				if ( real_to_compare >= compare_real ) {
+                return faux;
+				}
+			}
+			
+			/*if ( int_to_compare <= compare_real || real_to_compare <= compare_real ) {
+                return faux;
+             }*/
         }
     }
     return vrai;
